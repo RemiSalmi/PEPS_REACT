@@ -12,8 +12,42 @@
     }
 }
 
-.align-ctr{
-    align-items: center; 
+@keyframes pulseBtn {
+    0% {
+        -webkit-box-shadow: 0 0 0 15px#e0e0e0;
+        box-shadow: 0 0 0 15px#e0e0e0;
+        opacity: 1;
+    }
+
+    50% {
+        -webkit-box-shadow: 0 0 0 30px rgba(224,224,224,0.6);
+        box-shadow: 0 0 0 30px rgba(224,224,224,0.6);
+        opacity: 1;
+    }
+
+    100% {
+        -webkit-box-shadow: 0 0 0 40px rgba(224,224,224,0);
+        box-shadow: 0 0 0 40px rgba(224,224,224,0);
+        opacity: 0;
+    }
+}
+
+
+@font-face {
+    font-family: "Prototype";
+    src: url("../fonts/Prototype.ttf");
+}
+
+@keyframes movebounce {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(20px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
 }
 
 .logo{
@@ -38,8 +72,14 @@ nav a:hover{
 
 nav{
     display: flex;
-    justify-content: center;
-    padding: 20px;
+    justify-content: flex-start;
+    border: 1px solid#8080801c;
+    border-radius: 80px;
+    background-color:white;
+    margin-top: 10px;
+    margin-left: 10px;
+    box-shadow: 0px 0px 7px 3px#0000001a;
+    width: 98%;
 }
 
 .logo-nav{
@@ -48,22 +88,6 @@ nav{
     margin-right: 10px;
 }
 
-@font-face {
-    font-family: "Prototype";
-    src: url("../fonts/Prototype.ttf");
-}
-
-@keyframes movebounce {
-    0% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(20px);
-    }
-    100% {
-      transform: translateY(0px);
-    }
-}
 
 
 
@@ -76,25 +100,21 @@ section{
     width: 100%;
 }
 
-.full-height{
-    height: 100%;
-}
-
-.mr-t-190{
-    margin-top: 230px !important;
-}
-
-.full-height p {
+.logo-text{
     text-align: center;
     font-family : "Prototype";
-    position: fixed;
+    position: absolute;
+    top:112px;
     color: #302f2f;
     font-size: 76px;
 }
 
-.dsp-flx-cl{
+.flex{
     display: flex;
-    flex-direction: column;
+}
+
+.justify-center{
+    justify-content: center;
 }
 
 nav{
@@ -153,4 +173,36 @@ a{
     left: 62px;
     filter: hue-rotate(-632deg);
     transform: scale(0.85);
+}
+
+.next{
+    height: 50px;
+    width: 75px;
+    margin-top: 17px;
+    margin-left: 3px;
+}
+
+.roundBtn{
+    border-radius: 50px;
+    border : 1px solid #0000;
+    height: 80px;
+    width: 80px;
+    box-shadow: 1px 1px 10px 5px rgba(0, 0, 0, 0.05);
+    
+}
+
+.roundBtn:hover{
+    cursor: pointer;
+}
+
+.roundBtn::before {
+    -webkit-animation: 2.5s pulseBtn 0s linear infinite;
+    animation: 2.5s pulseBtn 0s linear infinite;
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    z-index: 1;
+    top: 0px;
 }
