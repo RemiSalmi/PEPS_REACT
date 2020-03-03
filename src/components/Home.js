@@ -1,12 +1,10 @@
 import React from 'react';
+import Landing from './Landing'
  
 class Home extends React.Component{
     render(){
         return (
-            <div>
-               <h1>Home</h1>
-                <p>Home page body content</p>
-            </div>
+            <Landing/>
          );
     }
     
