@@ -20,8 +20,8 @@ class Remark extends React.Component{
                             </a>
                         </div>
                         <div class="stats ml-auto">
-                        <i class="fas fa-bullhorn"></i> {this.props.nbEncounter} &#xB7;
-                            <i class="material-icons">share</i> {this.props.nbAnswer}
+                        <i class="fas fa-bullhorn icon-pad"></i> {this.props.nbEncounter}
+                        <i class="fas fa-comment icon-pad"></i> {this.props.nbAnswer}
                         </div>
                     </div>
                 </div>

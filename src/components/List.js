@@ -1,5 +1,7 @@
 import React from 'react';
 import Remark from './Remark'
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
 class List extends React.Component{
 
@@ -13,6 +15,9 @@ class List extends React.Component{
                         <li><Remark location="Paris" dateCreation="03/03/2020" remark="Ma super remarque 2" creator="Tom" nbEncounter="34" nbAnswer="8"></Remark></li>
                     </ul>
                 </div>
+                <Fab color="primary" aria-label="add" className="fab">
+                    <AddIcon />
+                </Fab>
             </section>
         );
     }
