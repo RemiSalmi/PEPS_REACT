@@ -8,7 +8,7 @@ import circle3 from "../assets/img/main-banner3.png"
 class Landing extends React.Component{
     render(){
         return (
-            <section>
+            <section id="Landing">
 
                 <div class="container-fluid">
                     <div class="row" style={{height: '300px'}}>
