@@ -3,7 +3,7 @@ import React from 'react';
 class Remark extends React.Component{
     render(){
         return(
-            <div class="card bg-primary">
+            <div class="card">
                 <div class="card-body">
                     <h5 class="card-category card-category-social">
                     <i class="material-icons">place</i> {this.props.location}, {this.props.dateCreation}
@@ -19,7 +19,7 @@ class Remark extends React.Component{
                                 <span>{this.props.creator}</span>
                             </a>
                         </div>
-                        <div class="stats ml-auto">
+                        <div class="stats ml-auto" style={{'color': '#a65fb3'}}>
                         <i class="fas fa-bullhorn icon-pad"></i> {this.props.nbEncounter}
                         <i class="fas fa-comment icon-pad"></i> {this.props.nbAnswer}
                         </div>

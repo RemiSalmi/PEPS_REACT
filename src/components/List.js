@@ -8,7 +8,7 @@ class List extends React.Component{
     render(){
         return(
             <section>
-                <h1>{this.props.title}</h1>
+                <h1 class="section_title">{this.props.title}</h1>
                 <div class="container">
                     <ul>
                         <li><Remark location="Montpellier" dateCreation="03/03/2020" remark="Ma super remarque" creator="Rémi" nbEncounter="10" nbAnswer="4"></Remark></li>

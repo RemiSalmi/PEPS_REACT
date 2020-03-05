@@ -222,8 +222,8 @@ a{
 }
 
 .icon-pad{
-    padding-right: 1px;
-    padding-top: 3px;
+    padding-right: 3px;
+    padding-top: 4px;
     padding-left: 15px;
 }
 
@@ -231,4 +231,11 @@ a{
     position: sticky !important;
     bottom: 50px;
     left: 95%;
+}
+
+.section_title{
+    background-color:#2d2e32;
+    color:white;
+    margin: 0px;
+    padding: 10px;
 }
