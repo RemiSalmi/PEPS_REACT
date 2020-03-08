@@ -1,13 +1,29 @@
 const initState = {
     remarks: [
-        {idRemark:8,remark:"The remark",idCategory:2,idUser:29,location:"Montpellier",dateCreation:"2020-02-28T00:00:00.000Z"},
-        {idRemark:7,remark:"The remark 2",idCategory:2,idUser:29,location:"Montpellier",dateCreation:"2020-02-28T00:00:00.000Z"},
-        {idRemark:6,remark:"The remark 3",idCategory:2,idUser:29,location:"Montpellier",dateCreation:"2020-02-28T00:00:00.000Z"}
     ]
 }
 
 const remarkReducer = (state = initState, action) =>{
+    switch (action.type){
+        case 'FETCH_ALL_REMARK' :
+            let newRemarks = [...state.remarks]
+            action.remarks.map(remark => {
+                newRemarks.push(remark)
+            })
+            return {
+                ...state,
+                remarks : newRemarks
+            }
+            break;
+        case 'ADD_REMARK' :
+            return {
+                ...state,
+                remarks : [...state.remarks, action.remark]
+            }
+            break;
+        default:        
+    }
     return state
 }
 
-export default remarkReducer
+export default remarkReducer 

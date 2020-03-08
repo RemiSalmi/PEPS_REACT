@@ -30,7 +30,7 @@ class Remark extends React.Component{
                         <i className={"material-icons"}>place</i> {this.props.location}, {this.props.dateCreation}
                         </h5>
                         <h4 className={"card-title"}>
-                        <p>{this.props.remark}&quot;</p>
+                        <p>&quot; {this.props.remark} &quot;</p>
                         </h4>
 
                         <div className={"card-stats"}>

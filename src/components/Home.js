@@ -2,8 +2,14 @@ import React from 'react';
 import Landing from './Landing'
 import List from './List'
 import { connect } from 'react-redux' 
+import { getAll } from '../actions/remarkAction'
  
 class Home extends React.Component{
+    componentDidMount(){
+        this.props.getAll()
+        
+    }
+
     render(){
         return (
             <div>
@@ -21,4 +27,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(Home);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getAll: () => dispatch(getAll())
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Home);
