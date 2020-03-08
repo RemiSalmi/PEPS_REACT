@@ -7,7 +7,7 @@ class Navigation extends React.Component{
     render() {
         return (
             <nav>
-                <img class="logo-nav" src={logo} alt="logo"/>
+                <img className={"logo-nav"} src={logo} alt="logo"/>
                <NavLink to="/">Home</NavLink>
                <NavLink to="/remark">Login</NavLink>
                <NavLink to="/remark">Register</NavLink>

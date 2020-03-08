@@ -239,3 +239,22 @@ a{
     margin: 0px;
     padding: 10px;
 }
+
+.fab_color{
+    background-color: white !important;
+    color: #9960a7 !important;
+}
+
+.fab_color:hover{
+    background-color: #d5d5d5 !important;
+}
+
+.card:hover{
+    background-color: #4a434b12;
+    cursor: pointer;
+    box-shadow: 1px 1px 12px 1px #0000005c;
+}
+
+html{
+    scroll-behavior: smooth;
+}

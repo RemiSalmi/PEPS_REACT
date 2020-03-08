@@ -6,35 +6,41 @@ import circle2 from "../assets/img/main-banner12.png"
 import circle3 from "../assets/img/main-banner3.png"
 
 class Landing extends React.Component{
+
+    scrollToRemark = () => {
+        let remarks = document.getElementById("Remarks")
+        remarks.scrollIntoView({behavior: "smooth", block: "end", inline: "center"})
+    }
+
     render(){
         return (
             <section id="Landing">
 
-                <div class="container-fluid">
-                    <div class="row" style={{height: '300px'}}>
-                        <div class="landing-circle">
-                            <div class="landing-circle1">
+                <div className={"container-fluid"}>
+                    <div className={"row"} style={{height: '300px'}}>
+                        <div className={"landing-circle"}>
+                            <div className={"landing-circle1"}>
                                 <img src={circle3} alt=""/>
                             </div>
-                            <div class="landing-circle2" >
+                            <div className={"landing-circle2"} >
                                 <img src={circle2} alt=""/>
                             </div>
-                            <div class="landing-circle3">
+                            <div className={"landing-circle3"}>
                                 <img src={circle1} alt=""/>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6 flex justify-center">
-                            <img class="logo" src={circle} alt="logo"/>
-                            <p class="logo-text">PEPS</p>
+                    <div className={"row"}>
+                        <div className={"col-sm-6 flex justify-center"}>
+                            <img className={"logo"} src={circle} alt="logo"/>
+                            <p className={"logo-text"}>PEPS</p>
                         </div>
                     </div>
                     
-                    <div class="row" style={{'padding-top': '60px'}}>
-                        <div class="col-sm-6 flex justify-center">
-                            <div class="roundBtn">
-                                <img class="next" src={next} alt=""/>
+                    <div className={"row"} style={{'paddingTop': '60px'}}>
+                        <div className={"col-sm-6 flex justify-center"}>
+                            <div className={"roundBtn"} onClick={this.scrollToRemark}>
+                                <img className={"next"} src={next} alt=""/>
                             </div>
                         </div>
                     </div>

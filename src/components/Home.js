@@ -7,7 +7,7 @@ class Home extends React.Component{
         return (
             <div>
                 <Landing/>
-                <List title="Remarks"/>
+                <List title="Remarks" type="remark"/>
             </div>
          );
     }
