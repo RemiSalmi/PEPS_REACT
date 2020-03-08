@@ -5,7 +5,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
 import List from './List'
-
+import { connect } from 'react-redux' 
 
 class Remark extends React.Component{
 
@@ -50,7 +50,7 @@ class Remark extends React.Component{
                 <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'xl'}>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            <List title="Answers" type="answer"></List>
+                            <List title="Answers" type="answer" answers={this.props.answers}></List>
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -62,7 +62,12 @@ class Remark extends React.Component{
             </div>
         );
     }
-
 }
 
-export default Remark;
+const mapStateToProps = (state) => {
+    return {
+        answers : state.answer.answers,
+    }
+}
+
+export default connect(mapStateToProps)(Remark);
