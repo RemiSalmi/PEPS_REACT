@@ -8,19 +8,17 @@ const remarkReducer = (state = initState, action) =>{
         case 'FETCH_ALL_REMARK' :
             let newRemarks = [...state.remarks]
             action.remarks.map(remark => {
-                newRemarks.push(remark)
+                return newRemarks.push(remark)
             })
             return {
                 ...state,
                 remarks : newRemarks
             }
-            break;
         case 'ADD_REMARK' :
             return {
                 ...state,
                 remarks : [...state.remarks, action.remark]
             }
-            break;
         default:        
     }
     return state
