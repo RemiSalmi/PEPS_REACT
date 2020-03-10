@@ -2,11 +2,14 @@ import React from 'react';
 import Landing from './Landing'
 import List from './List'
 import { connect } from 'react-redux' 
-import { getAll } from '../actions/remarkAction'
+import { getAllRemarks } from '../actions/remarkAction'
+import { getAllUsers } from '../actions/userAction'
  
 class Home extends React.Component{
     componentDidMount(){
-        this.props.getAll()
+        this.props.getAllUsers()
+        this.props.getAllRemarks()
+        
         
     }
 
@@ -24,12 +27,14 @@ class Home extends React.Component{
 const mapStateToProps = (state) => {
     return {
         remarks : state.remark.remarks,
+        users : state.user.users
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getAll: () => dispatch(getAll())
+        getAllRemarks: () => dispatch(getAllRemarks()),
+        getAllUsers: () => dispatch(getAllUsers())
     }
 }
 

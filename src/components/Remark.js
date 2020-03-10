@@ -2,12 +2,14 @@ import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
 import List from './List'
 import { connect } from 'react-redux' 
 
 class Remark extends React.Component{
+    componentDidMount(){
+        console.log("Remark mounted")
+    }
 
     state = {
         open: false
@@ -35,10 +37,10 @@ class Remark extends React.Component{
 
                         <div className={"card-stats"}>
                             <div className={"author"}>
-                                <a href="#pablo">
+                                <div>
                                     <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=334&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D" alt="..." className={"avatar img-raised"}/>
-                                    <span>{this.props.creator}</span>
-                                </a>
+                                    <span>{this.props.users.byId[this.props.creator] !== undefined ? this.props.users.byId[this.props.creator].pseudo : ""}</span>
+                                </div>
                             </div>
                             <div className={"stats ml-auto"} style={{'color': '#a65fb3'}}>
                             <i className={"fas fa-bullhorn icon-pad"}></i> {this.props.nbEncounter}
@@ -49,9 +51,7 @@ class Remark extends React.Component{
                 </div>
                 <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'xl'}>
                     <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            <List title="Answers" type="answer" answers={this.props.answers}></List>
-                        </DialogContentText>
+                            <List title="Answers" type="answer" answers={this.props.answers}></List> 
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary" autoFocus>
@@ -67,6 +67,7 @@ class Remark extends React.Component{
 const mapStateToProps = (state) => {
     return {
         answers : state.answer.answers,
+        users : state.user.users
     }
 }
 
