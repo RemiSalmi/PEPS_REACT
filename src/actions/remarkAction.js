@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const getAll  = () =>{
+export const getAllRemarks  = () =>{
     return (dispatch, getState) => {
         axios.get('https://web-ios-api.herokuapp.com/remarks')
         .then(response => {
