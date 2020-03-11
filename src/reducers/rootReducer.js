@@ -5,9 +5,9 @@ import authReducer from './authReducer'
 import { combineReducers } from 'redux'
 
 const rootReducer = combineReducers({
-    remark: remarkReducer,
-    user: userReducer,
-    answer: answerReducer,
+    remarks: remarkReducer,
+    users: userReducer,
+    answers: answerReducer,
     auth: authReducer,
 })
 
