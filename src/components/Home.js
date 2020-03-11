@@ -1,12 +1,15 @@
 import React from 'react';
 import Landing from './Landing'
 import List from './List'
+import Footer from './Footer'
 import { connect } from 'react-redux' 
 import { getAllRemarks } from '../actions/remarkAction'
 import { getAllUsers } from '../actions/userAction'
+import { getAllAnswers } from '../actions/answerAction';
  
 class Home extends React.Component{
     componentDidMount(){
+        this.props.getAllAnswers()
         this.props.getAllUsers()
         this.props.getAllRemarks()
         
@@ -18,6 +21,7 @@ class Home extends React.Component{
             <div>
                 <Landing/>
                 <List title="Remarks" type="remark" remarks={this.props.remarks}/>
+                <Footer/>
             </div>
          );
     }
@@ -27,14 +31,15 @@ class Home extends React.Component{
 const mapStateToProps = (state) => {
     return {
         remarks : state.remark.remarks,
-        users : state.user.users
+        users : state.user.users, 
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         getAllRemarks: () => dispatch(getAllRemarks()),
-        getAllUsers: () => dispatch(getAllUsers())
+        getAllUsers: () => dispatch(getAllUsers()),
+        getAllAnswers: () => dispatch(getAllAnswers())
     }
 }
 
