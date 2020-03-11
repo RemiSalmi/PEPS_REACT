@@ -1,15 +1,35 @@
 const initState = {
-    remarks: [
-    ]
+    remarks : {
+        byId : {
+        },
+        allIds : []
+    },
 }
 
 const remarkReducer = (state = initState, action) =>{
     switch (action.type){
         case 'FETCH_ALL_REMARK' :
-            let newRemarks = [...state.remarks]
+            console.log(action.encounters)
+
+            let newRemarks = state.remarks
             action.remarks.map(remark => {
-                return newRemarks.push(remark)
+                remark.encounters = []
+                remark.answers = [] 
+                newRemarks.byId[remark.idRemark] = remark
+                newRemarks.allIds.push(remark.idRemark)
+                return newRemarks
             })
+
+            action.links.map(answer => {
+                newRemarks.byId[answer.idRemark].answers.push(answer.idAnswer)
+                return newRemarks
+            })
+
+            action.encounters.map(encounter => {
+                newRemarks.byId[encounter.idRemark].encounters.push(encounter.idUser)
+                return newRemarks
+            })
+
             return {
                 ...state,
                 remarks : newRemarks
