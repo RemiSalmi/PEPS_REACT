@@ -1,14 +1,11 @@
 import React from 'react';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import Button from '@material-ui/core/Button';
-import List from './List'
-import { connect } from 'react-redux' 
+import { connect } from 'react-redux'
+
+import { fetchUsers } from '../actions/userAction';
 
 class Remark extends React.Component{
     componentDidMount(){
-        console.log("Remark mounted")
+        this.props.dispatch(fetchUsers());
     }
 
     state = {
@@ -49,26 +46,15 @@ class Remark extends React.Component{
                         </div>
                     </div>
                 </div>
-                <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'xl'}>
-                    <DialogContent>
-                            <List title="Answers" type="answer" answers={this.props.answers}></List> 
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleClose} color="primary" autoFocus>
-                            Fermer
-                        </Button>
-                    </DialogActions>
-                </Dialog>
             </div>
         );
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        answers : state.answer.answers,
-        users : state.user.users
-    }
-}
+const mapStateToProps = state => ({
+    users: state.users,
+    loading: state.users.loading,
+    error: state.users.error
+});
 
 export default connect(mapStateToProps)(Remark);
