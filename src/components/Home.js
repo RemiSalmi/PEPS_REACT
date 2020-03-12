@@ -2,7 +2,7 @@ import React from 'react';
 
 import Landing from './Landing'
 import Footer from './Footer'
-import ListRemark from './ListRemarks'
+import ListRemark from './ListRemark'
 
 class Home extends React.Component{
 

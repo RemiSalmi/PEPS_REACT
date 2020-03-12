@@ -78,7 +78,7 @@ class ListRemark extends React.Component {
                     <ul>
                         {remarks.allIds.length ? (
                             remarks.allIds.map(remarkId => {
-                                return <li key={remarkId}><Remark location={remarks.byId[remarkId].location} dateCreation={remarks.byId[remarkId].dateCreation} remark={remarks.byId[remarkId].remark} creator={remarks.byId[remarkId].idUser} nbEncounter="10" nbAnswer="4" dialogcontent="rem1"></Remark></li>
+                                return <li key={remarkId}><Remark remark={remarks.byId[remarkId]}></Remark></li>
                             })
                         ) : (
                             <p>There is no remarks</p>
