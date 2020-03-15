@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux' 
 import { fetchRemarks } from '../actions/remarkAction';
+import { fetchCategories } from '../actions/categoryAction';
+import { addRemarks } from '../actions/remarkAction';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -16,6 +18,7 @@ import Remark from './Remark'
 class ListRemark extends React.Component {
     componentDidMount() {
         this.props.dispatch(fetchRemarks());
+        this.props.dispatch(fetchCategories());
     }
 
     constructor(props){
@@ -24,7 +27,7 @@ class ListRemark extends React.Component {
             open: false,
             remark: "",
             location: "",
-            category: 0,
+            category: 1,
         }
     }
 
@@ -56,18 +59,19 @@ class ListRemark extends React.Component {
 
     handleClickCreate = () =>{
         this.setState({ open: false })
-        let remark = {"remark":this.state.remark, "idCategory" : this.state.category, "location" : this.state.location, "token": this.props.token}
-        this.props.addRemark(remark)
+        let remark = {"remark":this.state.remark, "idCategory" : this.state.category, "location" : this.state.location, "token": sessionStorage.getItem('token')}
+        this.props.dispatch(addRemarks(remark));
     }
 
     render() {
-        const { error, loading, remarks, title } = this.props;
-    
-        if (error) {
-          return <div>Error! {error.message}</div>;
+        const { errorRemarks, loadingRemarks,loadingCat, remarks, title, categories } = this.props;
+        const isConnected = this.props.auth.isConnected;
+
+        if (errorRemarks) {
+          return <div>Error! {errorRemarks.message}</div>;
         }
     
-        if (loading) {
+        if (loadingRemarks || loadingCat) {
           return <div>Loading...</div>;
         }
 
@@ -85,11 +89,17 @@ class ListRemark extends React.Component {
                         )}    
                     </ul>
                 </div>
-                <Tooltip title={"New remark"} aria-label={"New remark"} arrow>
-                    <Fab aria-label="add" className="fab fab_color" onClick={this.handleClickOpen}>
-                        <AddIcon />
-                    </Fab>
-                </Tooltip>
+
+                {isConnected ? (
+                   <Tooltip title={"New remark"} aria-label={"New remark"} arrow>
+                        <Fab aria-label="add" className="fab fab_color" onClick={this.handleClickOpen}>
+                            <AddIcon />
+                        </Fab>
+                    </Tooltip>
+               ) : null
+               }             
+                
+
                 <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'xl'}>
                     <DialogTitle id="form-dialog-title">New remark</DialogTitle>
                     <DialogContent>
@@ -101,9 +111,14 @@ class ListRemark extends React.Component {
                             <div className="form-group">
                                 <label htmlFor="Category">Category</label>
                                 <select className="form-control selectpicker" data-style="btn btn-link" id="Category" onChange={this.handleChangeCategory}>
-                                    <option value="0">Fun</option>
-                                    <option value="1">Angry</option>
-                                    <option value="2">Cool</option>
+                                    {
+                                    categories.allIds.map(idCategory => {
+                                        if(categories.byId[idCategory].type === "remark"){
+                                            return <option key={idCategory} value={idCategory}>{categories.byId[idCategory].lib}</option>
+                                        }else{
+                                            return null
+                                        }
+                                    })}
                                 </select>
                             </div>
                             <div className="form-group">
@@ -128,8 +143,12 @@ class ListRemark extends React.Component {
 
 const mapStateToProps = state => ({
     remarks: state.remarks,
-    loading: state.remarks.loading,
-    error: state.remarks.error
+    categories: state.categories,
+    loadingRemarks: state.remarks.loading,
+    errorRemarks: state.remarks.error,
+    loadingCat: state.categories.loading,
+    errorCat: state.categories.error,
+    auth: state.auth,
 });
 
 export default connect(mapStateToProps)(ListRemark)

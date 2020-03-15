@@ -2,6 +2,7 @@ import remarkReducer from './remarkReducer'
 import answerReducer from './answerReducer'
 import userReducer from './userReducer'
 import authReducer from './authReducer'
+import categoryReducer from './categoryReducer'
 import { combineReducers } from 'redux'
 
 const rootReducer = combineReducers({
@@ -9,6 +10,7 @@ const rootReducer = combineReducers({
     users: userReducer,
     answers: answerReducer,
     auth: authReducer,
+    categories: categoryReducer
 })
 
 export default rootReducer

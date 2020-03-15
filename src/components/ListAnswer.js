@@ -15,6 +15,7 @@ import Answer from './Answer'
 
 class ListAnswer extends React.Component {
     componentDidMount() {
+        this.props.dispatch(fetchAnswers());
     }
 
     constructor(props){
@@ -60,7 +61,7 @@ class ListAnswer extends React.Component {
     }
 
     render() {
-        const { error, loading, title, answersList } = this.props;
+        const { error, loading, title, answersList, answers } = this.props;
     
         if (error) {
           return <div>Error! {error.message}</div>;
@@ -79,7 +80,7 @@ class ListAnswer extends React.Component {
                     <ul>
                         {answersList.length ? (
                             answersList.map(idAnswer => {
-                                return <li key={idAnswer}><Answer idAnswer={idAnswer}></Answer></li>
+                                return <li key={idAnswer}><Answer answer={answers.byId[idAnswer]}></Answer></li>
                             })
                         ) : (
                             <p>There is no answer for this remark, add one !</p>
@@ -127,4 +128,10 @@ class ListAnswer extends React.Component {
       }
 }
 
-export default connect()(ListAnswer)
+const mapStateToProps = state => ({
+    answers: state.answers,
+    loading: state.answers.loading,
+    error: state.answers.error
+});
+
+export default connect(mapStateToProps)(ListAnswer)

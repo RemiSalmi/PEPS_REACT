@@ -1,10 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux' 
+import { checkLogin } from '../actions/authAction';
 
 import Landing from './Landing'
-import Footer from './Footer'
 import ListRemark from './ListRemark'
+import Footer from './Footer'
+
 
 class Home extends React.Component{
+    componentDidMount(){
+        this.props.dispatch(checkLogin());
+    }
 
     render(){
         return (
@@ -18,4 +24,4 @@ class Home extends React.Component{
     
 }
 
-export default (Home);
+export default connect()(Home);

@@ -14,8 +14,7 @@ class Landing extends React.Component{
 
     render(){
         return (
-            <section id="Landing">
-
+            <section id="Landing" className="fullScreen">
                 <div className={"container-fluid"}>
                     <div className={"row"} style={{height: '300px'}}>
                         <div className={"landing-circle"}>
