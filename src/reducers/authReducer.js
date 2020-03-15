@@ -1,9 +1,23 @@
-const initState = {
-    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjI5LCJyb2xlIjoidXNlciIsImlhdCI6MTU4Mjg5ODAzN30.GmstVYka-gZgp_V1gvpkNSI0EmVMXC3txiUeI6VA8XY"
+import {
+    CHECK_AUTH,
+  } from '../actions/authAction';
+
+const initialState = {
+    isConnected : false
 }
 
-const authReducer = (state = initState, action) =>{
-    return state
-}
+export default function authReducer(state = initialState, action) {
+    switch(action.type) {
+      case CHECK_AUTH:
+        // Mark the state as "loading" so we can show a spinner or something
+        // Also, reset any errors. We're starting fresh.
+        return {
+            ...state,
+            isConnected : action.payload.isConnected
+        };
 
-export default authReducer
+      default:
+        // ALWAYS have a default case in a reducer
+        return state;
+    }
+}
