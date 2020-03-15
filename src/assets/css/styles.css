@@ -109,6 +109,30 @@ h1{
     color:  #9960a7;
 }
 
+.neu{
+    display: flex;
+    align-items: center;
+    border-radius: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
+    text-align: center;
+    background-color: #E0E5EC;
+    box-shadow: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255, 0.5);
+    font-size: 17px;
+    width: 75px;
+    align-items: center;
+    justify-content: center;
+    color: gray;
+}
+
+.neu-card{
+    margin-left: auto;
+    margin-right: auto; 
+    background-color: #E0E5EC;
+    box-shadow: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255, 0.5);    
+}
+
 
 section{
     width: 100%;
@@ -197,7 +221,7 @@ nav{
 
 body{
     margin: 0px;
-    background-color: #fafafa;
+    background-color: #E0E5EC;
 }
 
 a{
@@ -209,6 +233,7 @@ a{
     top: 20px;
     left: 20px;
 }
+
 
 .landing-circle1 {
     -webkit-animation: movebounce 2.8s linear infinite;
@@ -286,10 +311,12 @@ a{
     top: 0px;
 }
 
-.icon-pad{
-    padding-right: 3px;
-    padding-top: 4px;
-    padding-left: 15px;
+.icon-mar{
+    margin-left: 20px;
+}
+
+.icon-mar-r-4{
+    margin-right: 4px;
 }
 
 .fab{
@@ -306,8 +333,9 @@ a{
 }
 
 .fab_color{
-    background-color: white !important;
+    background-color: #e0e5ec !important;
     color: #9960a7 !important;
+    box-shadow: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255, 0.5) !important;
 }
 
 .fab_color:hover{
@@ -318,6 +346,10 @@ a{
     background-color: #4a434b12;
     cursor: pointer;
     box-shadow: 1px 1px 12px 1px #0000005c;
+}
+
+.card{
+    background-color:#E0E5EC;
 }
 
 html{

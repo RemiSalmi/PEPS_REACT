@@ -9,6 +9,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import ListAnswer from './ListAnswer'
 import Button from '@material-ui/core/Button';
 
+var jwt = require('jsonwebtoken');
+
 class Remark extends React.Component{
     componentDidMount(){
         this.props.dispatch(fetchUsers());
@@ -32,7 +34,7 @@ class Remark extends React.Component{
 
         return(
             <div>
-                <div className={"card"} onClick={this.handleClickOpen}>
+                <div className={"card neu-card"} onClick={this.handleClickOpen}>
                     <div className={"card-body"}>
                         <h5 className={"card-category card-category-social"}>
                         <i className={"material-icons"}>place</i> {remark.location}, {remark.dateCreation}
@@ -49,8 +51,14 @@ class Remark extends React.Component{
                                 </div>
                             </div>
                             <div className={"stats ml-auto"} style={{'color': '#a65fb3'}}>
-                            <i className={"fas fa-bullhorn icon-pad"}></i> {remark.encounters.length}
-                            <i className={"fas fa-comment icon-pad"}></i> {remark.answers.length}
+
+                            <div className="neu">
+                                <i className="material-icons icon-mar-r-4" style={remark.encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser) ? ({'color': '#a45cfb'}) : ({'color': 'gray'})}>hearing</i> {remark.encounters.length}
+                            </div>
+                            <div className="neu icon-mar">
+                            <i className="material-icons icon-mar-r-4">message</i> {remark.answers.length}
+                            </div>
+                            
                             </div>
                         </div>
                     </div>
@@ -75,7 +83,8 @@ class Remark extends React.Component{
 const mapStateToProps = state => ({
     users: state.users,
     loading: state.users.loading,
-    error: state.users.error
+    error: state.users.error,
+    auth: state.auth
 });
 
 export default connect(mapStateToProps)(Remark);
