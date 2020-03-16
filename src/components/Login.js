@@ -55,8 +55,8 @@ class Login extends React.Component{
             <div style={{position: "absolute",height:"100%", width:"100%"}}>
                 <section id="Login" className="">
                     <div className={"container"} >
-                        <div className="row loginBox" >
-                        <div className="card margin-center">
+                        <div className="row loginBox " >
+                        <div className="card margin-center neu-card ">
                             <div className="container loginFlex">
                                 <img className="loginLogo" src={logo} alt="logo"/>
                                 <h1>Login</h1>
