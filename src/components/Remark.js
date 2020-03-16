@@ -34,7 +34,7 @@ class Remark extends React.Component{
 
         return(
             <div>
-                <div className={"card neu-card"} onClick={this.handleClickOpen}>
+                <div className={"card neu-card"}>
                     <div className={"card-body"}>
                         <h5 className={"card-category card-category-social"}>
                         <i className={"material-icons"}>place</i> {remark.location}, {remark.dateCreation}
@@ -52,7 +52,7 @@ class Remark extends React.Component{
                             </div>
                             <div className={"stats ml-auto"} style={{'color': '#a65fb3'}}>
 
-                            <div className="neu">
+                            <div className="neu pointer">
                                 {jwt.decode(sessionStorage.getItem('token')) !== null ? (
                                     <div><i className="material-icons icon-mar-r-4" style={remark.encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser)  ? ({'color': '#a45cfb'}) : ({'color': 'gray'})}>hearing</i> <span>{remark.encounters.length}</span></div>
                                 ) : (
@@ -60,7 +60,7 @@ class Remark extends React.Component{
                                 )}
                                 
                             </div>
-                            <div className="neu icon-mar">
+                            <div className="neu icon-mar pointer" onClick={this.handleClickOpen}>
                             <i className="material-icons icon-mar-r-4">message</i> {remark.answers.length}
                             </div>
                             

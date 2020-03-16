@@ -126,6 +126,10 @@ h1{
     color: gray;
 }
 
+.neu:hover {
+    box-shadow: inset 9px 9px 16px rgb(163,177,198,0.6), inset -9px -9px 16px rgba(255,255,255, 0.5);
+}
+
 .neu-card{
     margin-left: auto;
     margin-right: auto; 
@@ -344,16 +348,14 @@ a{
     background-color: #d5d5d5 !important;
 }
 
-.card:hover{
-    
-    cursor: pointer;
-    
-}
-
 .card{
     background-color:#E0E5EC;
 }
 
 html{
     scroll-behavior: smooth;
+}
+
+.pointer:hover{
+    cursor: pointer;
 }
