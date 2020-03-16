@@ -53,7 +53,12 @@ class Remark extends React.Component{
                             <div className={"stats ml-auto"} style={{'color': '#a65fb3'}}>
 
                             <div className="neu">
-                                <i className="material-icons icon-mar-r-4" style={remark.encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser) ? ({'color': '#a45cfb'}) : ({'color': 'gray'})}>hearing</i> {remark.encounters.length}
+                                {jwt.decode(sessionStorage.getItem('token')) !== null ? (
+                                    <div><i className="material-icons icon-mar-r-4" style={remark.encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser)  ? ({'color': '#a45cfb'}) : ({'color': 'gray'})}>hearing</i> <span>{remark.encounters.length}</span></div>
+                                ) : (
+                                    <div><i className="material-icons icon-mar-r-4" style={{'color': 'gray'}}>hearing</i> <span>{remark.encounters.length}</span></div>
+                                )}
+                                
                             </div>
                             <div className="neu icon-mar">
                             <i className="material-icons icon-mar-r-4">message</i> {remark.answers.length}
