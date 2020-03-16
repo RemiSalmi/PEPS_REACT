@@ -359,3 +359,16 @@ html{
 .pointer:hover{
     cursor: pointer;
 }
+
+#adminPanel{
+    position:fixed;
+    margin-top: 100px;
+    display: flex;
+    background-color:white;
+    box-shadow: 4px 4px 8px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255, 0.5);
+    border-radius: 15px;
+}
+
+#adminPanel .MuiToolbar-regular{
+    justify-content: space-between;
+}
