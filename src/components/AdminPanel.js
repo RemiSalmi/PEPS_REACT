@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux' 
+import { fetchRemarks } from '../actions/remarkAction';
 
+import Remark from './Remark'
 import Grid from '@material-ui/core/Grid'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -14,6 +16,7 @@ import InputBase from '@material-ui/core/InputBase';
 class AdminPanel extends React.Component{
 
     componentDidMount(){
+        this.props.dispatch(fetchRemarks());
     }
 
     constructor(props){
@@ -43,17 +46,31 @@ class AdminPanel extends React.Component{
 
 
     render(){
-        
-        var adminContent;
-            if (this.state.handleRemarks){
-                adminContent = <div>Administer all remarks</div>
-            }else if (this.state.handleAnswers){
-                adminContent = <div>Administer all answers</div>
-            }else if (this.state.handleUsers){
-                adminContent = <div>Administer all users</div>
-            }else{
-                adminContent = <div> Click to administer </div>
-            }
+        var {remarks} = this.props;
+        console.log(remarks)
+        var adminContent, adminTitle;
+        if (this.state.handleRemarks){
+            adminTitle = <div>Administer all remarks</div>
+            adminContent = (
+                <div className={"container"}>
+                      <ul>
+                        {remarks.allIds.length ? (
+                            remarks.allIds.map(remarkId => {
+                                return <li key={remarkId}><Remark remark={remarks.byId[remarkId]}></Remark></li>
+                            })
+                        ) : (
+                            <p>There is no remarks</p>
+                        )}    
+                    </ul>
+                </div> 
+            )
+        }else if (this.state.handleAnswers){
+            adminTitle = <div>Administer all answers</div>
+        }else if (this.state.handleUsers){
+            adminTitle = <div>Administer all users</div>
+        }else{
+            adminTitle = <div> Click to administer </div>
+        }
         
         return(
             
@@ -62,7 +79,7 @@ class AdminPanel extends React.Component{
                 <AppBar position="relative" >
                     <Toolbar>
                         <Typography  noWrap>
-                        {adminContent}
+                        {adminTitle}
                         </Typography>
                         <div>
                             <InputBase 
@@ -95,7 +112,7 @@ class AdminPanel extends React.Component{
     }
 }
 const mapStateToProps = state => ({
-
+    remarks: state.remarks,
 });
 
 export default connect(mapStateToProps)(AdminPanel);
