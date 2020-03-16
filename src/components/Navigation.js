@@ -28,6 +28,7 @@ class Navigation extends React.Component{
                {isConnected ? (
                    <div style={{display:"flex", marginRight:"10px"}}>
                         <NavLink className="login" to="/">My account</NavLink>
+                        <NavLink className="admin" to="/admin">Admin</NavLink>
                         <NavLink onClick={this.logout} to="/">Logout</NavLink>
                    </div>
                ) :(
