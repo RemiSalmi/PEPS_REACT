@@ -46,14 +46,16 @@ export function addRemarks(remark) {
 }
 
 export function encounter(remark,token) {
-  let url = 'https://web-ios-api.herokuapp.com/remarks/'+remark.idRemark+'/encounter'
-  console.log(url)
+
   return dispatch => {
-    return axios.post(url,token)
+    return axios.post('https://web-ios-api.herokuapp.com/remarks/'+remark.idRemark+'/encounter',{"token" : token})
     .then(res => {
       dispatch(encounteredSuccess(remark));
     })
-    .catch(error => dispatch(encounteredFailure(error)));
+    .catch(error => {
+      console.log(error)
+      dispatch(encounteredFailure(error))
+    });
   };
 }
 
