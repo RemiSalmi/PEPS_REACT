@@ -35,20 +35,16 @@ class Remark extends React.Component{
             console.log("est connecté")
             if(this.props.remark.encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser)){
                 console.log("deja encounter")
-                
                 this.props.dispatch(desencounter(this.props.remark,sessionStorage.getItem('token')));
-                
-                let newEncounter = this.props.remark.encounters
-                this.setState({ encounter: newEncounter }) 
+                 
 
             }else{
                 console.log("pas encounter")
-                console.log(this.state.encounter)
                 this.props.dispatch(encounter(this.props.remark,sessionStorage.getItem('token')));
-                
+                let idUser = jwt.decode(sessionStorage.getItem('token')).idUser
                 let newEncounter = this.props.remark.encounters
+                newEncounter.push(idUser)
                 this.setState({ encounter: newEncounter }) 
-                console.log(this.state.encounter)
             }
         }else{
             console.log("pas connecté")
@@ -81,7 +77,7 @@ class Remark extends React.Component{
 
                             <div className="neu pointer" onClick={this.handleEncounter}>
                                 {jwt.decode(sessionStorage.getItem('token')) !== null ? (
-                                    <div><i className="material-icons icon-mar-r-4" style={remark.encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser)  ? ({'color': '#a45cfb'}) : ({'color': 'gray'})}>hearing</i> <span>{remark.encounters.length}</span></div>
+                                    <div><i className="material-icons icon-mar-r-4" style={this.state.encounter.includes(jwt.decode(sessionStorage.getItem('token')).idUser)  ? ({'color': '#a45cfb'}) : ({'color': 'gray'})}>hearing</i> <span>{this.state.encounter.length}</span></div>
                                 ) : (
                                     <div><i className="material-icons icon-mar-r-4" style={{'color': 'gray'}}>hearing</i> <span>{remark.encounters.length}</span></div>
                                 )}
