@@ -2,7 +2,9 @@ import {
     FETCH_REMARK_BEGIN,
     FETCH_REMARK_SUCCESS,
     FETCH_REMARK_FAILURE,
-    ADD_REMARK_SUCCESS
+    ADD_REMARK_SUCCESS,
+    ENCOUNTERED_SUCCESS,
+    DESENCOUNTERED_SUCCESS
   } from '../actions/remarkAction';
   
   var jwt = require('jsonwebtoken');
@@ -94,6 +96,32 @@ import {
             error: null,
             byId : byIdAdd,
             allIds : allIdsAdd
+        };
+      case ENCOUNTERED_SUCCESS:
+        let byIdEncounter = state.byId
+        let remarkToEncounter = action.payload.remark
+        remarkToEncounter.encounters.push(jwt.decode(action.payload.token).idUser)
+        byIdEncounter[action.payload.remark.idRemark] = remarkToEncounter
+        let allIdsEncounter = state.allIds
+        return {
+          ...state,
+          loading: false,
+          error: null,
+          byId : byIdEncounter,
+          allIds : allIdsEncounter
+        };
+      case DESENCOUNTERED_SUCCESS:
+        let byIdDesencounter = state.byId
+        let remarkToDesencounter = action.payload.remark
+        remarkToDesencounter.encounters.delete(jwt.decode(action.payload.token).idUser)
+        byIdEncounter[action.payload.remark.idRemark] = remarkToDesencounter
+        let allIdsDesencounter = state.allIds
+        return {
+          ...state,
+          loading: false,
+          error: null,
+          byId : byIdDesencounter,
+          allIds : allIdsDesencounter
         };
   
       default:

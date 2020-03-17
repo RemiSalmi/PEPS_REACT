@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux'
 
 import { fetchUsers } from '../actions/userAction';
+import { encounter } from '../actions/remarkAction';
+import { desencounter } from '../actions/remarkAction';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -26,6 +28,22 @@ class Remark extends React.Component{
     
     handleClose = () => {
         this.setState({ open: false })
+    };
+    handleEncounter = () => {
+        if(this.props.auth.isConnected){
+            console.log("est connecté")
+            if(this.props.remark.encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser)){
+                console.log("deja encounter")
+                this.props.dispatch(desencounter(this.props.remark,sessionStorage.getItem('token')));
+
+            }else{
+                console.log("pas encounter")
+                this.props.dispatch(encounter(this.props.remark,sessionStorage.getItem('token')));
+            }
+            //
+        }else{
+            console.log("pas connecté")
+        }
     };
 
     render(){
@@ -52,7 +70,7 @@ class Remark extends React.Component{
                             </div>
                             <div className={"stats ml-auto"} style={{'color': '#a65fb3'}}>
 
-                            <div className="neu pointer">
+                            <div className="neu pointer" onClick={this.handleEncounter}>
                                 {jwt.decode(sessionStorage.getItem('token')) !== null ? (
                                     <div><i className="material-icons icon-mar-r-4" style={remark.encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser)  ? ({'color': '#a45cfb'}) : ({'color': 'gray'})}>hearing</i> <span>{remark.encounters.length}</span></div>
                                 ) : (

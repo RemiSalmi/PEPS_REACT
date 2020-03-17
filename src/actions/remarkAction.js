@@ -7,6 +7,13 @@ export const FETCH_REMARK_FAILURE = 'FETCH_REMARK_FAILURE';
 export const ADD_REMARK_SUCCESS = 'ADD_REMARK_SUCCESS';
 export const ADD_REMARK_FAILURE = 'ADD_REMARK_FAILURE';
 
+export const ENCOUNTERED_SUCCESS = 'ENCOUNTERED_SUCCESS';
+export const ENCOUNTERED_FAILURE = 'ENCOUNTERED_FAILURE';
+
+export const DESENCOUNTERED_SUCCESS = 'DESENCOUNTERED_SUCCESS';
+export const DESENCOUNTERED_FAILURE = 'DESENCOUNTERED_FAILURE';
+
+
 export function fetchRemarks() {
   return dispatch => {
     dispatch(fetchRemarksBegin());
@@ -38,6 +45,27 @@ export function addRemarks(remark) {
   };
 }
 
+export function encounter(remark,token) {
+  let url = 'https://web-ios-api.herokuapp.com/remarks/'+remark.idRemark+'/encounter'
+  console.log(url)
+  return dispatch => {
+    return axios.post(url,token)
+    .then(res => {
+      dispatch(encounteredSuccess(remark));
+    })
+    .catch(error => dispatch(encounteredFailure(error)));
+  };
+}
+
+export function desencounter(remark,token) {
+  return dispatch => {
+    return axios.delete('https://web-ios-api.herokuapp.com/remarks/'+remark.idRemark+'/encounter',token)
+    .then(res => {
+      dispatch(desencounteredSuccess(remark));
+    })
+    .catch(error => dispatch(desencounteredFailure(error)));
+  };
+}
 
 export const fetchRemarksBegin = () => ({
   type: FETCH_REMARK_BEGIN
@@ -60,5 +88,25 @@ export const addRemarkSuccess = remark => ({
 
 export const addRemarkFailure = error => ({
   type: ADD_REMARK_FAILURE,
+  payload: { error }
+});
+
+export const encounteredSuccess = (remark,token) => ({
+  type: ENCOUNTERED_SUCCESS,
+  payload: { remark,token }
+});
+
+export const encounteredFailure = error => ({
+  type: ENCOUNTERED_FAILURE,
+  payload: { error }
+});
+
+export const desencounteredSuccess = (remark,token) => ({
+  type: DESENCOUNTERED_SUCCESS,
+  payload: { remark,token }
+});
+
+export const desencounteredFailure = error => ({
+  type: DESENCOUNTERED_FAILURE,
   payload: { error }
 });
