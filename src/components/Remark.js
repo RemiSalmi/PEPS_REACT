@@ -32,22 +32,20 @@ class Remark extends React.Component{
     };
     handleEncounter = () => {
         if(this.props.auth.isConnected){
-            console.log("est connecté")
+            let idUser = jwt.decode(sessionStorage.getItem('token')).idUser
             if(this.props.remark.encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser)){
-                console.log("deja encounter")
                 this.props.dispatch(desencounter(this.props.remark,sessionStorage.getItem('token')));
-                 
-
+                let newEncounter = this.props.remark.encounters
+                newEncounter.splice(newEncounter.indexOf(idUser),1)
+                this.setState({ encounter: newEncounter }) 
             }else{
-                console.log("pas encounter")
                 this.props.dispatch(encounter(this.props.remark,sessionStorage.getItem('token')));
-                let idUser = jwt.decode(sessionStorage.getItem('token')).idUser
                 let newEncounter = this.props.remark.encounters
                 newEncounter.push(idUser)
                 this.setState({ encounter: newEncounter }) 
             }
         }else{
-            console.log("pas connecté")
+            this.props.history();
         }
     };
 
