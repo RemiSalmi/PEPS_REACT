@@ -103,6 +103,7 @@ import {
         remarkToEncounter.encounters.push(jwt.decode(action.payload.token).idUser)
         byIdEncounter[action.payload.remark.idRemark] = remarkToEncounter
         let allIdsEncounter = state.allIds
+       
         return {
           ...state,
           loading: false,

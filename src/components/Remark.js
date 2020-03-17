@@ -19,7 +19,8 @@ class Remark extends React.Component{
     }
 
     state = {
-        open: false
+        open: false,
+        encounter: this.props.remark.encounters
     }
 
     handleClickOpen = () => {
@@ -34,13 +35,21 @@ class Remark extends React.Component{
             console.log("est connecté")
             if(this.props.remark.encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser)){
                 console.log("deja encounter")
+                
                 this.props.dispatch(desencounter(this.props.remark,sessionStorage.getItem('token')));
+                
+                let newEncounter = this.props.remark.encounters
+                this.setState({ encounter: newEncounter }) 
 
             }else{
                 console.log("pas encounter")
+                console.log(this.state.encounter)
                 this.props.dispatch(encounter(this.props.remark,sessionStorage.getItem('token')));
+                
+                let newEncounter = this.props.remark.encounters
+                this.setState({ encounter: newEncounter }) 
+                console.log(this.state.encounter)
             }
-            //
         }else{
             console.log("pas connecté")
         }
