@@ -50,7 +50,7 @@ export function encounter(remark,token) {
   return dispatch => {
     return axios.post('https://web-ios-api.herokuapp.com/remarks/'+remark.idRemark+'/encounter',{"token" : token})
     .then(res => {
-      dispatch(encounteredSuccess(remark));
+      dispatch(encounteredSuccess(remark,token));
     })
     .catch(error => {
       console.log(error)
@@ -61,9 +61,9 @@ export function encounter(remark,token) {
 
 export function desencounter(remark,token) {
   return dispatch => {
-    return axios.delete('https://web-ios-api.herokuapp.com/remarks/'+remark.idRemark+'/encounter',token)
+    return axios.delete('https://web-ios-api.herokuapp.com/remarks/'+remark.idRemark+'/encounter',{"token" : token})
     .then(res => {
-      dispatch(desencounteredSuccess(remark));
+      dispatch(desencounteredSuccess(remark,token));
     })
     .catch(error => dispatch(desencounteredFailure(error)));
   };
