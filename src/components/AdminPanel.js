@@ -12,6 +12,11 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateIcon from '@material-ui/icons/Update';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent'; 
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid'
 import Tabs from '@material-ui/core/Tabs';
@@ -37,10 +42,15 @@ class AdminPanel extends React.Component{
             handleRemarks: false,
             handleAnswers: false,
             handleUsers: false,
+            selectedTab: "",
+            openDialog: false,
+            dialogAction: "",
+            objectId: "",
         }
         this.toggleRemarks = this.toggleRemarks.bind(this)
         this.toggleAnswers = this.toggleAnswers.bind(this)
         this.toggleUsers = this.toggleUsers.bind(this)
+        this.handleClose = this.handleClose.bind(this)
     }
 
     toggleRemarks(props){
@@ -52,14 +62,27 @@ class AdminPanel extends React.Component{
     }
 
     toggleUsers(props){
-        console.log("here")
         this.setState({handleRemarks: false, handleAnswers:false, handleUsers:true})
     }
+
+    
+    
+    handleDelete = event => {
+        this.setState({openDialog: true, dialogAction: "delete", objectId: event.currentTarget.value})
+    };
+
+    handleUpdate = event => {
+        this.setState({openDialog: true, dialogAction: "update" , objectId: event.currentTarget.value})
+    };
+
+    handleClose(props){
+        this.setState({ openDialog: false })
+    };
 
 
     render(){
         var {remarks, answers, users} = this.props;
-        var adminContent, adminTitle;
+        var adminContent, adminTitle, dialogActions, dialogContent;
 
         if (this.state.handleRemarks){
             adminTitle = <div>Administer all remarks</div>
@@ -70,16 +93,16 @@ class AdminPanel extends React.Component{
                                 return (
                                     
                                     <div>
-                                    <ListItem key={remarkId}>
-                                        <ListItemText>
+                                    <ListItem >
+                                        <ListItemText key={remarkId}>
                                         {remarks.byId[remarkId].remark}
                                         </ListItemText>
                                         <ListItemSecondaryAction>
-                                            <IconButton aria-label="update">
-                                                <UpdateIcon color="primary"/>
+                                            <IconButton aria-label="update" value={remarkId} onClick={this.handleUpdate}>
+                                                <UpdateIcon color="primary" />
                                             </IconButton>
 
-                                            <IconButton edge="end" aria-label="delete">
+                                            <IconButton edge="end" aria-label="delete" value={remarkId} onClick={this.handleDelete}>
                                                 <DeleteIcon color="secondary"/>
                                             </IconButton>
                                         </ListItemSecondaryAction>
@@ -88,17 +111,54 @@ class AdminPanel extends React.Component{
                                     </div>
                                 )
                             })
-
-
                         ) :(
                             <ListItem>
                                 <ListItemText>No remarks to handle</ListItemText>
                             </ListItem>
-                            
                         )}
-                        
                     </List>
             )
+            
+            if (this.state.dialogAction === "delete"){
+                dialogContent = (
+                    <DialogContent>
+                        <div>Are you sure to delete this remark ?</div>
+                        <div>{this.state.objectId}</div>
+                    </DialogContent>
+                )
+                
+                dialogActions = (
+                    <DialogActions>
+                        <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
+                            Cancel
+                        </Button>
+                        <Button variant="outlined" color="secondary" autoFocus>
+                            Delete
+                        </Button>
+                    </DialogActions>
+                )
+
+            }else if(this.state.dialogAction === "update"){
+                dialogContent = (
+                    <DialogContent>
+                        <div>Update the remark</div>
+                    </DialogContent>
+                )
+
+                dialogActions = (
+                    <DialogActions>
+                        <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
+                            Cancel
+                        </Button>
+                        <Button variant="outlined" color="primary" autoFocus>
+                            Update
+                        </Button>
+                    </DialogActions>
+                )
+            }
+
+
+
         }else if (this.state.handleAnswers){
             adminTitle = <div>Administer all answers</div>
             adminContent = (
@@ -117,7 +177,7 @@ class AdminPanel extends React.Component{
                                             <UpdateIcon color="primary"/>
                                         </IconButton>
 
-                                        <IconButton edge="end" aria-label="delete">
+                                        <IconButton edge="end" aria-label="delete" onClick={this.handleClickOpen}>
                                             <DeleteIcon color="secondary"/>
                                         </IconButton>
                                     </ListItemSecondaryAction>
@@ -153,7 +213,7 @@ class AdminPanel extends React.Component{
                                             <UpdateIcon color="primary"/>
                                         </IconButton>
 
-                                        <IconButton edge="end" aria-label="delete">
+                                        <IconButton edge="end" aria-label="delete" onClick={this.handleClickOpen}>
                                             <DeleteIcon color="secondary"/>
                                         </IconButton>
                                     </ListItemSecondaryAction>
@@ -170,12 +230,12 @@ class AdminPanel extends React.Component{
                 </List>
             )
         }else{
-            adminTitle = <div> Click to administer </div>
+            adminTitle =  <span>Click to administer</span>
         }
         
         return(
             
-
+            <section id="adminPanel">
             <Grid container id="adminPanel">
                 <AppBar position="relative" >
                     <Toolbar>
@@ -209,6 +269,15 @@ class AdminPanel extends React.Component{
                     
                 </Grid>
             </Grid>
+
+            <Dialog open={this.state.openDialog} onClose={this.handleClose} aria-labelledby="form-dialog-title"  maxWidth={'xl'}>
+                <DialogTitle id="form-dialog-title">{this.state.dialogAction==="delete" ? ( <p>Verification</p> ):(<p>Update</p>)}</DialogTitle>
+                
+                {dialogContent}
+            
+                {dialogActions}
+            </Dialog>
+            </section>
         );
     }
 }
