@@ -1,9 +1,13 @@
 import {
     FETCH_ANSWER_BEGIN,
     FETCH_ANSWER_SUCCESS,
-    FETCH_ANSWER_FAILURE
+    FETCH_ANSWER_FAILURE,
+    LIKE_SUCCESS,
+    DISLIKE_SUCCESS
   } from '../actions/answerAction';
   
+  var jwt = require('jsonwebtoken');
+
   const initialState = {
     byId : {},
     allIds : [],
@@ -62,6 +66,33 @@ import {
             byId : {},
             allIds : [],
         };
+      case LIKE_SUCCESS:
+        console.log("action.payload.answer")
+        console.log(action.payload.answer)
+        let byIdLike = state.byId
+        let answerToLike = action.payload.answer
+        answerToLike.likes.push(jwt.decode(action.payload.token).idUser)
+        byIdLike[action.payload.answer.idAnswer] = answerToLike
+        let allIdsLike = state.allIds
+        return {
+          ...state,
+          loading: false,
+          byId : byIdLike,
+          allIds : allIdsLike
+      };
+
+      case DISLIKE_SUCCESS:
+        let byIdDislike = state.byId
+        let answerToDislike = action.payload.answer
+        answerToDislike.likes.push(jwt.decode(action.payload.token).idUser)
+        byIdDislike[action.payload.answer.idAnswer] = answerToDislike
+        let allIdsDislike = state.allIds
+        return {
+          ...state,
+          loading: false,
+          byId : byIdDislike,
+          allIds : allIdsDislike
+      };
   
       default:
         // ALWAYS have a default case in a reducer

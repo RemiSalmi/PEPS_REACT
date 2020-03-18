@@ -92,7 +92,7 @@ class Remark extends React.Component{
 
                 <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'xl'}>
                     <DialogContent>
-                            <ListAnswer title="Answers" answersList={remark.answers}></ListAnswer> 
+                            <ListAnswer title="Answers" answersList={remark.answers} history={this.props.history}></ListAnswer> 
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary" autoFocus>

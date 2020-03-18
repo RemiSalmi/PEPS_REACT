@@ -71,8 +71,6 @@ class ListAnswer extends React.Component {
           return <div>Loading...</div>;
         }
 
-        console.log(answersList)
-
         return(
             <section id={title}>
                 <h1 className={"section_title"}>{title}</h1>
@@ -80,7 +78,7 @@ class ListAnswer extends React.Component {
                     <ul>
                         {answersList.length ? (
                             answersList.map(idAnswer => {
-                                return <li key={idAnswer}><Answer answer={answers.byId[idAnswer]}></Answer></li>
+                                return <li key={idAnswer}><Answer answer={answers.byId[idAnswer]} history={this.props.history}></Answer></li>
                             })
                         ) : (
                             <p>There is no answer for this remark, add one !</p>
@@ -131,7 +129,8 @@ class ListAnswer extends React.Component {
 const mapStateToProps = state => ({
     answers: state.answers,
     loading: state.answers.loading,
-    error: state.answers.error
+    error: state.answers.error,
+    auth: state.auth
 });
 
 export default connect(mapStateToProps)(ListAnswer)
