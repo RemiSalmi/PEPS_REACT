@@ -12,11 +12,15 @@ class Home extends React.Component{
         this.props.dispatch(checkLogin());
     }
 
+    redirectionLogin = ()=>{
+        this.props.history.push('/login')
+    }
+
     render(){
         return (
             <div>
                 <Landing/>
-                <ListRemark title={"Remarks"}/>
+                <ListRemark title={"Remarks"} history={this.redirectionLogin}/>
                 <Footer/>
             </div>
          );

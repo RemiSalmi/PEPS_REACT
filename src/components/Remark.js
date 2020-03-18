@@ -45,7 +45,7 @@ class Remark extends React.Component{
                 this.setState({ encounter: newEncounter }) 
             }
         }else{
-            this.props.history();
+             this.props.history();
         }
     };
 

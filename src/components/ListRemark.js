@@ -63,10 +63,7 @@ class ListRemark extends React.Component {
         this.props.dispatch(addRemarks(remark));
     }
 
-    redirectionLogin = ()=>{
-        console.log(this.props)
-        this.props.history.push('/login')
-    }
+    
 
     render() {
         const { errorRemarks, loadingRemarks,loadingCat, remarks, title, categories } = this.props;
@@ -87,7 +84,7 @@ class ListRemark extends React.Component {
                     <ul>
                         {remarks.allIds.length ? (
                             remarks.allIds.map(remarkId => {
-                                return <li key={remarkId}><Remark remark={remarks.byId[remarkId]} history={this.redirectionLogin}></Remark></li>
+                                return <li key={remarkId}><Remark remark={remarks.byId[remarkId]} history={this.props.history}></Remark></li>
                             })
                         ) : (
                             <p>There is no remarks</p>
