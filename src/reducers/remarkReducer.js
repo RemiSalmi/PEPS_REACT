@@ -4,7 +4,9 @@ import {
     FETCH_REMARK_FAILURE,
     ADD_REMARK_SUCCESS,
     ENCOUNTERED_SUCCESS,
-    DESENCOUNTERED_SUCCESS
+    DESENCOUNTERED_SUCCESS,
+    DELETE_REMARK_SUCCESS,
+    DELETE_REMARK_FAILURE
   } from '../actions/remarkAction';
   
   var jwt = require('jsonwebtoken');
@@ -124,6 +126,17 @@ import {
           byId : byIdDesencounter,
           allIds : allIdsDesencounter
         };
+      case DELETE_REMARK_SUCCESS:
+        let allIdsRemoveRemark = state.allIds
+        let byIdRemoveRemark = state.byId
+        byIdRemoveRemark.delete(action.payload.idRemark)
+        return{
+          ...state,
+          loading:false,
+          error: null,
+          byId: byIdRemoveRemark,
+          allIds : allIdsRemoveRemark
+        }
   
       default:
         // ALWAYS have a default case in a reducer

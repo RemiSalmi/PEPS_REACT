@@ -7,6 +7,9 @@ export const FETCH_REMARK_FAILURE = 'FETCH_REMARK_FAILURE';
 export const ADD_REMARK_SUCCESS = 'ADD_REMARK_SUCCESS';
 export const ADD_REMARK_FAILURE = 'ADD_REMARK_FAILURE';
 
+export const DELETE_REMARK_SUCCESS = 'DELETE_REMARK_SUCCESS';
+export const DELETE_REMARK_FAILURE = 'DELETE_REMARK_FAILURE';
+
 export const ENCOUNTERED_SUCCESS = 'ENCOUNTERED_SUCCESS';
 export const ENCOUNTERED_FAILURE = 'ENCOUNTERED_FAILURE';
 
@@ -43,6 +46,17 @@ export function addRemarks(remark) {
     })
     .catch(error => dispatch(addRemarkFailure(error)));
   };
+}
+
+export function deleteRemark(idRemark,token){
+  console.log(token)
+  return dispatch => {
+    return axios.delete('https://web-ios-api.herokuapp.com/remarks/'+idRemark,token)
+    .then(res => {
+      dispatch(deleteRemarkSuccess(idRemark));
+    })
+    .catch(error => dispatch(deleteRemarkFailure(error)));
+  }
 }
 
 export function encounter(remark,token) {
@@ -112,3 +126,13 @@ export const desencounteredFailure = error => ({
   type: DESENCOUNTERED_FAILURE,
   payload: { error }
 });
+
+export const deleteRemarkSuccess = (remark) => ({
+  type : DELETE_REMARK_SUCCESS,
+  payload: { remark }
+})
+
+export const deleteRemarkFailure = (error) => ({
+  type : DELETE_REMARK_FAILURE,
+  payload: { error }
+})

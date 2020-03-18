@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { fetchRemarks } from '../actions/remarkAction';
 import { fetchAnswers } from '../actions/answerAction';
 import { fetchUsers } from '../actions/userAction';
+import { deleteRemark } from '../actions/remarkAction';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -26,7 +27,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
-
+var jwt = require('jsonwebtoken');
 
 class AdminPanel extends React.Component{
 
@@ -65,13 +66,19 @@ class AdminPanel extends React.Component{
         this.setState({handleRemarks: false, handleAnswers:false, handleUsers:true})
     }
 
+    handleDelete = () => {
+        //Need check if Admin
+        let tokenArg = {"token": sessionStorage.getItem('token')}
+        this.props.dispatch(deleteRemark(this.state.objectId,tokenArg))
+        console.log("delete done")
+        this.handleClose()
+    }
     
-    
-    handleDelete = event => {
+    handleConfirmDelete = event => {
         this.setState({openDialog: true, dialogAction: "delete", objectId: event.currentTarget.value})
     };
 
-    handleUpdate = event => {
+    handleConfirmUpdate = event => {
         this.setState({openDialog: true, dialogAction: "update" , objectId: event.currentTarget.value})
     };
 
@@ -98,11 +105,11 @@ class AdminPanel extends React.Component{
                                         {remarks.byId[remarkId].remark}
                                         </ListItemText>
                                         <ListItemSecondaryAction>
-                                            <IconButton aria-label="update" value={remarkId} onClick={this.handleUpdate}>
+                                            <IconButton aria-label="update" value={remarkId} onClick={this.handleConfirmUpdate}>
                                                 <UpdateIcon color="primary" />
                                             </IconButton>
 
-                                            <IconButton edge="end" aria-label="delete" value={remarkId} onClick={this.handleDelete}>
+                                            <IconButton edge="end" aria-label="delete" value={remarkId} onClick={this.handleConfirmDelete}>
                                                 <DeleteIcon color="secondary"/>
                                             </IconButton>
                                         </ListItemSecondaryAction>
@@ -132,7 +139,7 @@ class AdminPanel extends React.Component{
                         <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
                             Cancel
                         </Button>
-                        <Button variant="outlined" color="secondary" autoFocus>
+                        <Button variant="outlined" color="secondary" autoFocus onClick={this.handleDelete}>
                             Delete
                         </Button>
                     </DialogActions>
@@ -150,7 +157,7 @@ class AdminPanel extends React.Component{
                         <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
                             Cancel
                         </Button>
-                        <Button variant="outlined" color="primary" autoFocus>
+                        <Button variant="outlined" color="primary" autoFocus >
                             Update
                         </Button>
                     </DialogActions>
