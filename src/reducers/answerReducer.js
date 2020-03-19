@@ -7,7 +7,6 @@ import {
     DELETE_ANSWER_SUCCESS,
     DELETE_ANSWER_FAILURE
   } from '../actions/answerAction';
-import { DELETE_REMARK_FAILURE } from '../actions/remarkAction';
   
   var jwt = require('jsonwebtoken');
 
