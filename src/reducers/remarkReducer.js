@@ -138,7 +138,14 @@ import { act } from 'react-dom/test-utils';
           error: null,
           byId: byIdRemoveRemark,
           allIds : allIdsRemoveRemark
-        }
+        };
+
+      case DELETE_REMARK_FAILURE:
+        return{
+          ...state,
+          loading: false,
+          error: action.payload.error
+        };
   
       default:
         // ALWAYS have a default case in a reducer
