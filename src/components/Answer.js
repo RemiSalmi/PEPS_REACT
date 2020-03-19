@@ -11,9 +11,7 @@ class Answer extends React.Component{
 
     constructor(props){
         super(props)
-        this.state = { 
-            likes: this.props.answer != null ? (this.props.answer.likes) : ([])
-        }
+        
         
     }
 
@@ -21,19 +19,11 @@ class Answer extends React.Component{
         
         if(this.props.auth.isConnected){
             let idUser = jwt.decode(sessionStorage.getItem('token')).idUser
-            if(this.state.likes.includes(idUser)){
-                console.log("dislike")
+            if(this.props.answers.byId[this.props.answer.idAnswer].likes.includes(idUser)){
                 this.props.dispatch(dislike(this.props.answer,sessionStorage.getItem('token')));
-                let newLike = this.props.answer.likes
-                while (newLike.includes(idUser)){
-                    if (newLike[newLike.indexOf(idUser)] == idUser){
-                        newLike.splice(newLike.indexOf(idUser),1)
-                    }
-                }
-                this.setState({ likes: newLike })
+                
                 
             }else{
-                console.log("like")
                 this.props.dispatch(like(this.props.answer,sessionStorage.getItem('token'))); 
                 
             }
@@ -43,7 +33,7 @@ class Answer extends React.Component{
     };
 
     render(){
-        const {answer, users} = this.props
+        const {answer, users, answers} = this.props
         return(
                 <div className="card">
                     <div className="card-body">
@@ -61,10 +51,19 @@ class Answer extends React.Component{
                                 </div>
                             </div>
                             <div className="neu pointer" onClick={this.handleLike}>
-                                {jwt.decode(sessionStorage.getItem('token')) !== null ? (
-                                        <div><i className="material-icons icon-mar-r-4" style={this.state.likes.includes(jwt.decode(sessionStorage.getItem('token')).idUser)  ? ({'color': '#a45cfb'}) : ({'color': 'gray'})}>hearing</i> <span>{answer != null ? (answer.likes.length) : ("...") }</span></div>
+                                {jwt.decode(sessionStorage.getItem('token')) !== null ?(
+                                        this.props.answer !== undefined ? (
+                                            <div><i className="material-icons icon-mar-r-4" style={answers.byId[this.props.answer.idAnswer].likes.includes(jwt.decode(sessionStorage.getItem('token')).idUser)  ? ({'color': '#a45cfb'}) : ({'color': 'gray'})}>hearing</i> <span>{answers.byId[this.props.answer.idAnswer].likes.length}</span></div>
+                                        ):(
+                                            null
+                                        )
                                     ) : (
-                                        <div><i className="material-icons icon-mar-r-4" style={{'color': 'gray'}}>hearing</i> <span>{answer != null ? (answer.likes.length) : ("...")}</span></div>
+                                        this.props.answer !== undefined ? (
+                                            <div><i className="material-icons icon-mar-r-4" style={{'color': 'gray'}}>hearing</i> <span>{answers.byId[this.props.answer.idAnswer].likes.length}</span></div>
+                                        ) : (
+                                            null
+                                        )
+            
                                     )
                                 }
                                 
@@ -80,6 +79,7 @@ class Answer extends React.Component{
 
 const mapStateToProps = state => ({
     users: state.users,
+    answers : state.answers,
     auth: state.auth
 });
 

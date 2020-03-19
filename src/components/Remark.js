@@ -18,10 +18,13 @@ class Remark extends React.Component{
         this.props.dispatch(fetchUsers());
     }
 
-    state = {
-        open: false,
-        encounter: this.props.remark.encounters
+    constructor(props){
+        super(props)
+        this.state = {
+            open: false,
+        }
     }
+    
 
     handleClickOpen = () => {
         this.setState({ open: true }) 
@@ -33,18 +36,13 @@ class Remark extends React.Component{
     handleEncounter = () => {
         if(this.props.auth.isConnected){
             let idUser = jwt.decode(sessionStorage.getItem('token')).idUser
-            if(this.props.remark.encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser)){
+            if(this.props.remarks.byId[this.props.remark.idRemark].encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser)){
+                console.log("desencounter")
+                console.log(this.props.remark)
                 this.props.dispatch(desencounter(this.props.remark,sessionStorage.getItem('token')));
-                let newEncounter = this.props.remark.encounters
-                while (newEncounter.includes(idUser)){
-                    newEncounter.splice(newEncounter.indexOf(idUser),1)
-                }
-                this.setState({ encounter: newEncounter }) 
             }else{
+                console.log("encounter")
                 this.props.dispatch(encounter(this.props.remark,sessionStorage.getItem('token')));
-                let newEncounter = this.props.remark.encounters
-                newEncounter.push(idUser)
-                this.setState({ encounter: newEncounter }) 
             }
         }else{
              this.props.history();
@@ -53,7 +51,7 @@ class Remark extends React.Component{
 
     render(){
 
-        const { remark, users } = this.props;
+        const { remark, users, remarks } = this.props;
 
         return(
             <div>
@@ -77,9 +75,9 @@ class Remark extends React.Component{
 
                             <div className="neu pointer" onClick={this.handleEncounter}>
                                 {jwt.decode(sessionStorage.getItem('token')) !== null ? (
-                                    <div><i className="material-icons icon-mar-r-4" style={this.state.encounter.includes(jwt.decode(sessionStorage.getItem('token')).idUser)  ? ({'color': '#a45cfb'}) : ({'color': 'gray'})}>hearing</i> <span>{this.state.encounter.length}</span></div>
+                                    <div><i className="material-icons icon-mar-r-4" style={remarks.byId[remark.idRemark].encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser)  ? ({'color': '#a45cfb'}) : ({'color': 'gray'})}>hearing</i> <span>{remarks.byId[remark.idRemark].encounters.length}</span></div>
                                 ) : (
-                                    <div><i className="material-icons icon-mar-r-4" style={{'color': 'gray'}}>hearing</i> <span>{remark.encounters.length}</span></div>
+                                    <div><i className="material-icons icon-mar-r-4" style={{'color': 'gray'}}>hearing</i> <span>{remarks.byId[remark.idRemark].encounters.length}</span></div>
                                 )}
                                 
                             </div>
@@ -110,6 +108,7 @@ class Remark extends React.Component{
 
 const mapStateToProps = state => ({
     users: state.users,
+    remarks : state.remarks,
     loading: state.users.loading,
     error: state.users.error,
     auth: state.auth

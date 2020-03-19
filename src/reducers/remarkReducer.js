@@ -8,6 +8,7 @@ import {
     DELETE_REMARK_SUCCESS,
     DELETE_REMARK_FAILURE
   } from '../actions/remarkAction';
+import { act } from 'react-dom/test-utils';
   
   var jwt = require('jsonwebtoken');
 
@@ -116,13 +117,12 @@ import {
       case DESENCOUNTERED_SUCCESS:
         let byIdDesencounter = state.byId
         let remarkToDesencounter = action.payload.remark
-        remarkToDesencounter.encounters.delete(jwt.decode(action.payload.token).idUser)
-        byIdEncounter[action.payload.remark.idRemark] = remarkToDesencounter
+        remarkToDesencounter.encounters.splice(remarkToDesencounter.encounters.indexOf(jwt.decode(action.payload.token).idUser),1)
+        byIdDesencounter[action.payload.remark.idRemark] = remarkToDesencounter
         let allIdsDesencounter = state.allIds
         return {
           ...state,
           loading: false,
-          error: null,
           byId : byIdDesencounter,
           allIds : allIdsDesencounter
         };
