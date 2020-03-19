@@ -4,6 +4,7 @@ import { fetchRemarks } from '../actions/remarkAction';
 import { fetchAnswers } from '../actions/answerAction';
 import { fetchUsers } from '../actions/userAction';
 import { deleteRemark } from '../actions/remarkAction';
+import { deleteAnswer } from '../actions/answerAction';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -68,8 +69,16 @@ class AdminPanel extends React.Component{
 
     handleDelete = () => {
         //Need check if Admin
-        this.props.dispatch(deleteRemark(this.state.objectId,sessionStorage.getItem('token')))
-        console.log("delete done")
+        if(this.state.handleRemarks){
+            //dispatch to delete remarks
+            this.props.dispatch(deleteRemark(this.state.objectId,sessionStorage.getItem('token')))
+        }else if(this.state.handleAnswers){
+            //dispatch to delete answer
+            console.log("heho")
+            this.props.dispatch(deleteAnswer(this.state.objectId,sessionStorage.getItem('token')))
+        }else if(this.state.handleUsers){
+            //dispatch to delete user
+        }
         this.handleClose()
     }
     
@@ -88,7 +97,30 @@ class AdminPanel extends React.Component{
 
     render(){
         var {remarks, answers, users} = this.props;
-        var adminContent, adminTitle, dialogActions, dialogContent;
+        var adminContent, adminTitle, dialogActionsDelete, dialogActionsUpdate, dialogContent;
+
+
+        dialogActionsDelete = (
+            <DialogActions>
+                <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
+                    Cancel
+                </Button>
+                <Button variant="outlined" color="secondary" autoFocus onClick={this.handleDelete}>
+                    Delete
+                </Button>
+            </DialogActions>
+        )
+
+        dialogActionsUpdate = (
+            <DialogActions>
+                <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
+                    Cancel
+                </Button>
+                <Button variant="outlined" color="primary" autoFocus >
+                    Update
+                </Button>
+            </DialogActions>
+        )
 
         if (this.state.handleRemarks){
             adminTitle = <div>Administer all remarks</div>
@@ -129,37 +161,13 @@ class AdminPanel extends React.Component{
                 dialogContent = (
                     <DialogContent>
                         <div>Are you sure to delete this remark ?</div>
-                        <div>{this.state.objectId}</div>
                     </DialogContent>
                 )
-                
-                dialogActions = (
-                    <DialogActions>
-                        <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
-                            Cancel
-                        </Button>
-                        <Button variant="outlined" color="secondary" autoFocus onClick={this.handleDelete}>
-                            Delete
-                        </Button>
-                    </DialogActions>
-                )
-
             }else if(this.state.dialogAction === "update"){
                 dialogContent = (
                     <DialogContent>
                         <div>Update the remark</div>
                     </DialogContent>
-                )
-
-                dialogActions = (
-                    <DialogActions>
-                        <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
-                            Cancel
-                        </Button>
-                        <Button variant="outlined" color="primary" autoFocus >
-                            Update
-                        </Button>
-                    </DialogActions>
                 )
             }
 
@@ -179,11 +187,11 @@ class AdminPanel extends React.Component{
                                     {answers.byId[answerId].answer}
                                     </ListItemText>
                                     <ListItemSecondaryAction>
-                                        <IconButton aria-label="update">
+                                        <IconButton aria-label="update" value={answerId} onClick={this.handleConfirmUpdate}>
                                             <UpdateIcon color="primary"/>
                                         </IconButton>
 
-                                        <IconButton edge="end" aria-label="delete" onClick={this.handleClickOpen}>
+                                        <IconButton edge="end" aria-label="delete" value={answerId} onClick={this.handleConfirmDelete}>
                                             <DeleteIcon color="secondary"/>
                                         </IconButton>
                                     </ListItemSecondaryAction>
@@ -200,6 +208,22 @@ class AdminPanel extends React.Component{
                     )}
                 </List>
             )
+
+
+            if (this.state.dialogAction === "delete"){
+                dialogContent = (
+                    <DialogContent>
+                        <div>Are you sure to delete this answer ?</div>
+                    </DialogContent>
+                )
+            }else if(this.state.dialogAction === "update"){
+                dialogContent = (
+                    <DialogContent>
+                        <div>Update the answer</div>
+                    </DialogContent>
+                )
+            }
+
         }else if (this.state.handleUsers){
             adminTitle = <div>Administer all users</div>
             adminContent = (
@@ -280,8 +304,13 @@ class AdminPanel extends React.Component{
                 <DialogTitle id="form-dialog-title">{this.state.dialogAction==="delete" ? ( <p>Verification</p> ):(<p>Update</p>)}</DialogTitle>
                 
                 {dialogContent}
-            
-                {dialogActions}
+
+                {this.state.dialogAction==="delete" ? (
+                    dialogActionsDelete
+                ): (
+                    dialogActionsUpdate
+                )}
+                
             </Dialog>
             </section>
         );

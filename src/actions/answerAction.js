@@ -10,6 +10,9 @@ export const LIKE_FAILURE = 'LIKE_FAILURE';
 export const DISLIKE_SUCCESS = 'DISLIKE_SUCCESS';
 export const DISLIKE_FAILURE = 'DISLIKE_FAILURE';
 
+export const DELETE_ANSWER_SUCCESS = 'DELETE_ANSWER_SUCCESS';
+export const DELETE_ANSWER_FAILURE = 'DELETE_ANSWER_FAILURE';
+
 export function fetchAnswers() {
     return dispatch => {
         dispatch(fetchAnswersBegin());
@@ -50,6 +53,18 @@ export function dislike(answer,token) {
   };
 }
 
+export function deleteAnswer(idAnswer,token){
+  return dispatch =>{
+    return axios.delete('https://web-ios-api.herokuapp.com/answers/'+idAnswer, { 'headers': { 'Authorization': token } })
+    .then(res => {
+      dispatch(deleteAnswerSuccess(idAnswer));
+    })
+    .catch(error => {
+      dispatch(deleteAnswerFailure(error));
+    })
+  }
+}
+
 
 export const fetchAnswersBegin = () => ({
   type: FETCH_ANSWER_BEGIN
@@ -84,3 +99,13 @@ export const dislikeFailure = error => ({
   type: DISLIKE_FAILURE,
   payload: { error }
 });
+
+export const deleteAnswerSuccess = (idAnswer) => ({
+  type: DELETE_ANSWER_SUCCESS,
+  payload: { idAnswer }
+})
+
+export const deleteAnswerFailure = (error) => ({
+  type: DELETE_ANSWER_FAILURE,
+  payload: {error}
+})

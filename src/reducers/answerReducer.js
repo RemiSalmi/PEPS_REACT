@@ -3,8 +3,11 @@ import {
     FETCH_ANSWER_SUCCESS,
     FETCH_ANSWER_FAILURE,
     LIKE_SUCCESS,
-    DISLIKE_SUCCESS
+    DISLIKE_SUCCESS,
+    DELETE_ANSWER_SUCCESS,
+    DELETE_ANSWER_FAILURE
   } from '../actions/answerAction';
+import { DELETE_REMARK_FAILURE } from '../actions/remarkAction';
   
   var jwt = require('jsonwebtoken');
 
@@ -91,7 +94,19 @@ import {
           byId : byIdDislike,
           allIds : allIdsDislike
       };
-  
+
+      case DELETE_ANSWER_SUCCESS:
+        let byIdRemoveAnswer = state.byId
+        let allIdsRemoveAnswer = state.allIds
+        delete byIdRemoveAnswer[action.payload.idAnswer]
+        allIdsRemoveAnswer.splice(allIdsRemoveAnswer.indexOf(parseInt(action.payload.idAnswer)),1)
+        return {
+          ...state,
+          loading: false,
+          byId : byIdRemoveAnswer,
+          allIds : allIdsRemoveAnswer
+        };
+        
       default:
         // ALWAYS have a default case in a reducer
         return state;
