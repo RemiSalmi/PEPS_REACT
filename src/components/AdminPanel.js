@@ -68,8 +68,7 @@ class AdminPanel extends React.Component{
 
     handleDelete = () => {
         //Need check if Admin
-        let tokenArg = {"token": sessionStorage.getItem('token')}
-        this.props.dispatch(deleteRemark(this.state.objectId,tokenArg))
+        this.props.dispatch(deleteRemark(this.state.objectId,sessionStorage.getItem('token')))
         console.log("delete done")
         this.handleClose()
     }

@@ -51,7 +51,7 @@ export function addRemarks(remark) {
 export function deleteRemark(idRemark,token){
   console.log(token)
   return dispatch => {
-    return axios.delete('https://web-ios-api.herokuapp.com/remarks/'+idRemark,token)
+    return axios.delete('https://web-ios-api.herokuapp.com/remarks/'+idRemark,{ 'headers': { 'Authorization': token } })
     .then(res => {
       dispatch(deleteRemarkSuccess(idRemark));
     })
@@ -127,9 +127,9 @@ export const desencounteredFailure = error => ({
   payload: { error }
 });
 
-export const deleteRemarkSuccess = (remark) => ({
+export const deleteRemarkSuccess = (idRemark) => ({
   type : DELETE_REMARK_SUCCESS,
-  payload: { remark }
+  payload: { idRemark }
 })
 
 export const deleteRemarkFailure = (error) => ({
