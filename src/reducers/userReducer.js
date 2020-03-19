@@ -1,7 +1,9 @@
 import {
     FETCH_USER_BEGIN,
     FETCH_USER_SUCCESS,
-    FETCH_USER_FAILURE
+    FETCH_USER_FAILURE,
+    DELETE_USER_SUCCESS,
+    DELETE_USER_FAILURE
   } from '../actions/userAction';
   
   const initialState = {
@@ -57,6 +59,25 @@ import {
             byId : {},
             allIds : [],
         };
+
+      case DELETE_USER_SUCCESS:
+        let byIdRemoveUser = state.byId
+        let allIdsRemoveUser = state.allIds
+        delete byIdRemoveUser[action.payload.idUser]
+        allIdsRemoveUser.splice(allIdsRemoveUser.indexOf(parseInt(action.payload.idUser)),1)
+        return {
+          ...state,
+          loading: false,
+          byId : byIdRemoveUser,
+          allIds : allIdsRemoveUser,
+        };
+      
+        case DELETE_USER_FAILURE:
+          return{
+            ...state,
+            loading: false,
+            error: action.payload.error,
+          };
   
       default:
         // ALWAYS have a default case in a reducer

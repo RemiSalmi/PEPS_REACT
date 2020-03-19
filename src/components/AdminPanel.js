@@ -5,6 +5,7 @@ import { fetchAnswers } from '../actions/answerAction';
 import { fetchUsers } from '../actions/userAction';
 import { deleteRemark } from '../actions/remarkAction';
 import { deleteAnswer } from '../actions/answerAction';
+import { deleteUser } from '../actions/userAction';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -74,10 +75,10 @@ class AdminPanel extends React.Component{
             this.props.dispatch(deleteRemark(this.state.objectId,sessionStorage.getItem('token')))
         }else if(this.state.handleAnswers){
             //dispatch to delete answer
-            console.log("heho")
             this.props.dispatch(deleteAnswer(this.state.objectId,sessionStorage.getItem('token')))
         }else if(this.state.handleUsers){
             //dispatch to delete user
+            this.props.dispatch(deleteUser(this.state.objectId,sessionStorage.getItem('token')))
         }
         this.handleClose()
     }
@@ -239,11 +240,11 @@ class AdminPanel extends React.Component{
                                     </ListItemText>
                                     
                                     <ListItemSecondaryAction>
-                                        <IconButton aria-label="update">
+                                        <IconButton aria-label="update" value={userId} onClick={this.handleConfirmUpdate}>
                                             <UpdateIcon color="primary"/>
                                         </IconButton>
 
-                                        <IconButton edge="end" aria-label="delete" onClick={this.handleClickOpen}>
+                                        <IconButton edge="end" aria-label="delete" value={userId} onClick={this.handleConfirmDelete}>
                                             <DeleteIcon color="secondary"/>
                                         </IconButton>
                                     </ListItemSecondaryAction>
