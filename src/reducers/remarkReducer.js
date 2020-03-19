@@ -129,7 +129,19 @@ import { act } from 'react-dom/test-utils';
       case DELETE_REMARK_SUCCESS:
         let allIdsRemoveRemark = state.allIds
         let byIdRemoveRemark = state.byId
-        byIdRemoveRemark.delete(action.payload.idRemark)
+
+        /**Problem: indexOf returning -1 */
+        console.log(action.payload.idRemark)
+        console.log(allIdsRemoveRemark)
+        console.log(allIdsRemoveRemark.indexOf(action.payload.idRemark))
+        allIdsRemoveRemark.splice(allIdsRemoveRemark.indexOf(action.payload.idRemark),1)
+
+
+        delete byIdRemoveRemark[action.payload.idRemark]
+
+        
+        
+
         return{
           ...state,
           loading:false,
