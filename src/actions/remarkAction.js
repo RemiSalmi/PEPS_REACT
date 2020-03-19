@@ -75,7 +75,7 @@ export function encounter(remark,token) {
 
 export function desencounter(remark,token) {
   return dispatch => {
-    return axios.delete('https://web-ios-api.herokuapp.com/remarks/'+remark.idRemark+'/encounter',{"token" : token})
+    return axios.delete('https://web-ios-api.herokuapp.com/remarks/'+remark.idRemark+'/encounter',{ 'headers': { 'Authorization': token } })
     .then(res => {
       dispatch(desencounteredSuccess(remark,token));
     })

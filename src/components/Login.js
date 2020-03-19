@@ -50,7 +50,6 @@ class Login extends React.Component{
 
 
     render(){
-        console.log(this.props)
         return (
             <div style={{position: "absolute",height:"100%", width:"100%"}}>
                 <section id="Login" className="">

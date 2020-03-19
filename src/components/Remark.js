@@ -36,7 +36,9 @@ class Remark extends React.Component{
             if(this.props.remark.encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser)){
                 this.props.dispatch(desencounter(this.props.remark,sessionStorage.getItem('token')));
                 let newEncounter = this.props.remark.encounters
-                newEncounter.splice(newEncounter.indexOf(idUser),1)
+                while (newEncounter.includes(idUser)){
+                    newEncounter.splice(newEncounter.indexOf(idUser),1)
+                }
                 this.setState({ encounter: newEncounter }) 
             }else{
                 this.props.dispatch(encounter(this.props.remark,sessionStorage.getItem('token')));

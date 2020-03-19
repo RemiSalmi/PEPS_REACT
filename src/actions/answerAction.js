@@ -39,7 +39,7 @@ export function like(answer,token) {
 }
 export function dislike(answer,token) {
   return dispatch => {
-    return axios.delete('https://web-ios-api.herokuapp.com/answers/'+answer.idAnswer+'/likes',{"token" : token})
+    return axios.delete('https://web-ios-api.herokuapp.com/answers/'+answer.idAnswer+'/likes',{ 'headers': { 'Authorization': token } })
     .then(res => {
       dispatch(dislikeSuccess(answer,token));
     })
@@ -65,9 +65,9 @@ export const fetchAnswersFailure = error => ({
   payload: { error }
 });
 
-export const likeSuccess = (remark,token) => ({
+export const likeSuccess = (answer,token) => ({
   type: LIKE_SUCCESS,
-  payload: { remark,token }
+  payload: { answer,token }
 });
 
 export const likeFailure = error => ({

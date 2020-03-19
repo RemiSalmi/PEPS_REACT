@@ -7,27 +7,35 @@ import { dislike } from '../actions/answerAction';
 var jwt = require('jsonwebtoken');
 
 class Answer extends React.Component{
-    componentDidMount(){
-    }
+    
 
-    state = {
-        like: []
+    constructor(props){
+        super(props)
+        this.state = { 
+            likes: this.props.answer != null ? (this.props.answer.likes) : ([])
+        }
+        
     }
 
     handleLike = () => {
         
         if(this.props.auth.isConnected){
             let idUser = jwt.decode(sessionStorage.getItem('token')).idUser
-            if(this.props.answer.likes.includes(jwt.decode(sessionStorage.getItem('token')).idUser)){
+            if(this.state.likes.includes(idUser)){
+                console.log("dislike")
                 this.props.dispatch(dislike(this.props.answer,sessionStorage.getItem('token')));
                 let newLike = this.props.answer.likes
-                newLike.splice(newLike.indexOf(idUser),1)
-                this.setState({ like: newLike }) 
+                while (newLike.includes(idUser)){
+                    if (newLike[newLike.indexOf(idUser)] == idUser){
+                        newLike.splice(newLike.indexOf(idUser),1)
+                    }
+                }
+                this.setState({ likes: newLike })
+                
             }else{
-                this.props.dispatch(like(this.props.answer,sessionStorage.getItem('token')));
-                let newLike = this.props.answer.likes
-                newLike.push(idUser)
-                this.setState({ like: newLike }) 
+                console.log("like")
+                this.props.dispatch(like(this.props.answer,sessionStorage.getItem('token'))); 
+                
             }
         }else{
              this.props.history();
@@ -36,7 +44,6 @@ class Answer extends React.Component{
 
     render(){
         const {answer, users} = this.props
-
         return(
                 <div className="card">
                     <div className="card-body">
@@ -53,8 +60,15 @@ class Answer extends React.Component{
                                     <span>{answer !== undefined ? users.byId[answer.idUser].pseudo : ""}</span>
                                 </div>
                             </div>
-                            <div className="stats ml-auto" style={{'color': '#a65fb3'}} onClick={this.handleLike}>
-                            <i className="fas fa-bullhorn icon-pad"></i> {answer !== undefined ? answer.likes.length : ""}
+                            <div className="neu pointer" onClick={this.handleLike}>
+                                {jwt.decode(sessionStorage.getItem('token')) !== null ? (
+                                        <div><i className="material-icons icon-mar-r-4" style={this.state.likes.includes(jwt.decode(sessionStorage.getItem('token')).idUser)  ? ({'color': '#a45cfb'}) : ({'color': 'gray'})}>hearing</i> <span>{answer != null ? (answer.likes.length) : ("...") }</span></div>
+                                    ) : (
+                                        <div><i className="material-icons icon-mar-r-4" style={{'color': 'gray'}}>hearing</i> <span>{answer != null ? (answer.likes.length) : ("...")}</span></div>
+                                    )
+                                }
+                                
+                                
                             </div>
                         </div>
                     </div>

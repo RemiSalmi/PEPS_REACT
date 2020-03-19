@@ -67,8 +67,6 @@ import {
             allIds : [],
         };
       case LIKE_SUCCESS:
-        console.log("action.payload.answer")
-        console.log(action.payload.answer)
         let byIdLike = state.byId
         let answerToLike = action.payload.answer
         answerToLike.likes.push(jwt.decode(action.payload.token).idUser)
@@ -84,7 +82,7 @@ import {
       case DISLIKE_SUCCESS:
         let byIdDislike = state.byId
         let answerToDislike = action.payload.answer
-        answerToDislike.likes.push(jwt.decode(action.payload.token).idUser)
+        answerToDislike.likes.splice(answerToDislike.likes.indexOf(jwt.decode(action.payload.token).idUser),1)
         byIdDislike[action.payload.answer.idAnswer] = answerToDislike
         let allIdsDislike = state.allIds
         return {
