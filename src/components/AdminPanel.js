@@ -3,33 +3,25 @@ import { connect } from 'react-redux'
 import { fetchRemarks } from '../actions/remarkAction';
 import { fetchAnswers } from '../actions/answerAction';
 import { fetchUsers } from '../actions/userAction';
-import { deleteRemark } from '../actions/remarkAction';
-import { deleteAnswer } from '../actions/answerAction';
-import { deleteUser } from '../actions/userAction';
+import { fetchCategories } from '../actions/categoryAction';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import UpdateIcon from '@material-ui/icons/Update';
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent'; 
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button'
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid'
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
-var jwt = require('jsonwebtoken');
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add'
+
+import RemarkAdmin from './RemarkAdmin';
+import AnswerAdmin from './AnswerAdmin';
+import UserAdmin from './UserAdmin';
+import CategoryAdmin from './CategoryAdmin';
 
 class AdminPanel extends React.Component{
 
@@ -37,6 +29,7 @@ class AdminPanel extends React.Component{
         this.props.dispatch(fetchRemarks());
         this.props.dispatch(fetchAnswers());
         this.props.dispatch(fetchUsers());
+        this.props.dispatch(fetchCategories());
     }
 
     constructor(props){
@@ -45,109 +38,42 @@ class AdminPanel extends React.Component{
             handleRemarks: false,
             handleAnswers: false,
             handleUsers: false,
-            selectedTab: "",
-            openDialog: false,
-            dialogAction: "",
-            objectId: "",
+            handleCategories: false,
         }
         this.toggleRemarks = this.toggleRemarks.bind(this)
         this.toggleAnswers = this.toggleAnswers.bind(this)
         this.toggleUsers = this.toggleUsers.bind(this)
-        this.handleClose = this.handleClose.bind(this)
     }
 
-    toggleRemarks(props){
-        this.setState({handleRemarks: true, handleAnswers:false, handleUsers:false})
+    toggleRemarks = () => {
+        this.setState({handleRemarks: true, handleAnswers:false, handleUsers:false, handleCategories:false})
     }
 
-    toggleAnswers(props){
-        this.setState({handleRemarks: false, handleAnswers:true, handleUsers:false})
+    toggleAnswers= () =>{
+        this.setState({handleRemarks: false, handleAnswers:true, handleUsers:false, handleCategories:false})
     }
 
-    toggleUsers(props){
-        this.setState({handleRemarks: false, handleAnswers:false, handleUsers:true})
+    toggleUsers = () =>{
+        this.setState({handleRemarks: false, handleAnswers:false, handleUsers:true, handleCategories:false})
     }
 
-    handleDelete = () => {
-        //Need check if Admin
-        if(this.state.handleRemarks){
-            //dispatch to delete remarks
-            this.props.dispatch(deleteRemark(this.state.objectId,sessionStorage.getItem('token')))
-        }else if(this.state.handleAnswers){
-            //dispatch to delete answer
-            this.props.dispatch(deleteAnswer(this.state.objectId,sessionStorage.getItem('token')))
-        }else if(this.state.handleUsers){
-            //dispatch to delete user
-            this.props.dispatch(deleteUser(this.state.objectId,sessionStorage.getItem('token')))
-        }
-        this.handleClose()
+    toggleCategories = () =>{
+        this.setState({handleRemarks: false, handleAnswers:false, handleUsers:false, handleCategories:true})
     }
-    
-    handleConfirmDelete = event => {
-        this.setState({openDialog: true, dialogAction: "delete", objectId: event.currentTarget.value})
-    };
-
-    handleConfirmUpdate = event => {
-        this.setState({openDialog: true, dialogAction: "update" , objectId: event.currentTarget.value})
-    };
-
-    handleClose(props){
-        this.setState({ openDialog: false })
-    };
 
 
     render(){
-        var {remarks, answers, users} = this.props;
-        var adminContent, adminTitle, dialogActionsDelete, dialogActionsUpdate, dialogContent;
-
-
-        dialogActionsDelete = (
-            <DialogActions>
-                <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
-                    Cancel
-                </Button>
-                <Button variant="outlined" color="secondary" autoFocus onClick={this.handleDelete}>
-                    Delete
-                </Button>
-            </DialogActions>
-        )
-
-        dialogActionsUpdate = (
-            <DialogActions>
-                <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
-                    Cancel
-                </Button>
-                <Button variant="outlined" color="primary" autoFocus >
-                    Update
-                </Button>
-            </DialogActions>
-        )
+        var {remarks, answers, users, categories} = this.props;
+        var adminContent, adminTitle, createButton;
 
         if (this.state.handleRemarks){
-            adminTitle = <div>Administer all remarks</div>
+            adminTitle = <div>Administer remarks</div>
             adminContent = (
                     <List>
                         {remarks.allIds.length ? (
                             remarks.allIds.map(remarkId => {
                                 return (
-                                    
-                                    <div>
-                                    <ListItem >
-                                        <ListItemText key={remarkId}>
-                                        {remarks.byId[remarkId].remark}
-                                        </ListItemText>
-                                        <ListItemSecondaryAction>
-                                            <IconButton aria-label="update" value={remarkId} onClick={this.handleConfirmUpdate}>
-                                                <UpdateIcon color="primary" />
-                                            </IconButton>
-
-                                            <IconButton edge="end" aria-label="delete" value={remarkId} onClick={this.handleConfirmDelete}>
-                                                <DeleteIcon color="secondary"/>
-                                            </IconButton>
-                                        </ListItemSecondaryAction>
-                                    </ListItem>
-                                    <Divider/>
-                                    </div>
+                                    <RemarkAdmin remark={remarks.byId[remarkId]}></RemarkAdmin>
                                 )
                             })
                         ) :(
@@ -158,47 +84,18 @@ class AdminPanel extends React.Component{
                     </List>
             )
             
-            if (this.state.dialogAction === "delete"){
-                dialogContent = (
-                    <DialogContent>
-                        <div>Are you sure to delete this remark ?</div>
-                    </DialogContent>
-                )
-            }else if(this.state.dialogAction === "update"){
-                dialogContent = (
-                    <DialogContent>
-                        <div>Update the remark</div>
-                    </DialogContent>
-                )
-            }
+            createButton = <Button variant="contained" color="default" endIcon={<AddIcon/>}>New Remark</Button>
 
 
 
         }else if (this.state.handleAnswers){
-            adminTitle = <div>Administer all answers</div>
+            adminTitle = <div>Administer answers</div>
             adminContent = (
                 <List>
                     {answers.allIds.length ? (
                         answers.allIds.map(answerId => {
                             return (
-                                
-                                <div>
-                                <ListItem key={answerId}>
-                                    <ListItemText>
-                                    {answers.byId[answerId].answer}
-                                    </ListItemText>
-                                    <ListItemSecondaryAction>
-                                        <IconButton aria-label="update" value={answerId} onClick={this.handleConfirmUpdate}>
-                                            <UpdateIcon color="primary"/>
-                                        </IconButton>
-
-                                        <IconButton edge="end" aria-label="delete" value={answerId} onClick={this.handleConfirmDelete}>
-                                            <DeleteIcon color="secondary"/>
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                                <Divider/>
-                                </div>
+                                <AnswerAdmin answer={answers.byId[answerId]}></AnswerAdmin>
                             )
                         })
                     ) :(
@@ -209,48 +106,16 @@ class AdminPanel extends React.Component{
                     )}
                 </List>
             )
-
-
-            if (this.state.dialogAction === "delete"){
-                dialogContent = (
-                    <DialogContent>
-                        <div>Are you sure to delete this answer ?</div>
-                    </DialogContent>
-                )
-            }else if(this.state.dialogAction === "update"){
-                dialogContent = (
-                    <DialogContent>
-                        <div>Update the answer</div>
-                    </DialogContent>
-                )
-            }
+            createButton = <Button>New Answer</Button>
 
         }else if (this.state.handleUsers){
-            adminTitle = <div>Administer all users</div>
+            adminTitle = <div>Administer users</div>
             adminContent = (
                 <List>
                     {users.allIds.length ? (
                         users.allIds.map(userId => {
                             return (
-                                
-                                <div>
-                                <ListItem key={userId}>
-                                    <ListItemText>
-                                    {users.byId[userId].pseudo}
-                                    </ListItemText>
-                                    
-                                    <ListItemSecondaryAction>
-                                        <IconButton aria-label="update" value={userId} onClick={this.handleConfirmUpdate}>
-                                            <UpdateIcon color="primary"/>
-                                        </IconButton>
-
-                                        <IconButton edge="end" aria-label="delete" value={userId} onClick={this.handleConfirmDelete}>
-                                            <DeleteIcon color="secondary"/>
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                                <Divider/>
-                                </div>
+                               <UserAdmin user={users.byId[userId]}></UserAdmin>
                             )
                         })
                     ) :(
@@ -260,19 +125,46 @@ class AdminPanel extends React.Component{
                     )}
                 </List>
             )
-        }else{
+            createButton = <Button>New User</Button>
+
+        }else if(this.state.handleCategories){
+            adminTitle = <div>Administer categories</div>
+            adminContent = (
+                <List>
+                    {categories.allIds.length ? (
+                        categories.allIds.map(categoryId => {
+                            return (
+                                <CategoryAdmin category={categories.byId[categoryId]}></CategoryAdmin>
+                            )
+                        })
+                    ) :(
+                        <ListItem>
+                            <ListItemText>No users to handle</ListItemText>
+                        </ListItem>
+                    )}
+                </List>
+            )
+
+            createButton = <Button>New Category</Button>
+        }    
+        else{
             adminTitle =  <span>Click to administer</span>
         }
+        
         
         return(
             
             <section id="adminPanel">
-            <Grid container id="adminPanel">
+            <Grid container >
                 <AppBar position="relative" >
                     <Toolbar>
                         <Typography  noWrap>
                         {adminTitle}
                         </Typography>
+                        <div>
+                            {createButton}
+                        </div>
+
                         <div>
                             <InputBase 
                                 placeholder="Search…"
@@ -284,35 +176,40 @@ class AdminPanel extends React.Component{
                     </Toolbar>
                 </AppBar>
                 <Grid item xs={2}>
-                    <Tabs
-                    orientation="vertical"
-                    variant="scrollable"
-                    aria-label="Vertical tabs example"
-                    >
-                        <Tab label="Remarks" onClick={this.toggleRemarks} />
-                        <Tab label="Answers"  onClick={this.toggleAnswers}/>
-                        <Tab label="Users" onClick={this.toggleUsers}/>
-                    </Tabs>
+                    
+                    <List>
+                        <ListItem onClick={this.toggleRemarks} key={0}>
+                            <ListItemText>
+                                <Button>REMARKS</Button>
+                            </ListItemText>
+                        </ListItem>
+
+                        <ListItem onClick={this.toggleAnswers} key={1}>
+                            <ListItemText>
+                                <Button>Answers</Button>
+                            </ListItemText>
+                        </ListItem>
+
+                        <ListItem onClick={this.toggleUsers} key={2}>
+                            <ListItemText>
+                                <Button>Users</Button>
+                            </ListItemText>
+                        </ListItem>
+
+                        <ListItem onClick={this.toggleCategories} key={3}>
+                            <ListItemText>
+                                <Button>Categories</Button>
+                            </ListItemText>
+                        </ListItem>
+                    </List>
+
                 </Grid>
                 <Grid item xs={10}>
-
                     {adminContent}
-                    
                 </Grid>
             </Grid>
 
-            <Dialog open={this.state.openDialog} onClose={this.handleClose} aria-labelledby="form-dialog-title"  maxWidth={'xl'}>
-                <DialogTitle id="form-dialog-title">{this.state.dialogAction==="delete" ? ( <p>Verification</p> ):(<p>Update</p>)}</DialogTitle>
-                
-                {dialogContent}
-
-                {this.state.dialogAction==="delete" ? (
-                    dialogActionsDelete
-                ): (
-                    dialogActionsUpdate
-                )}
-                
-            </Dialog>
+            
             </section>
         );
     }
@@ -321,6 +218,8 @@ const mapStateToProps = state => ({
     remarks: state.remarks,
     answers: state.answers,
     users: state.users,
+    categories: state.categories,
 });
 
 export default connect(mapStateToProps)(AdminPanel);
+
