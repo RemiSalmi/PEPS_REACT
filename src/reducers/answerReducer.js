@@ -106,7 +106,15 @@ import { DELETE_REMARK_FAILURE } from '../actions/remarkAction';
           byId : byIdRemoveAnswer,
           allIds : allIdsRemoveAnswer
         };
-        
+      
+      case DELETE_ANSWER_FAILURE:
+        return{
+          ...state,
+          loading: false,
+          error: action.payload.error
+        };
+
+
       default:
         // ALWAYS have a default case in a reducer
         return state;
