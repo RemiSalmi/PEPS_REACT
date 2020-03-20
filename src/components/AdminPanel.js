@@ -9,10 +9,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent'; 
 
 import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
@@ -21,7 +17,6 @@ import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add'
 
 import RemarkAdmin from './RemarkAdmin';
 import AnswerAdmin from './AnswerAdmin';
@@ -44,7 +39,6 @@ class AdminPanel extends React.Component{
             handleAnswers: false,
             handleUsers: false,
             handleCategories: false,
-            openDialog: false,
         }
     }
 
@@ -64,18 +58,9 @@ class AdminPanel extends React.Component{
         this.setState({handleRemarks: false, handleAnswers:false, handleUsers:false, handleCategories:true})
     }
 
-    handleOpenDialog = () => {
-        this.setState({openDialog:true})
-    }
-
-    handleClose = () => {
-        this.setState({openDialog:false})
-    }
-
-
     render(){
-        var {categories} = this.props;
-        var adminContent, adminTitle, createButton, dialogContent;
+        
+        var adminContent, adminTitle;
 
         if (this.state.handleRemarks){
             adminTitle = <div>Administer remarks</div>
@@ -98,22 +83,8 @@ class AdminPanel extends React.Component{
         }else if(this.state.handleCategories){
             adminTitle = <div>Administer categories</div>
             adminContent = (
-                <List>
-                    {categories.allIds.length ? (
-                        categories.allIds.map(categoryId => {
-                            return (
-                                <CategoryAdmin category={categories.byId[categoryId]}></CategoryAdmin>
-                            )
-                        })
-                    ) :(
-                        <ListItem>
-                            <ListItemText>No users to handle</ListItemText>
-                        </ListItem>
-                    )}
-                </List>
+                <CategoryAdmin/>
             )
-
-            createButton = <Button>New Category</Button>
         }    
         else{
             adminTitle =  <span>Click to administer</span>
@@ -129,9 +100,6 @@ class AdminPanel extends React.Component{
                         <Typography  noWrap>
                         {adminTitle}
                         </Typography>
-                        <div>
-                            {createButton}
-                        </div>
 
                         <div>
                             <InputBase 
@@ -177,33 +145,11 @@ class AdminPanel extends React.Component{
                 </Grid>
             </Grid>
 
-            <Dialog open={this.state.openDialog} onClose={this.handleClose} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'xl'}>
-                    <DialogTitle id="form-dialog-title">Creation</DialogTitle>
-                
-                    <DialogContent>
-                        {dialogContent}
-                    </DialogContent>
-
-                    <DialogActions>
-                        <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
-                            Cancel
-                        </Button>
-                        <Button variant="outlined" color="secondary" autoFocus>
-                            Create
-                        </Button>
-                    </DialogActions>
-            </Dialog>
-
-            
             </section>
         );
     }
 }
 const mapStateToProps = state => ({
-    remarks: state.remarks,
-    answers: state.answers,
-    users: state.users,
-    categories: state.categories,
 });
 
 export default connect(mapStateToProps)(AdminPanel);
