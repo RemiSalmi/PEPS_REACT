@@ -1,19 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import { deleteUser } from '../actions/userAction';
+import { deleteUser, addUser, } from '../actions/userAction';
 
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent'; 
 import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateIcon from '@material-ui/icons/Update';
+import AddIcon from '@material-ui/icons/Add';
 
 import Divider from '@material-ui/core/Divider';
 var jwt = require('jsonwebtoken');
@@ -29,11 +30,24 @@ class AnswerAdmin extends React.Component{
             openDialog: false,
             dialogAction: "",
             userId: "",
+            pseudo: "",
+            password: "",
+            password2: ""
         }
+    }
+
+    handleCreate = () => {
+        let user = {"pseudo": this.state.pseudo, "password":this.state.password}
+        console.log(user)
+        this.props.dispatch(addUser(user,sessionStorage.getItem('token')))
+        this.handleClose()
+
     }
     
     handleUpdate = () => {
-
+        if(this.state.password === this.state.password2){
+            //this.props.dispatch(updateUser(this.state.idUser,this.state.password,sessionStorage.getItem('token')))
+        }
     };
 
     handleDelete = () =>{
@@ -46,39 +60,43 @@ class AnswerAdmin extends React.Component{
     };
 
     handleConfirmUpdate = event => {
-        this.setState({openDialog: true, dialogAction: "update" , userId: event.currentTarget.value})
+        let userObj = this.props.users.byId[event.currentTarget.value]
+        this.setState({
+            openDialog: true,
+            dialogAction: "update",
+            userId: event.currentTarget.value,
+            pseudo: userObj.pseudo
+        })
     };
+
+    handleConfirmCreate = () => {
+        this.setState({openDialog:true, dialogAction: "create"})
+    }
 
     handleClose = () => {
         this.setState({ openDialog: false })
     };
 
+    handleChangePseudo = event => {
+        this.setState({pseudo: event.target.value})
+    }
+
+    handleChangePassword = event => {
+        this.setState({password: event.target.value})
+    }
+
+    handleChangePassword2 = event => {
+        this.setState({password2: event.target.value})
+    }
+
     render(){
 
-        const { user } = this.props;
-        var dialogContent, dialogActionsUpdate, dialogActionsDelete;
+        const { users } = this.props;
+        var dialogContent, dialogActions;
 
-        dialogActionsDelete = (
-            <DialogActions>
-                <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
-                    Cancel
-                </Button>
-                <Button variant="outlined" color="secondary" autoFocus onClick={this.handleDelete}>
-                    Delete
-                </Button>
-            </DialogActions>
-        )
 
-        dialogActionsUpdate = (
-            <DialogActions>
-                <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
-                    Cancel
-                </Button>
-                <Button variant="outlined" color="primary" autoFocus >
-                    Update
-                </Button>
-            </DialogActions>
-        )
+
+        
 
         if (this.state.dialogAction === "delete"){
             dialogContent = (
@@ -86,43 +104,110 @@ class AnswerAdmin extends React.Component{
                     <div>Are you sure to delete this user ?</div>
                 </DialogContent>
             )
+
+            dialogActions = (
+                <DialogActions>
+                    <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
+                        Cancel
+                    </Button>
+                    <Button variant="outlined" color="secondary" autoFocus onClick={this.handleDelete}>
+                        Delete
+                    </Button>
+                </DialogActions>
+            )
         }else if(this.state.dialogAction === "update"){
             dialogContent = (
                 <DialogContent>
-                    <div>Update the user</div>
+                    <form>
+                        <div className="form-group">
+                            <label htmlFor="Password">Password</label>
+                            <input type="text" className="form-control" id="password" type="password" onChange={this.handleChangePassword}/>
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="Password2">Check Password</label>
+                            <input type="text" className="form-control" id="password2" type="password" onChange={this.handleChangePassword2}/>
+                        </div>
+                    </form>
                 </DialogContent>
+            )
+
+            dialogActions = (
+                <DialogActions>
+                    <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
+                        Cancel
+                    </Button>
+                    <Button variant="outlined" color="primary" autoFocus onClick={this.handleUpdate}>
+                        Update
+                    </Button>
+                </DialogActions>
+            )
+        }else if(this.state.dialogAction === "create"){
+            dialogContent = (
+                <DialogContent>
+                    <form>
+                        <div className="form-group">
+                            <label htmlFor="Pseudo">Pseudo</label>
+                            <input type="text" className="form-control" id="pseudo" placeholder="JohnDoe" onChange={this.handleChangePseudo}/>
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="Password">Password</label>
+                            <input type="text" className="form-control" id="password" type="password" onChange={this.handleChangePassword}/>
+                        </div>
+                    </form>
+                </DialogContent>
+            )
+            dialogActions = (
+                <DialogActions>
+                    <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
+                        Cancel
+                    </Button>
+                    <Button variant="outlined" color="primary" autoFocus onClick={this.handleCreate}>
+                        Create
+                    </Button>
+                </DialogActions>
             )
         }
 
         return(
             <div>
 
-                <ListItem >
-                    <ListItemText key={user.idUser}>
-                    {user.pseudo}
-                    </ListItemText>
-                    <ListItemSecondaryAction>
-                        <IconButton aria-label="update" value={user.idUser} onClick={this.handleConfirmUpdate}>
-                            <UpdateIcon color="primary" />
-                        </IconButton>
+                <Button variant="contained" color="default" endIcon={<AddIcon/>} onClick={this.handleConfirmCreate}>New User</Button>
+                <List>
+                    {users.allIds.length ? (
+                        users.allIds.map(userId => {
+                            return (
+                                <div>
+                                <ListItem >
+                                    <ListItemText key={userId}>
+                                    {users.byId[userId].pseudo}
+                                    </ListItemText>
+                                    <ListItemSecondaryAction>
 
-                        <IconButton edge="end" aria-label="delete" value={user.idUser} onClick={this.handleConfirmDelete}>
-                            <DeleteIcon color="secondary"/>
-                        </IconButton>
-                    </ListItemSecondaryAction>
-                </ListItem>
-                <Divider/>
+                                        <Button aria-label="update" value={userId} onClick={this.handleConfirmUpdate}>Password</Button>
+                 
+                                        <IconButton edge="end" aria-label="delete" value={userId} onClick={this.handleConfirmDelete}>
+                                            <DeleteIcon color="secondary"/>
+                                        </IconButton>
+                                    </ListItemSecondaryAction>
+                                </ListItem>
+                                <Divider/>
+                                </div>
+                            )
+                        })
+                    ) :(
+                        <ListItem>
+                            <ListItemText>No users to handle</ListItemText>
+                        </ListItem>
+                    )}
+                </List>
 
                 <Dialog open={this.state.openDialog} onClose={this.handleClose} aria-labelledby="form-dialog-title"  maxWidth={'xl'}>
-                    <DialogTitle id="form-dialog-title">{this.state.dialogAction==="delete" ? ( <p>Verification</p> ):(<p>Update</p>)}</DialogTitle>
-                
+                    
                     {dialogContent}
-
-                    {this.state.dialogAction==="delete" ? (
-                        dialogActionsDelete
-                    ): (
-                        dialogActionsUpdate
-                    )}
+                    {dialogActions}
+                    
                 </Dialog>
 
             </div>
@@ -131,6 +216,7 @@ class AnswerAdmin extends React.Component{
 }
 
 const mapStateToProps = state => ({
+    users: state.users
 });
 
 export default connect(mapStateToProps)(AnswerAdmin);

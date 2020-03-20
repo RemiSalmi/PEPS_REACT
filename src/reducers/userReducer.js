@@ -3,7 +3,9 @@ import {
     FETCH_USER_SUCCESS,
     FETCH_USER_FAILURE,
     DELETE_USER_SUCCESS,
-    DELETE_USER_FAILURE
+    DELETE_USER_FAILURE,
+    ADD_USER_SUCCESS,
+    ADD_USER_FAILURE
   } from '../actions/userAction';
   
   const initialState = {
@@ -78,6 +80,24 @@ import {
             loading: false,
             error: action.payload.error,
           };
+      case ADD_USER_SUCCESS:
+        let byIdAddUser = state.byId
+        let allIdsAddUser = state.allIds
+        byIdAddUser[action.payload.user.idUser] = action.payload.user
+        allIdsAddUser.push(action.payload.user.idUser)
+        return{
+          ...state,
+          loading: false,
+          byId: byIdAddUser,
+          allIds: allIdsAddUser,
+        };
+      case ADD_USER_FAILURE:
+        return{
+          ...state,
+          loading:false,
+          error: action.payload.error,
+        }
+
       
       default:
         // ALWAYS have a default case in a reducer

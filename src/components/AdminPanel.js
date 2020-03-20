@@ -74,7 +74,7 @@ class AdminPanel extends React.Component{
 
 
     render(){
-        var {users, categories} = this.props;
+        var {categories} = this.props;
         var adminContent, adminTitle, createButton, dialogContent;
 
         if (this.state.handleRemarks){
@@ -92,21 +92,8 @@ class AdminPanel extends React.Component{
         }else if (this.state.handleUsers){
             adminTitle = <div>Administer users</div>
             adminContent = (
-                <List>
-                    {users.allIds.length ? (
-                        users.allIds.map(userId => {
-                            return (
-                               <UserAdmin user={users.byId[userId]}></UserAdmin>
-                            )
-                        })
-                    ) :(
-                        <ListItem>
-                            <ListItemText>No users to handle</ListItemText>
-                        </ListItem>
-                    )}
-                </List>
+                <UserAdmin/>
             )
-            createButton = <Button>New User</Button>
 
         }else if(this.state.handleCategories){
             adminTitle = <div>Administer categories</div>
