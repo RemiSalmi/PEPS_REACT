@@ -10,6 +10,8 @@ export const LIKE_FAILURE = 'LIKE_FAILURE';
 export const ADD_ANSWER_SUCCESS = 'ADD_ANSWER_SUCCESS';
 export const ADD_ANSWER_FAILURE = 'ADD_ANSWER_FAILURE';
 
+export const UPDATE_ANSWER_SUCCESS = 'UPDATE_ANSWER_SUCCESS';
+export const UPDATE_ANSWER_FAILURE = 'UPDATE_ANSWER_FAILURE';
 
 export const DISLIKE_SUCCESS = 'DISLIKE_SUCCESS';
 export const DISLIKE_FAILURE = 'DISLIKE_FAILURE';
@@ -82,6 +84,17 @@ export function addAnswer(answer,token){
   }
 }
 
+export function updateAnswer(answer,token){
+  return dispatch => {
+    return axios.put('https://web-ios-api.herokuapp.com/answers/'+answer.idAnswer, {"answer":answer.answer, "idCategory":answer.idCategory, "token":token})
+    .then(res => {
+      dispatch(updateAnswerSuccess(answer))
+    })
+    .catch(error => {
+      dispatch(updateAnswerFailure(error))
+    })
+  }
+}
 
 export const fetchAnswersBegin = () => ({
   type: FETCH_ANSWER_BEGIN
@@ -134,5 +147,15 @@ export const addAnswerSuccess = (answer,token) => ({
 
 export const addAnswerFailure = (error) => ({
   type: ADD_ANSWER_FAILURE,
-  payload: {error}
+  payload: { error }
+})
+
+export const updateAnswerSuccess = (answer) => ({
+  type: UPDATE_ANSWER_SUCCESS,
+  payload: { answer }
+})
+
+export const updateAnswerFailure = (error) => ({
+  type: UPDATE_ANSWER_FAILURE,
+  payload: { error }
 })

@@ -7,7 +7,9 @@ import {
     DELETE_ANSWER_SUCCESS,
     DELETE_ANSWER_FAILURE,
     ADD_ANSWER_SUCCESS,
-    ADD_ANSWER_FAILURE
+    ADD_ANSWER_FAILURE,
+    UPDATE_ANSWER_SUCCESS,
+    UPDATE_ANSWER_FAILURE
   } from '../actions/answerAction';
   
   var jwt = require('jsonwebtoken');
@@ -129,13 +131,28 @@ import {
           allIds: allIdsAddAnswer,
         };
       
-        case ADD_ANSWER_FAILURE:
-          return {
-            ...state,
-            loading:false,
-            error: action.payload.error,
-          };
-
+      case ADD_ANSWER_FAILURE:
+        return {
+          ...state,
+          loading:false,
+          error: action.payload.error,
+        };
+        
+      case UPDATE_ANSWER_SUCCESS:
+        let byIdUpdateAnswer = state.byId
+        byIdUpdateAnswer[action.payload.answer.idAnswer] = action.payload.answer
+        return{
+          ...state,
+          loading: false,
+          byId: byIdUpdateAnswer,
+        };
+      
+      case UPDATE_ANSWER_FAILURE:
+        return{
+          ...state,
+          loading:false,
+          error: action.payload.error
+        };
 
       default:
         // ALWAYS have a default case in a reducer

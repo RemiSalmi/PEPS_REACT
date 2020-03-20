@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import { deleteAnswer,addAnswer } from '../actions/answerAction';
+import { deleteAnswer,addAnswer,updateAnswer } from '../actions/answerAction';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -46,9 +46,8 @@ class AnswerAdmin extends React.Component{
     };
     
     handleUpdate = () => {
-        let answer = {"answer": this.state.answer, "idCategory":this.state.idCategory}
-        console.log(answer)
-        //this.props.dispatch(updateAnswer(answer,sessionStorage.getItem('token")))
+        let answer = {"idAnswer": this.state.answerId,"answer": this.state.answer, "idCategory":this.state.idCategory}
+        this.props.dispatch(updateAnswer(answer,sessionStorage.getItem('token')))
         this.handleClose()
     };
 
@@ -135,7 +134,7 @@ class AnswerAdmin extends React.Component{
                         </div>
                         <div className="form-group">
                             <label htmlFor="Answer">Answer</label>
-                            <textarea className="form-control" id="Remark" rows="3" onChange={this.handleChangeAnswer}></textarea>
+                            <textarea className="form-control" id="Answer" rows="3" value={this.state.answer} onChange={this.handleChangeAnswer}></textarea>
                         </div>
                     </form>
                 </DialogContent>
