@@ -74,7 +74,7 @@ class AdminPanel extends React.Component{
 
 
     render(){
-        var {remarks, answers, users, categories} = this.props;
+        var {users, categories} = this.props;
         var adminContent, adminTitle, createButton, dialogContent;
 
         if (this.state.handleRemarks){
@@ -82,54 +82,12 @@ class AdminPanel extends React.Component{
             adminContent = (
                     <RemarkAdmin/>
             )
-            
-            
-            dialogContent = (
-                <form>
-                    <div className="form-group">
-                        <label htmlFor="Location">Location</label>
-                        <input type="text" className="form-control" id="location" placeholder="Paris" onChange={this.handleChangeLocation}/>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="Category">Category</label>
-                        <select className="form-control selectpicker" data-style="btn btn-link" id="Category" onChange={this.handleChangeCategory}>
-                            {
-                            categories.allIds.map(idCategory => {
-                                if(categories.byId[idCategory].type === "remark"){
-                                    return <option key={idCategory} value={idCategory}>{categories.byId[idCategory].lib}</option>
-                                }else{
-                                    return null
-                                }
-                            })}
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="Remark">Remark</label>
-                        <textarea className="form-control" id="Remark" rows="3" onChange={this.handleChangeRemark}></textarea>
-                    </div>
-                </form> 
-            )
-
 
         }else if (this.state.handleAnswers){
             adminTitle = <div>Administer answers</div>
             adminContent = (
-                <List>
-                    {answers.allIds.length ? (
-                        answers.allIds.map(answerId => {
-                            return (
-                                <AnswerAdmin answer={answers.byId[answerId]}></AnswerAdmin>
-                            )
-                        })
-                    ) :(
-                        <ListItem>
-                            <ListItemText>No answers to handle</ListItemText>
-                        </ListItem>
-                        
-                    )}
-                </List>
+                <AnswerAdmin/>
             )
-            createButton = <Button>New Answer</Button>
 
         }else if (this.state.handleUsers){
             adminTitle = <div>Administer users</div>

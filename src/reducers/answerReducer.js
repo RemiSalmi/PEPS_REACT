@@ -5,7 +5,9 @@ import {
     LIKE_SUCCESS,
     DISLIKE_SUCCESS,
     DELETE_ANSWER_SUCCESS,
-    DELETE_ANSWER_FAILURE
+    DELETE_ANSWER_FAILURE,
+    ADD_ANSWER_SUCCESS,
+    ADD_ANSWER_FAILURE
   } from '../actions/answerAction';
   
   var jwt = require('jsonwebtoken');
@@ -112,6 +114,27 @@ import {
           loading: false,
           error: action.payload.error
         };
+
+      case  ADD_ANSWER_SUCCESS:
+        let byIdAddAnswer = state.byId
+        let allIdsAddAnswer = state.allIds
+        let newAnswer = action.payload.answer
+        newAnswer.idUser = jwt.decode(action.payload.token).idUser
+        allIdsAddAnswer.push(newAnswer.idAnswer)
+        byIdAddAnswer[newAnswer.idAnswer] = newAnswer
+        return {
+          ...state,
+          loading: false,
+          byId: byIdAddAnswer,
+          allIds: allIdsAddAnswer,
+        };
+      
+        case ADD_ANSWER_FAILURE:
+          return {
+            ...state,
+            loading:false,
+            error: action.payload.error,
+          };
 
 
       default:
