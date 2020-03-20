@@ -10,6 +10,11 @@ export const ADD_REMARK_FAILURE = 'ADD_REMARK_FAILURE';
 export const DELETE_REMARK_SUCCESS = 'DELETE_REMARK_SUCCESS';
 export const DELETE_REMARK_FAILURE = 'DELETE_REMARK_FAILURE';
 
+export const UPDATE_REMARK_SUCCESS = 'UPDATE_REMARK_SUCCESS';
+export const UPDATE_REMARK_FAILURE = 'UPDATE_REMARK_FAILURE';
+
+
+
 export const ENCOUNTERED_SUCCESS = 'ENCOUNTERED_SUCCESS';
 export const ENCOUNTERED_FAILURE = 'ENCOUNTERED_FAILURE';
 
@@ -49,13 +54,24 @@ export function addRemarks(remark) {
 }
 
 export function deleteRemark(idRemark,token){
-  console.log(token)
   return dispatch => {
     return axios.delete('https://web-ios-api.herokuapp.com/remarks/'+idRemark,{ 'headers': { 'Authorization': token } })
     .then(res => {
       dispatch(deleteRemarkSuccess(idRemark));
     })
     .catch(error => dispatch(deleteRemarkFailure(error)));
+  }
+}
+
+export function updateRemark(remark,token){
+  return dispatch =>{
+    return axios.put('https://web-ios-api.herokuapp.com/remarks/'+remark.idRemark,{"remark":remark.remark,"idCategory":remark.idCategory,"token":token})
+    .then(res => {
+      dispatch(updateRemarkSuccess(remark));
+    })
+    .catch(error => {
+      dispatch(updateRemarkFailure(error));
+    })
   }
 }
 
@@ -136,4 +152,15 @@ export const deleteRemarkSuccess = (idRemark) => ({
 export const deleteRemarkFailure = (error) => ({
   type : DELETE_REMARK_FAILURE,
   payload: { error }
+})
+
+
+export const updateRemarkSuccess = (remark) => ({
+  type: UPDATE_REMARK_SUCCESS,
+  payload: {remark}
+})
+
+export const updateRemarkFailure = (error) => ({
+  type: UPDATE_REMARK_FAILURE,
+  payload: {error}
 })

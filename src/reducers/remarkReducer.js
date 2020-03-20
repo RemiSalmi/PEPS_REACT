@@ -6,7 +6,9 @@ import {
     ENCOUNTERED_SUCCESS,
     DESENCOUNTERED_SUCCESS,
     DELETE_REMARK_SUCCESS,
-    DELETE_REMARK_FAILURE
+    DELETE_REMARK_FAILURE,
+    UPDATE_REMARK_SUCCESS,
+    UPDATE_REMARK_FAILURE
   } from '../actions/remarkAction';
 import { act } from 'react-dom/test-utils';
   
@@ -145,7 +147,23 @@ import { act } from 'react-dom/test-utils';
           ...state,
           loading: false,
           error: action.payload.error
+        };  
+      
+      case UPDATE_REMARK_SUCCESS:
+        let byIdUpdateRemark = state.byId
+        byIdUpdateRemark[action.payload.remark.idRemark] = action.payload.remark
+        return{
+          ...state,
+          loading: false,
+          byId: byIdUpdateRemark
         };
+      case UPDATE_REMARK_FAILURE:
+        return{
+          ...state,
+          loading:false,
+          error:action.payload.error,
+        }
+
   
       default:
         // ALWAYS have a default case in a reducer
