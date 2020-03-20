@@ -7,6 +7,9 @@ export const FETCH_USER_FAILURE = 'FETCH_USER_FAILURE';
 export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
 export const DELETE_USER_FAILURE = 'DELETE_USER_FAILURE';
 
+export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
+export const UPDATE_USER_FAILURE = 'UPDATE_USER_FAILURE';
+
 export function fetchUsers() {
     return dispatch => {
         dispatch(fetchUsersBegin());
@@ -27,6 +30,20 @@ export function deleteUser(idUser,token){
     })
     .catch(error => {
       dispatch(deleteUserFailure(error));
+    })
+  }
+}
+
+export function updateUser(idUser,password,token){
+  return dispatch => {
+    return axios.put('https://web-ios-api.herokuapp.com/users/'+idUser, {'password':password,'token': token})
+    .then(response => {
+      dispatch(updateUserSuccess(idUser));
+      console.log("ok")
+    })
+    .catch(error => {
+      dispatch(updateUserFailure(error));
+      console.log("pasok")
     })
   }
 }
@@ -52,5 +69,15 @@ export const deleteUserSuccess = idUser => ({
 
 export const deleteUserFailure = error => ({
   type: DELETE_USER_FAILURE,
+  payload: { error }
+})
+
+export const updateUserSuccess = idUser => ({
+  type: UPDATE_USER_SUCCESS,
+  payload: { idUser}
+})
+
+export const updateUserFailure = error => ({
+  type: UPDATE_USER_FAILURE,
   payload: { error }
 })

@@ -78,7 +78,7 @@ import {
             loading: false,
             error: action.payload.error,
           };
-  
+      
       default:
         // ALWAYS have a default case in a reducer
         return state;
