@@ -46,7 +46,7 @@ class RemarkAdmin extends React.Component{
     };
     
     handleUpdate = () => {
-        let remark = {"remark":this.state.remark, "idCategory" : this.state.idCategory, "location" : this.state.location}
+        let remark = {"idRemark":this.state.remarkId, "remark":this.state.remark, "idCategory" : this.state.idCategory, "location" : this.state.location}
         this.props.dispatch(updateRemark(remark,sessionStorage.getItem('token')))
         this.handleClose()
     };
@@ -61,7 +61,15 @@ class RemarkAdmin extends React.Component{
     };
 
     handleConfirmUpdate = event => {
-        this.setState({openDialog: true, dialogAction: "update" , remarkId: event.currentTarget.value})
+        let remarkObj = this.props.remarks.byId[event.currentTarget.value]
+        this.setState({
+            openDialog: true,
+            dialogAction: "update",
+            remarkId: event.currentTarget.value,
+            remark: remarkObj.remark,
+            idCategory: remarkObj.idCategory,
+            location: remarkObj.location
+        })
     };
 
     handleConfirmCreate = () => {
@@ -80,7 +88,7 @@ class RemarkAdmin extends React.Component{
 
     handleChangeCategory = (e) => {
         this.setState({
-            category: e.target.value
+            idCategory: e.target.value
         })
     }
 
@@ -122,12 +130,12 @@ class RemarkAdmin extends React.Component{
                     <form>
                         <div className="form-group">
                             <label htmlFor="Location">Location</label>
-                            <input type="text" className="form-control" value={remarks.byId[this.state.remarkId].location} id="location"  onChange={this.handleChangeLocation}/>
+                            <input type="text" className="form-control" value={this.state.location} id="location"  onChange={this.handleChangeLocation}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="Category">Category</label>
                             <select className="form-control selectpicker" data-style="btn btn-link" id="Category" onChange={this.handleChangeCategory}>
-                                <option key={remarks.byId[this.state.remarkId].idCategory} value={remarks.byId[this.state.remarkId].idCategory}>{categories.byId[remarks.byId[this.state.remarkId].idCategory].lib}</option>
+                                <option key={this.state.idCategory} value={this.state.idCategory}>{categories.byId[remarks.byId[this.state.remarkId].idCategory].lib}</option>
                                 {
                                 categories.allIds.map(idCategory => {
                                     if(categories.byId[idCategory].type === "remark"){
@@ -140,7 +148,7 @@ class RemarkAdmin extends React.Component{
                         </div>
                         <div className="form-group">
                             <label htmlFor="Remark">Remark</label>
-                            <textarea className="form-control" id="Remark" rows="3" value={remarks.byId[this.state.remarkId].remark} onChange={this.handleChangeRemark}></textarea>
+                            <textarea className="form-control" id="Remark" rows="3" value={this.state.remark} onChange={this.handleChangeRemark}></textarea>
                         </div>
                     </form> 
                 </DialogContent>
