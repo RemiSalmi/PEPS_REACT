@@ -14,7 +14,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
-
+import Key from '@material-ui/icons/VpnKey';
+import Supervisor from '@material-ui/icons/SupervisorAccount';
+import Stars from '@material-ui/icons/Stars';
 import Divider from '@material-ui/core/Divider';
 var jwt = require('jsonwebtoken');
 
@@ -31,7 +33,8 @@ class AnswerAdmin extends React.Component{
             userId: "",
             pseudo: "",
             password: "",
-            password2: ""
+            password2: "",
+            role: "",
         }
     }
 
@@ -53,10 +56,18 @@ class AnswerAdmin extends React.Component{
         this.handleClose()
     };
 
+    handleRight = event =>{
+        //console.log(this.state.userId)
+        //console.log(event.currentTarget.value)
+        //dispatch changeRole to admin
+        this.handleClose()
+    };
+
     handleConfirmDelete = event => {
         this.setState({openDialog: true, dialogAction: "delete", userId: event.currentTarget.value})
     };
 
+    
     handleConfirmUpdate = event => {
         let userObj = this.props.users.byId[event.currentTarget.value]
         this.setState({
@@ -69,6 +80,15 @@ class AnswerAdmin extends React.Component{
 
     handleConfirmCreate = () => {
         this.setState({openDialog:true, dialogAction: "create"})
+    }
+
+    handleConfirmAccessRight = event => {
+        let userObj = this.props.users.byId[event.currentTarget.value]
+        this.setState({openDialog:true,
+            dialogAction: "accessRights",
+            userId:  event.currentTarget.value,
+            role: userObj.role
+        })
     }
 
     handleClose = () => {
@@ -85,6 +105,10 @@ class AnswerAdmin extends React.Component{
 
     handleChangePassword2 = event => {
         this.setState({password2: event.target.value})
+    }
+
+    handleChangeRole = event => {
+        this.setState({role: event.currentTarget.value})
     }
 
     render(){
@@ -166,6 +190,29 @@ class AnswerAdmin extends React.Component{
                     </Button>
                 </DialogActions>
             )
+        }else if(this.state.dialogAction === "accessRights"){
+            var newRight;
+            if(this.state.role === "user"){
+                dialogContent = (
+                    <DialogContent>Turn this user administrator ?</DialogContent>
+                )
+                newRight="admin"
+            }else if(this.state.role === "admin"){
+                dialogContent = (
+                    <DialogContent>Remove administrator rights from this user?</DialogContent>
+                )
+                newRight="user"
+            }
+            dialogActions = (
+                <DialogActions>
+                    <Button variant="outlined" color="default" autoFocus onClick={this.handleClose}>
+                        Cancel
+                    </Button>
+                    <Button variant="outlined" color="primary" autoFocus value={newRight} onClick={this.handleRight}>
+                        Yes
+                    </Button>
+                </DialogActions>
+            )
         }
 
         return(
@@ -180,10 +227,18 @@ class AnswerAdmin extends React.Component{
                                 <ListItem key={userId}>
                                     <ListItemText >
                                     {users.byId[userId].pseudo}
+                                    {users.byId[userId].role === "admin" &&  <Stars/> }
+                                    
                                     </ListItemText>
                                     <ListItemSecondaryAction>
 
-                                        <Button aria-label="update" value={userId} onClick={this.handleConfirmUpdate}>Password</Button>
+                                        <IconButton aria-label="update" value={userId} onClick={this.handleConfirmUpdate}>
+                                            <Key/>
+                                        </IconButton>
+
+                                        <IconButton value={userId} onClick={this.handleConfirmAccessRight}>
+                                            <Supervisor/>
+                                        </IconButton>
                  
                                         <IconButton edge="end" aria-label="delete" value={userId} onClick={this.handleConfirmDelete}>
                                             <DeleteIcon color="secondary"/>
