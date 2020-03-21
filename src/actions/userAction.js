@@ -30,6 +30,7 @@ export function addUser(user){
     return axios.post('https://web-ios-api.herokuapp.com/users',user)
     .then(res => {
       user.idUser = res.data.data.idUser
+      user.role = "user"
       dispatch(addUserSuccess(user))
     })
     .catch(error => {
