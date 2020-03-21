@@ -5,7 +5,10 @@ import {
     DELETE_USER_SUCCESS,
     DELETE_USER_FAILURE,
     ADD_USER_SUCCESS,
-    ADD_USER_FAILURE
+    ADD_USER_FAILURE,
+    UPDATE_ROLE_USER_SUCCESS,
+    UPDATE_ROLE_USER_FAILURE,
+    updateUser
   } from '../actions/userAction';
   
   const initialState = {
@@ -96,6 +99,24 @@ import {
           ...state,
           loading:false,
           error: action.payload.error,
+        }
+
+      case UPDATE_ROLE_USER_SUCCESS:
+        let byIdUpdateUserRole = state.byId
+        let updatedUser = byIdUpdateUserRole[action.payload.idUser]
+        updatedUser.role = action.payload.role
+        byIdUpdateUserRole[action.payload.idUser] = updatedUser
+        return{
+          ...state,
+          loading: false,
+          byId: byIdUpdateUserRole
+        };
+
+      case UPDATE_ROLE_USER_FAILURE:
+        return{
+          ...state,
+          loading:false,
+          error: action.payload.error
         }
 
       

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import { deleteUser, addUser, updateUser } from '../actions/userAction';
+import { deleteUser, addUser, updateUser, updateUserRole } from '../actions/userAction';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -57,9 +57,8 @@ class AnswerAdmin extends React.Component{
     };
 
     handleRight = event =>{
-        //console.log(this.state.userId)
-        //console.log(event.currentTarget.value)
-        //dispatch changeRole to admin
+        let newRole = event.currentTarget.value
+        this.props.dispatch(updateUserRole(this.state.userId,newRole,sessionStorage.getItem('token')))
         this.handleClose()
     };
 

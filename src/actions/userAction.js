@@ -13,6 +13,9 @@ export const DELETE_USER_FAILURE = 'DELETE_USER_FAILURE';
 export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
 export const UPDATE_USER_FAILURE = 'UPDATE_USER_FAILURE';
 
+export const UPDATE_ROLE_USER_SUCCESS = 'UPDATE_ROLE_USER_SUCCESS';
+export const UPDATE_ROLE_USER_FAILURE = 'UPDATE_ROLE_USER_FAILURE';
+
 export function fetchUsers() {
     return dispatch => {
         dispatch(fetchUsersBegin());
@@ -65,6 +68,18 @@ export function updateUser(idUser,password,token){
   }
 }
 
+export function updateUserRole(idUser,role,token){
+  return dispatch => {
+    return axios.put('https://web-ios-api.herokuapp.com/users/role/'+idUser, {'role':role,'token': token})
+    .then(response => {
+      dispatch(updateUserRoleSuccess(idUser,role))
+    })
+    .catch(error => {
+      dispatch(updateUserRoleFailure(idUser))
+    })
+  }
+}
+
 export const fetchUsersBegin = () => ({
   type: FETCH_USER_BEGIN
 });
@@ -106,5 +121,15 @@ export const addUserSuccess = user => ({
 
 export const addUserFailure = error => ({
   type: ADD_USER_FAILURE,
+  payload: { error }
+})
+
+export const updateUserRoleSuccess = (idUser,role) => ({
+  type: UPDATE_ROLE_USER_SUCCESS,
+  payload: { idUser, role }
+})
+
+export const updateUserRoleFailure = error => ({
+  type: UPDATE_ROLE_USER_FAILURE,
   payload: { error }
 })
