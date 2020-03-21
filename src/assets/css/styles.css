@@ -109,6 +109,17 @@ h1{
     color:  #9960a7;
 }
 
+.pagination-it{
+    position: relative;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+    border :none;
+    background-color: transparent;
+    box-shadow: none;
+}
+
 .neu{
     display: flex;
     align-items: center;

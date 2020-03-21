@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
+import Pagination from '@material-ui/lab/Pagination';
 
 import Remark from './Remark'
 
@@ -28,6 +29,9 @@ class ListRemark extends React.Component {
             remark: "",
             location: "",
             category: 1,
+            nbByPage : 10,
+            nbPage : Math.ceil(this.props.remarks.allIds.length/10),
+            currentPage : 1,
         }
     }
 
@@ -63,6 +67,11 @@ class ListRemark extends React.Component {
         this.props.dispatch(addRemarks(remark));
     }
 
+    handleChangePage = (event, value) => {
+        this.setState({ currentPage: value })
+        document.getElementsByClassName('section_title')[0].scrollIntoView(true)
+    };
+
     
 
     render() {
@@ -83,13 +92,15 @@ class ListRemark extends React.Component {
                 <div className={"container"}>
                     <ul>
                         {remarks.allIds.length ? (
-                            remarks.allIds.map(remarkId => {
+                            remarks.allIds.slice(this.state.nbByPage*this.state.currentPage-this.state.nbByPage,this.state.nbByPage*this.state.currentPage)
+                            .map(remarkId => {
                                 return <li key={remarkId}><Remark remark={remarks.byId[remarkId]} history={this.props.history}></Remark></li>
                             })
                         ) : (
                             <p>There is no remarks</p>
                         )}    
                     </ul>
+                    <Pagination count={this.state.nbPage === 0 ? (Math.ceil(this.props.remarks.allIds.length/10)) :(this.state.nbPage)} page={this.state.currentPage} size="large" className="pagination-it" onChange={this.handleChangePage} />
                 </div>
 
                 {isConnected ? (
