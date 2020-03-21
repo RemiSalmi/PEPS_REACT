@@ -69,19 +69,19 @@ class AdminPanel extends React.Component{
             )
 
         }else if (this.state.handleAnswers){
-            adminTitle = <div>Administer answers</div>
+            adminTitle = <span>Administer answers</span>
             adminContent = (
                 <AnswerAdmin/>
             )
 
         }else if (this.state.handleUsers){
-            adminTitle = <div>Administer users</div>
+            adminTitle = <span>Administer users</span>
             adminContent = (
                 <UserAdmin/>
             )
 
         }else if(this.state.handleCategories){
-            adminTitle = <div>Administer categories</div>
+            adminTitle = <span>Administer categories</span>
             adminContent = (
                 <CategoryAdmin/>
             )
