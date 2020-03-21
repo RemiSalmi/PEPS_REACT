@@ -118,6 +118,15 @@ h1{
     border :none;
     background-color: transparent;
     box-shadow: none;
+    margin-left: 0px;
+}
+
+.dspf{
+    display: flex;
+}
+
+.fullWidth{
+    width: 100%;
 }
 
 .neu{
@@ -338,8 +347,18 @@ a{
 
 .fab{
     position: sticky !important;
-    bottom: 50px;
+    bottom: 100px;
     left: 95%;
+}
+
+.badge-info{
+    background-color: #3f51b5 !important;
+}
+
+.filters{
+    position: sticky !important;
+    top: 50px;
+    left: 1%;
 }
 
 .section_title{

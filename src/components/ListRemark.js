@@ -15,6 +15,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Pagination from '@material-ui/lab/Pagination';
 
 import Remark from './Remark'
+import ListFilter from './ListFilter'
 
 class ListRemark extends React.Component {
     componentDidMount() {
@@ -28,6 +29,7 @@ class ListRemark extends React.Component {
             open: false,
             remark: "",
             location: "",
+            filters : [],
             category: 1,
             nbByPage : 10,
             nbPage : Math.ceil(this.props.remarks.allIds.length/10),
@@ -45,6 +47,34 @@ class ListRemark extends React.Component {
         })
     }
 
+    refreshNbPage = () => {
+        let size = this.props.remarks.allIds.filter(remarkId =>{
+                                
+            if (this.state.filters.includes(this.props.remarks.byId[remarkId].idCategory) || this.state.filters.length == 0){
+                return remarkId
+            }
+            return null
+        }).length
+
+        this.setState({nbPage : Math.ceil(size/this.state.nbByPage)})
+    }
+
+    addFilter = (filter) => {
+        let newFilters = this.state.filters
+        newFilters.push(filter)
+        this.setState({filters : newFilters})
+        this.goToFirstPage()
+        this.refreshNbPage()
+    }
+
+    removeFilter = (filter) => {
+        let newFilters = this.state.filters
+        newFilters.splice(newFilters.indexOf(filter),1)
+        this.setState({filters : newFilters})
+        this.goToFirstPage()
+        this.refreshNbPage()
+    }
+
     handleChangeCategory = (e) => {
         this.setState({
             category: e.target.value
@@ -55,6 +85,10 @@ class ListRemark extends React.Component {
         this.setState({
             remark: e.target.value
         })
+    }
+
+    goToFirstPage = (e) => {
+        this.setState({ currentPage: 1 })
     }
 
     handleClose = () => {
@@ -89,10 +123,21 @@ class ListRemark extends React.Component {
         return(
             <section id={title}>
                 <h1 className={"section_title"}>{title}</h1>
-                <div className={"container"}>
+                <div className={"container-fluid dspf"}>
+                    <div>
+                        <ListFilter type="remark" addFilter={this.addFilter} removeFilter={this.removeFilter}/>
+                    </div>
+                    <div className="fullWidth" style={{marginRight : "15%"}}>
                     <ul>
                         {remarks.allIds.length ? (
-                            remarks.allIds.slice(this.state.nbByPage*this.state.currentPage-this.state.nbByPage,this.state.nbByPage*this.state.currentPage)
+                            remarks.allIds.filter(remarkId =>{
+                                
+                                if (this.state.filters.includes(remarks.byId[remarkId].idCategory) || this.state.filters.length == 0){
+                                    return remarkId
+                                }
+                                return null
+                            })
+                            .slice(this.state.nbByPage*this.state.currentPage-this.state.nbByPage,this.state.nbByPage*this.state.currentPage)
                             .map(remarkId => {
                                 return <li key={remarkId}><Remark remark={remarks.byId[remarkId]} history={this.props.history}></Remark></li>
                             })
@@ -101,6 +146,8 @@ class ListRemark extends React.Component {
                         )}    
                     </ul>
                     <Pagination count={this.state.nbPage === 0 ? (Math.ceil(this.props.remarks.allIds.length/10)) :(this.state.nbPage)} page={this.state.currentPage} size="large" className="pagination-it" onChange={this.handleChangePage} />
+                    </div>
+                    
                 </div>
 
                 {isConnected ? (

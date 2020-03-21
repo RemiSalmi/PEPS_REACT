@@ -57,9 +57,12 @@ class Remark extends React.Component{
             <div>
                 <div className={"card neu-card"}>
                     <div className={"card-body"}>
+                        <div className="dspf">
                         <h5 className={"card-category card-category-social"}>
                         <i className={"material-icons"}>place</i> {remark.location}, {remark.dateCreation}
                         </h5>
+                        <span className="badge badge-info ml-auto" style={{height:"20px"}}>{this.props.categories.byId[remark.idCategory].lib}</span>
+                        </div>
                         <h4 className={"card-title"}>
                         <p>&quot; {remark.remark} &quot;</p>
                         </h4>
@@ -111,7 +114,8 @@ const mapStateToProps = state => ({
     remarks : state.remarks,
     loading: state.users.loading,
     error: state.users.error,
-    auth: state.auth
+    auth: state.auth,
+    categories : state.categories
 });
 
 export default connect(mapStateToProps)(Remark);
