@@ -18,7 +18,6 @@ import Key from '@material-ui/icons/VpnKey';
 import Supervisor from '@material-ui/icons/SupervisorAccount';
 import Stars from '@material-ui/icons/Stars';
 import Divider from '@material-ui/core/Divider';
-var jwt = require('jsonwebtoken');
 
 class AnswerAdmin extends React.Component{
     componentDidMount(){
@@ -142,12 +141,12 @@ class AnswerAdmin extends React.Component{
                     <form>
                         <div className="form-group">
                             <label htmlFor="Password">Password</label>
-                            <input type="text" className="form-control" id="password" type="password" onChange={this.handleChangePassword}/>
+                            <input className="form-control" id="password" type="password" onChange={this.handleChangePassword}/>
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="Password2">Check Password</label>
-                            <input type="text" className="form-control" id="password2" type="password" onChange={this.handleChangePassword2}/>
+                            <input className="form-control" id="password2" type="password" onChange={this.handleChangePassword2}/>
                         </div>
                     </form>
                 </DialogContent>
@@ -174,7 +173,7 @@ class AnswerAdmin extends React.Component{
 
                         <div className="form-group">
                             <label htmlFor="Password">Password</label>
-                            <input type="text" className="form-control" id="password" type="password" onChange={this.handleChangePassword}/>
+                            <input className="form-control" id="password" type="password" onChange={this.handleChangePassword}/>
                         </div>
                     </form>
                 </DialogContent>

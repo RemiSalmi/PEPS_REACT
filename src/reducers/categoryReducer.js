@@ -1,7 +1,13 @@
 import {
     FETCH_CATEGORY_BEGIN,
     FETCH_CATEGORY_SUCCESS,
-    FETCH_CATEGORY_FAILURE
+    FETCH_CATEGORY_FAILURE,
+    ADD_CATEGORY_SUCCESS,
+    ADD_CATEGORY_FAILURE,
+    UPDATE_CATEGORY_SUCCESS,
+    UPDATE_CATEGORY_FAILURE,
+    DELETE_CATEGORY_SUCCESS,
+    DELETE_CATEGORY_FAILURE
   } from '../actions/categoryAction';
 
 const initialState = {
@@ -57,7 +63,61 @@ export default function userReducer(state = initialState, action) {
             byId : {},
             allIds : [],
         };
-  
+      
+      case ADD_CATEGORY_SUCCESS:
+        let byIdAddCategory = state.byId
+        let allIdsAddCategory = state.allIds
+        byIdAddCategory[action.payload.category.idCategory] = action.payload.category
+        allIdsAddCategory.push(action.payload.category.idCategory)
+        return {
+          ...state,
+          loading: false,
+          byId: byIdAddCategory,
+          allIds: allIdsAddCategory
+        };
+      
+      case ADD_CATEGORY_FAILURE:
+        return{
+          ...state,
+          loading:false,
+          error: action.payload.error
+        }
+      
+      case UPDATE_CATEGORY_SUCCESS:
+        let byIdUpdateCategory = state.byId
+        byIdUpdateCategory[action.payload.category.idCategory] = action.payload.category
+        return{
+          ...state,
+          loading:false,
+          byId: byIdUpdateCategory
+        };
+
+      case UPDATE_CATEGORY_FAILURE:
+        return{
+          ...state,
+          loading:false,
+          error:action.payload.error
+        };
+
+      case DELETE_CATEGORY_SUCCESS:
+        let byIdRemoveCategory = state.byId
+        let allIdsRemoveCategory = state.allIds
+        delete byIdRemoveCategory[action.payload.idCategory]
+        allIdsRemoveCategory.splice(allIdsRemoveCategory.indexOf(parseInt(action.payload.idCategory)),1)
+        return{
+          ...state,
+          loading:false,
+          byId: byIdRemoveCategory,
+          allIds: allIdsRemoveCategory
+        };
+
+      case DELETE_CATEGORY_FAILURE:
+        return{
+          ...state,
+          loading:false,
+          error:action.payload.error
+        };
+        
       default:
         // ALWAYS have a default case in a reducer
         return state;

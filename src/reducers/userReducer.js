@@ -8,7 +8,6 @@ import {
     ADD_USER_FAILURE,
     UPDATE_ROLE_USER_SUCCESS,
     UPDATE_ROLE_USER_FAILURE,
-    updateUser
   } from '../actions/userAction';
   
   const initialState = {

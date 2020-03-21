@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
+import { addCategory, updateCategory, deleteCategory } from '../actions/categoryAction';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -17,7 +18,6 @@ import UpdateIcon from '@material-ui/icons/Update';
 import AddIcon from '@material-ui/icons/Add';
 
 import Divider from '@material-ui/core/Divider';
-var jwt = require('jsonwebtoken');
 
 class AnswerAdmin extends React.Component{
     componentDidMount(){
@@ -38,20 +38,20 @@ class AnswerAdmin extends React.Component{
     handleCreate = () => {
         let category = {"lib": this.state.lib, "type": this.state.type}
         console.log(category)
-        //Create a category todo
+        this.props.dispatch(addCategory(category,sessionStorage.getItem('token')))
         this.handleClose()
     };
     
     handleUpdate = () => {
-        let category = {"lib": this.state.lib, "type": this.state.type}
+        let category = {"idCategory":this.state.categoryId, "lib": this.state.lib, "type": this.state.type}
         console.log(category)
-        //Update a category todo
+        this.props.dispatch(updateCategory(category,sessionStorage.getItem('token')))
         this.handleClose()
     };
 
     handleDelete = () =>{
         console.log(this.state.categoryId)
-        //Delete a category todo
+        this.props.dispatch(deleteCategory(this.state.categoryId,sessionStorage.getItem('token')))
         this.handleClose()
     };
 
@@ -76,6 +76,14 @@ class AnswerAdmin extends React.Component{
     handleClose = () => {
         this.setState({ openDialog: false })
     };
+
+    handleChangeLib = event => {
+        this.setState({ lib: event.currentTarget.value })
+    }
+
+    handleChangeType = event => {
+        this.setState({ type: event.currentTarget.value })
+    }
 
     render(){
 
@@ -176,9 +184,9 @@ class AnswerAdmin extends React.Component{
                     {categories.allIds.length ? (
                         categories.allIds.map(categoryId => {
                             return (
-                                <div>
+                                <div key={categoryId}>
                                 <ListItem >
-                                    <ListItemText key={categoryId}>
+                                    <ListItemText >
                                     {categories.byId[categoryId].lib} type : {categories.byId[categoryId].type}
                                     </ListItemText>
                                     <ListItemSecondaryAction>
