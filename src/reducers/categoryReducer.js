@@ -9,7 +9,6 @@ import {
     DELETE_CATEGORY_SUCCESS,
     DELETE_CATEGORY_FAILURE
   } from '../actions/categoryAction';
-import { DELETE_USER_FAILURE } from '../actions/userAction';
 
 const initialState = {
     byId : {},
@@ -112,7 +111,7 @@ export default function userReducer(state = initialState, action) {
           allIds: allIdsRemoveCategory
         };
 
-      case DELETE_USER_FAILURE:
+      case DELETE_CATEGORY_FAILURE:
         return{
           ...state,
           loading:false,

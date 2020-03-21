@@ -5,7 +5,6 @@ import { fetchUsers } from '../actions/userAction';
 import { deleteRemark, addRemarks, updateRemark } from '../actions/remarkAction';
 
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent'; 
 import Button from '@material-ui/core/Button';
@@ -19,7 +18,6 @@ import UpdateIcon from '@material-ui/icons/Update';
 
 import AddIcon from '@material-ui/icons/Add'
 import Divider from '@material-ui/core/Divider';
-var jwt = require('jsonwebtoken');
 
 class RemarkAdmin extends React.Component{
     componentDidMount(){
