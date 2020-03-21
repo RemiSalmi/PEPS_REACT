@@ -36,16 +36,21 @@ class AnswerAdmin extends React.Component{
     }
 
     handleCreate = () => {
+        let category = {"lib": this.state.lib, "type": this.state.type}
+        console.log(category)
         //Create a category todo
         this.handleClose()
     };
     
     handleUpdate = () => {
+        let category = {"lib": this.state.lib, "type": this.state.type}
+        console.log(category)
         //Update a category todo
         this.handleClose()
     };
 
     handleDelete = () =>{
+        console.log(this.state.categoryId)
         //Delete a category todo
         this.handleClose()
     };
