@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import { deleteUser, addUser, } from '../actions/userAction';
+import { deleteUser, addUser, updateUser } from '../actions/userAction';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -37,16 +37,15 @@ class AnswerAdmin extends React.Component{
 
     handleCreate = () => {
         let user = {"pseudo": this.state.pseudo, "password":this.state.password}
-        console.log(user)
         this.props.dispatch(addUser(user,sessionStorage.getItem('token')))
         this.handleClose()
-
     }
     
     handleUpdate = () => {
         if(this.state.password === this.state.password2){
-            //this.props.dispatch(updateUser(this.state.idUser,this.state.password,sessionStorage.getItem('token')))
+            this.props.dispatch(updateUser(this.state.userId,this.state.password,sessionStorage.getItem('token')))
         }
+        this.handleClose()
     };
 
     handleDelete = () =>{
@@ -178,8 +177,8 @@ class AnswerAdmin extends React.Component{
                         users.allIds.map(userId => {
                             return (
                                 <div>
-                                <ListItem >
-                                    <ListItemText key={userId}>
+                                <ListItem key={userId}>
+                                    <ListItemText >
                                     {users.byId[userId].pseudo}
                                     </ListItemText>
                                     <ListItemSecondaryAction>
