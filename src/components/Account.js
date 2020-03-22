@@ -1,10 +1,12 @@
 import React from 'react';
 import axios from 'axios'
-
+import { checkLogin } from '../actions/authAction'; 
+import { deleteUser } from '../actions/userAction';
 import Footer from './Footer'
 import { connect } from 'react-redux' 
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import { NavLink } from 'react-router-dom';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -26,18 +28,25 @@ class Account extends React.Component{
         this.setState({
             alert : alert,
             open: true
-            
         })
-      };
-  handleClose = (event, reason) => {
+    };
+
+    handleClose = (event, reason) => {
         if (reason === 'clickaway') {
           return;
         }
         this.setState({
             open: false
         })
-      };
+    };
+
     componentDidMount(){
+    }
+
+    handleDelete =() => {
+        this.props.dispatch(deleteUser(jwt.decode(sessionStorage.getItem('token')).idUser,sessionStorage.getItem('token')));
+        sessionStorage.removeItem('token')
+        this.props.dispatch(checkLogin());
     }
 
     handleChangePass1 = (e) => {
@@ -70,14 +79,15 @@ class Account extends React.Component{
 
     render(){
         return (
-            
+    
             <div style={{position: "absolute",height:"100%", width:"100%"}}>
-                <section id="Login" className="">
+                <section id="Account" className="">
                     <div className={"container"} >
                         <div className="row loginBox " >
                         <div className="card margin-center neu-card ">
                             <div className="container loginFlex">
                                 <h1>My Account</h1>
+                                <NavLink onClick={this.handleDelete} class="text-primary" to="/">Delete my account</NavLink>
                                 <form>
                                 <h2>Change my password</h2>
                                 <div className="input-group">
@@ -102,6 +112,7 @@ class Account extends React.Component{
                                     </div>
                                 </form>
                             </div>
+                            <div> Delete my account</div>
                         </div>
                         </div>
                     </div>
