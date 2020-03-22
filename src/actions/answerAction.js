@@ -76,10 +76,12 @@ export function addAnswer(answer,token){
     return axios.post('https://web-ios-api.herokuapp.com/answers',{"answer":answer.answer, "idCategory":answer.idCategory, "token":token})
     .then(res => {
       answer.idAnswer = res.data.data.idAnswer
+      console.log(answer.answer)
       dispatch(addAnswerSuccess(answer,token))
     })
     .catch(error => {
       dispatch(addAnswerFailure(error))
+      console.log("erreur")
     })
   }
 }

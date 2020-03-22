@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux' 
 import { fetchAnswers } from '../actions/answerAction';
+import { addAnswer } from '../actions/answerAction';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -22,31 +23,24 @@ class ListAnswer extends React.Component {
         super(props)
         this.state = {
             open: false,
-            remark: "",
-            location: "",
-            category: 0,
+            answer: "",
+            idCategory: 0,
         }
     }
 
     handleClickOpen = () => {
         this.setState({ open: true }) 
     };
-    
-    handleChangeLocation = (e) => {
-        this.setState({
-            location: e.target.value
-        })
-    }
 
     handleChangeCategory = (e) => {
         this.setState({
-            category: e.target.value
+            idCategory: e.target.value
         })
     }
 
-    handleChangeRemark = (e) => {
+    handleChangeAnswer = (e) => {
         this.setState({
-            remark: e.target.value
+            answer: e.target.value
         })
     }
 
@@ -55,9 +49,9 @@ class ListAnswer extends React.Component {
     };
 
     handleClickCreate = () =>{
-        this.setState({ open: false })
-        let remark = {"remark":this.state.remark, "idCategory" : this.state.category, "location" : this.state.location, "token": this.props.token}
-        this.props.addRemark(remark)
+        let answer = {"answer": this.state.answer, "idCategory":this.state.idCategory}
+        this.props.dispatch(addAnswer(answer,sessionStorage.getItem('token')))
+        this.handleClose()
     }
 
     render() {
@@ -95,10 +89,6 @@ class ListAnswer extends React.Component {
                     <DialogContent>
                         <form>
                             <div className="form-group">
-                                <label htmlFor="Location">Location</label>
-                                <input type="text" className="form-control" id="location" placeholder="Paris" onChange={this.handleChangeLocation}/>
-                            </div>
-                            <div className="form-group">
                                 <label htmlFor="Category">Category</label>
                                 <select className="form-control selectpicker" data-style="btn btn-link" id="Category" onChange={this.handleChangeCategory}>
                                     <option value="0">Fun</option>
@@ -107,8 +97,8 @@ class ListAnswer extends React.Component {
                                 </select>
                             </div>
                             <div className="form-group">
-                                <label htmlFor="Remark">Remark</label>
-                                <textarea className="form-control" id="Remark" rows="3" onChange={this.handleChangeRemark}></textarea>
+                                <label htmlFor="Remark">Answer</label>
+                                <textarea className="form-control" id="Remark" rows="3" onChange={this.handleChangeAnswer}></textarea>
                             </div>
                         </form>
                     </DialogContent>
