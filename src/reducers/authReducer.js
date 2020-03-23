@@ -3,7 +3,8 @@ import {
   } from '../actions/authAction';
 
 const initialState = {
-    isConnected : false
+    isConnected : false,
+    isAdmin : false
 }
 
 export default function authReducer(state = initialState, action) {
@@ -13,7 +14,8 @@ export default function authReducer(state = initialState, action) {
         // Also, reset any errors. We're starting fresh.
         return {
             ...state,
-            isConnected : action.payload.isConnected
+            isConnected : action.payload.isConnected,
+            isAdmin : action.payload.isAdmin
         };
 
       default:

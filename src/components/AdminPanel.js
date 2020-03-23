@@ -59,7 +59,8 @@ class AdminPanel extends React.Component{
     }
 
     render(){
-        
+
+        const isAdmin = this.props.auth.isAdmin;
         var adminContent, adminTitle;
 
         if (this.state.handleRemarks){
@@ -85,6 +86,9 @@ class AdminPanel extends React.Component{
             adminContent = (
                 <CategoryAdmin/>
             )
+        }else if(isAdmin===false){
+            adminTitle = <div>Access Denied</div>
+            adminContent = <div>Access Denied</div> 
         }    
         else{
             adminTitle =  <span>Click to administer</span>
@@ -112,7 +116,7 @@ class AdminPanel extends React.Component{
                     </Toolbar>
                 </AppBar>
                 <Grid item xs={2}>
-                    
+                    {isAdmin ? (
                     <List>
                         <ListItem onClick={this.toggleRemarks} key={0}>
                             <ListItemText>
@@ -138,7 +142,9 @@ class AdminPanel extends React.Component{
                             </ListItemText>
                         </ListItem>
                     </List>
-
+                    ):(
+                        <div>Access Denied</div>
+                    )}
                 </Grid>
                 <Grid item xs={10}>
                     {adminContent}
@@ -150,6 +156,7 @@ class AdminPanel extends React.Component{
     }
 }
 const mapStateToProps = state => ({
+    auth: state.auth
 });
 
 export default connect(mapStateToProps)(AdminPanel);

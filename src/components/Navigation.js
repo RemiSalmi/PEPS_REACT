@@ -13,10 +13,13 @@ class Navigation extends React.Component{
     logout = (e) =>{
         sessionStorage.removeItem('token')
         this.props.dispatch(checkLogin());
+        
     }
     
     render() {
         const isConnected = this.props.auth.isConnected;
+        const isAdmin = this.props.auth.isAdmin;
+        console.log(isAdmin)
         return (
             <nav>
                 <div>
@@ -28,7 +31,7 @@ class Navigation extends React.Component{
                {isConnected ? (
                    <div style={{display:"flex", marginRight:"10px"}}>
                         <NavLink className="login" to="/account">My account</NavLink>
-                        <NavLink className="admin" to="/admin">Admin</NavLink>
+                        {isAdmin &&  <NavLink className="admin" to="/admin">Admin</NavLink> }
                         <NavLink onClick={this.logout} to="/">Logout</NavLink>
                    </div>
                ) :(
