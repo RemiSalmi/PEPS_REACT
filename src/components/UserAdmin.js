@@ -7,17 +7,21 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent'; 
 import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
+
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AddIcon from '@material-ui/icons/Add';
 import Key from '@material-ui/icons/VpnKey';
 import Supervisor from '@material-ui/icons/SupervisorAccount';
 import Stars from '@material-ui/icons/Stars';
-import Divider from '@material-ui/core/Divider';
+
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import AddIcon from '@material-ui/icons/Add';
+import Paper from '@material-ui/core/Paper';
 
 class AnswerAdmin extends React.Component{
     componentDidMount(){
@@ -214,53 +218,67 @@ class AnswerAdmin extends React.Component{
         }
 
         return(
+
             <div>
-
-                <Button variant="contained" color="default" endIcon={<AddIcon/>} onClick={this.handleConfirmCreate}>New User</Button>
-                <List>
+            <Button variant="contained" color="default" endIcon={<AddIcon/>} onClick={this.handleConfirmCreate}>New User</Button>
+            <TableContainer component={Paper}>
+                <Table aria-label="customized table">
+                    <TableHead>
+                    <TableRow>
+                        <TableCell>User ID</TableCell>
+                        <TableCell align="right">Pseudo</TableCell>
+                        <TableCell align="right">Role</TableCell>
+                        <TableCell align="right">Password</TableCell>
+                        <TableCell align="right">Access</TableCell>
+                        <TableCell align="right">Delete</TableCell>
+                    </TableRow>
+                    </TableHead>
+                    <TableBody>
                     {users.allIds.length ? (
-                        users.allIds.map(userId => {
-                            return (
-                                <div>
-                                <ListItem key={userId}>
-                                    <ListItemText >
-                                    {users.byId[userId].pseudo}
-                                    {users.byId[userId].role === "admin" &&  <Stars/> }
-                                    
-                                    </ListItemText>
-                                    <ListItemSecondaryAction>
-
-                                        <IconButton aria-label="update" value={userId} onClick={this.handleConfirmUpdate}>
-                                            <Key/>
-                                        </IconButton>
-
-                                        <IconButton value={userId} onClick={this.handleConfirmAccessRight}>
-                                            <Supervisor/>
-                                        </IconButton>
-                 
-                                        <IconButton edge="end" aria-label="delete" value={userId} onClick={this.handleConfirmDelete}>
-                                            <DeleteIcon color="secondary"/>
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                                <Divider/>
-                                </div>
-                            )
-                        })
-                    ) :(
-                        <ListItem>
-                            <ListItemText>No users to handle</ListItemText>
-                        </ListItem>
-                    )}
-                </List>
+                        users.allIds.map(userId => (
+                            <TableRow key={userId}>
+                            <TableCell component="th" scope="row">
+                                {userId}
+                            </TableCell>
+                            <TableCell align="right">{users.byId[userId].pseudo}</TableCell>
+                            <TableCell align="right">{users.byId[userId].role} {users.byId[userId].role === "admin" &&  <Stars/> }</TableCell>
+                            <TableCell align="right">
+                                <IconButton aria-label="update" value={userId} onClick={this.handleConfirmUpdate}>
+                                    <Key/>
+                                </IconButton>
+                            </TableCell>
+                            <TableCell align="right">
+                                <IconButton value={userId} onClick={this.handleConfirmAccessRight}>
+                                    <Supervisor/>
+                                </IconButton>
+                            </TableCell>
+                            <TableCell align="right">
+                                <IconButton edge="end" aria-label="delete" value={userId} onClick={this.handleConfirmDelete}>
+                                    <DeleteIcon color="secondary"/>
+                                </IconButton>
+                            </TableCell>
+                            
+                            </TableRow>
+                        ))
+                    ):(
+                        <TableRow>
+                            <TableCell align="right"></TableCell>
+                            <TableCell align="right">No users to handle</TableCell>
+                            <TableCell align="right"></TableCell>
+                            <TableCell align="right"></TableCell>
+                            <TableCell align="right"></TableCell>
+                            <TableCell align="right"></TableCell>
+                        </TableRow>
+                    )
+                    }
+                    </TableBody>
+                </Table>
+                </TableContainer>
 
                 <Dialog open={this.state.openDialog} onClose={this.handleClose} aria-labelledby="form-dialog-title"  maxWidth={'xl'}>
-                    
                     {dialogContent}
                     {dialogActions}
-                    
                 </Dialog>
-
             </div>
         );
     }

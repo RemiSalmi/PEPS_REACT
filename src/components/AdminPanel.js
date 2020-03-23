@@ -64,7 +64,7 @@ class AdminPanel extends React.Component{
         var adminContent, adminTitle;
 
         if (this.state.handleRemarks){
-            adminTitle = <div>Administer remarks</div>
+            adminTitle = <span>Administer remarks</span>
             adminContent = (
                     <RemarkAdmin/>
             )
@@ -87,7 +87,7 @@ class AdminPanel extends React.Component{
                 <CategoryAdmin/>
             )
         }else if(isAdmin===false){
-            adminTitle = <div>Access Denied</div>
+            adminTitle = <span>Access Denied</span>
             adminContent = <div>Access Denied</div> 
         }    
         else{

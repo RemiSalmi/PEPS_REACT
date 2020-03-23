@@ -4,20 +4,22 @@ import { connect } from 'react-redux'
 import { addCategory, updateCategory, deleteCategory } from '../actions/categoryAction';
 
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent'; 
 import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
+
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateIcon from '@material-ui/icons/Update';
-import AddIcon from '@material-ui/icons/Add';
 
-import Divider from '@material-ui/core/Divider';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import AddIcon from '@material-ui/icons/Add';
+import Paper from '@material-ui/core/Paper';
 
 class AnswerAdmin extends React.Component{
     componentDidMount(){
@@ -177,47 +179,60 @@ class AnswerAdmin extends React.Component{
         }
 
         return(
+
             <div>
-
-                <Button variant="contained" color="default" endIcon={<AddIcon/>} onClick={this.handleConfirmCreate}>New Category</Button>
-                <List>
+            <Button variant="contained" color="default" endIcon={<AddIcon/>} onClick={this.handleConfirmCreate}>New Category</Button>
+            <TableContainer component={Paper}>
+                <Table aria-label="customized table">
+                    <TableHead>
+                    <TableRow>
+                        <TableCell>Category ID</TableCell>
+                        <TableCell align="right">Lib</TableCell>
+                        <TableCell align="right">Type</TableCell>
+                        <TableCell align="right">Update</TableCell>
+                        <TableCell align="right">Delete</TableCell>
+                    </TableRow>
+                    </TableHead>
+                    <TableBody>
                     {categories.allIds.length ? (
-                        categories.allIds.map(categoryId => {
-                            return (
-                                <div key={categoryId}>
-                                <ListItem >
-                                    <ListItemText >
-                                    {categories.byId[categoryId].lib} type : {categories.byId[categoryId].type}
-                                    </ListItemText>
-                                    <ListItemSecondaryAction>
-
-                                        <IconButton aria-label="update" value={categories.byId[categoryId].idCategory} onClick={this.handleConfirmUpdate}>
-                                            <UpdateIcon color="primary" />
-                                        </IconButton>
-                 
-                                        <IconButton edge="end" aria-label="delete" value={categories.byId[categoryId].idCategory} onClick={this.handleConfirmDelete}>
-                                            <DeleteIcon color="secondary"/>
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                                <Divider/>
-                                </div>
-                            )
-                        })
-                    ) :(
-                        <ListItem>
-                            <ListItemText>No category to handle</ListItemText>
-                        </ListItem>
-                    )}
-                </List>
+                        categories.allIds.map(categoryId => (
+                            <TableRow key={categoryId}>
+                            <TableCell component="th" scope="row">
+                                {categoryId}
+                            </TableCell>
+                            <TableCell align="right">{categories.byId[categoryId].lib}</TableCell>
+                            <TableCell align="right">{categories.byId[categoryId].type}</TableCell>
+                            <TableCell align="right">
+                                <IconButton aria-label="update" value={categoryId} onClick={this.handleConfirmUpdate}>
+                                    <UpdateIcon color="primary" />
+                                </IconButton>
+                            </TableCell>
+                            <TableCell align="right">
+                                <IconButton edge="end" aria-label="delete" value={categoryId} onClick={this.handleConfirmDelete}>
+                                    <DeleteIcon color="secondary"/>
+                                </IconButton>
+                            </TableCell>
+                            
+                            </TableRow>
+                        ))
+                    ):(
+                        <TableRow>
+                            <TableCell align="right"></TableCell>
+                            <TableCell align="right">No categories to handle</TableCell>
+                            <TableCell align="right"></TableCell>
+                            <TableCell align="right"></TableCell>
+                            <TableCell align="right"></TableCell>
+                        </TableRow>
+                    )
+                    }
+                    </TableBody>
+                </Table>
+                </TableContainer>
 
                 <Dialog open={this.state.openDialog} onClose={this.handleClose} aria-labelledby="form-dialog-title"  maxWidth={'xl'}>
-                    <DialogTitle id="form-dialog-title">{this.state.dialogAction==="delete" ? ( <p>Verification</p> ):(<p>Update</p>)}</DialogTitle>
-                
                     {dialogContent}
                     {dialogActions}
                 </Dialog>
-
             </div>
         );
     }

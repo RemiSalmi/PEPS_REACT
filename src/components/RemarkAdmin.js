@@ -8,16 +8,19 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent'; 
 import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
+
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateIcon from '@material-ui/icons/Update';
 
-import AddIcon from '@material-ui/icons/Add'
-import Divider from '@material-ui/core/Divider';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import AddIcon from '@material-ui/icons/Add';
+import Paper from '@material-ui/core/Paper';
 
 class RemarkAdmin extends React.Component{
     componentDidMount(){
@@ -203,41 +206,57 @@ class RemarkAdmin extends React.Component{
         return(
             <div>
                 <Button variant="contained" color="default" endIcon={<AddIcon/>} onClick={this.handleConfirmCreate}>New Remark</Button>
-                <List>
-                    {remarks.allIds.length ? (
-                        remarks.allIds.map(remarkId => {
-                            return (
-                                <div>
-                                <ListItem >
-                                    <ListItemText key={remarkId}>
-                                    {remarks.byId[remarkId].remark}
-                                    </ListItemText>
-                                    <ListItemSecondaryAction>
-                                        <IconButton aria-label="update" value={remarkId} onClick={this.handleConfirmUpdate}>
-                                            <UpdateIcon color="primary" />
-                                        </IconButton>
+                <TableContainer component={Paper}>
+                    <Table aria-label="customized table">
+                        <TableHead>
+                        <TableRow>
+                            <TableCell>Remark ID</TableCell>
+                            <TableCell align="right">Content</TableCell>
+                            <TableCell align="right">Category</TableCell>
+                            <TableCell align="right">Update</TableCell>
+                            <TableCell align="right">Delete</TableCell>
+                        </TableRow>
+                        </TableHead>
+                        <TableBody>
+                        {remarks.allIds.length ? (
+                            remarks.allIds.map(remarkId => (
+                                <TableRow key={remarkId}>
+                                <TableCell component="th" scope="row">
+                                    {remarkId}
+                                </TableCell>
+                                <TableCell align="right">{remarks.byId[remarkId].remark}</TableCell>
+                                <TableCell align="right">{categories.byId[remarks.byId[remarkId].idCategory].lib}</TableCell>
+                                <TableCell align="right">
+                                    <IconButton aria-label="update" value={remarkId} onClick={this.handleConfirmUpdate}>
+                                        <UpdateIcon color="primary" />
+                                    </IconButton>
+                                </TableCell>
+                                <TableCell align="right">
+                                    <IconButton edge="end" aria-label="delete" value={remarkId} onClick={this.handleConfirmDelete}>
+                                        <DeleteIcon color="secondary"/>
+                                    </IconButton>
+                                </TableCell>
+                                
+                                </TableRow>
+                            ))
+                        ):(
+                            <TableRow>
+                                <TableCell align="right"></TableCell>
+                                <TableCell align="right">No remarks to handle</TableCell>
+                                <TableCell align="right"></TableCell>
+                                <TableCell align="right"></TableCell>
+                                <TableCell align="right"></TableCell>
+                            </TableRow>
+                        )
+                        }
+                        </TableBody>
+                    </Table>
+                    </TableContainer>
 
-                                        <IconButton edge="end" aria-label="delete" value={remarkId} onClick={this.handleConfirmDelete}>
-                                            <DeleteIcon color="secondary"/>
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                                <Divider/>
-                                </div>
-                            )
-                        })
-                    ) :(
-                        <ListItem>
-                            <ListItemText>No remarks to handle</ListItemText>
-                        </ListItem>
-                    )}
-                </List>
-
-                <Dialog open={this.state.openDialog} onClose={this.handleClose} aria-labelledby="form-dialog-title"  maxWidth={'xl'}>
-                    {dialogContent}
-                    {dialogActions}
-                </Dialog>
-
+                    <Dialog open={this.state.openDialog} onClose={this.handleClose} aria-labelledby="form-dialog-title"  maxWidth={'xl'}>
+                        {dialogContent}
+                        {dialogActions}
+                    </Dialog>
             </div>
         );
     }
