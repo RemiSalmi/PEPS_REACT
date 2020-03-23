@@ -122,6 +122,7 @@ import {
         let allIdsAddAnswer = state.allIds
         let newAnswer = action.payload.answer
         newAnswer.idUser = jwt.decode(action.payload.token).idUser
+        newAnswer.likes = []
         allIdsAddAnswer.push(newAnswer.idAnswer)
         byIdAddAnswer[newAnswer.idAnswer] = newAnswer
         return {
@@ -140,7 +141,10 @@ import {
         
       case UPDATE_ANSWER_SUCCESS:
         let byIdUpdateAnswer = state.byId
-        byIdUpdateAnswer[action.payload.answer.idAnswer] = action.payload.answer
+        let updatedAnswer = byIdUpdateAnswer[action.payload.answer.idAnswer]
+        updatedAnswer.answer = action.payload.answer.answer
+        updatedAnswer.idCategory = action.payload.answer.idCategory
+        byIdUpdateAnswer[action.payload.answer.idAnswer] = updatedAnswer
         return{
           ...state,
           loading: false,

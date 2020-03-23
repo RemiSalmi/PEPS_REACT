@@ -151,7 +151,10 @@ import { act } from 'react-dom/test-utils';
       
       case UPDATE_REMARK_SUCCESS:
         let byIdUpdateRemark = state.byId
-        byIdUpdateRemark[action.payload.remark.idRemark] = action.payload.remark
+        let updatedRemark = byIdUpdateRemark[action.payload.remark.idRemark]
+        updatedRemark.remark = action.payload.remark.remark
+        updatedRemark.idCategory = action.payload.remark.idCategory
+        byIdUpdateRemark[action.payload.remark.idRemark] = updatedRemark
         return{
           ...state,
           loading: false,
