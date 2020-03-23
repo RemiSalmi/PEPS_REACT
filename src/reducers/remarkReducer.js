@@ -8,7 +8,8 @@ import {
     DELETE_REMARK_SUCCESS,
     DELETE_REMARK_FAILURE,
     UPDATE_REMARK_SUCCESS,
-    UPDATE_REMARK_FAILURE
+    UPDATE_REMARK_FAILURE,
+    ADD_ANSWER_TO_REMARK_SUCCESS
   } from '../actions/remarkAction';
 import { act } from 'react-dom/test-utils';
   
@@ -166,6 +167,18 @@ import { act } from 'react-dom/test-utils';
           loading:false,
           error:action.payload.error,
         }
+      case ADD_ANSWER_TO_REMARK_SUCCESS:
+          let byIdAnswerToRemark = state.byId
+          let remarkToAddAnswer = byIdAnswerToRemark[action.payload.idRemark]
+          remarkToAddAnswer.answers.push(action.payload.idAnswer,1)
+          byIdAnswerToRemark[action.payload.idRemark] = remarkToAddAnswer
+          let allIdsAnswerToRemark = state.allIds
+          return {
+            ...state,
+            loading: false,
+            byId : byIdAnswerToRemark,
+            allIds : allIdsAnswerToRemark
+          };
 
   
       default:

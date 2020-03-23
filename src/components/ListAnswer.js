@@ -24,7 +24,7 @@ class ListAnswer extends React.Component {
         this.state = {
             open: false,
             answer: "",
-            idCategory: 0,
+            idCategory: this.props.categories.allIds[0],
         }
     }
 
@@ -49,14 +49,13 @@ class ListAnswer extends React.Component {
     };
 
     handleClickCreate = () =>{
-        let answer = {"answer": this.state.answer, "idCategory":this.state.idCategory}
+        let answer = {"answer": this.state.answer, "idCategory":this.state.idCategory,"idRemark":this.props.idRemark}
         this.props.dispatch(addAnswer(answer,sessionStorage.getItem('token')))
         this.handleClose()
     }
 
     render() {
-        const { error, loading, title, answersList, answers } = this.props;
-    
+        const { error, loading, title, answersList, answers ,categories} = this.props;
         if (error) {
           return <div>Error! {error.message}</div>;
         }
@@ -91,9 +90,12 @@ class ListAnswer extends React.Component {
                             <div className="form-group">
                                 <label htmlFor="Category">Category</label>
                                 <select className="form-control selectpicker" data-style="btn btn-link" id="Category" onChange={this.handleChangeCategory}>
-                                    <option value="0">Fun</option>
-                                    <option value="1">Angry</option>
-                                    <option value="2">Cool</option>
+                                    {categories.allIds.filter(categoryId => categories.byId[categoryId].type === "answer").map(categoryId => {
+                                        return (
+                                            <option value={categoryId}>{categories.byId[categoryId].lib}</option>
+                                        )   
+                                        })
+                                    }
                                 </select>
                             </div>
                             <div className="form-group">

@@ -52,7 +52,6 @@ class Remark extends React.Component{
     render(){
 
         const { remark, users, remarks } = this.props;
-
         return(
             <div>
                 <div className={"card neu-card"}>
@@ -95,7 +94,7 @@ class Remark extends React.Component{
 
                 <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'xl'}>
                     <DialogContent>
-                            <ListAnswer title="Answers" answersList={remark.answers} history={this.props.history}></ListAnswer> 
+                            <ListAnswer title="Answers" idRemark = {remark.idRemark} answersList={remark.answers} history={this.props.history} categories={this.props.categories}></ListAnswer> 
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary" autoFocus>

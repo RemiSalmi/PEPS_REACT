@@ -21,6 +21,8 @@ export const ENCOUNTERED_FAILURE = 'ENCOUNTERED_FAILURE';
 export const DESENCOUNTERED_SUCCESS = 'DESENCOUNTERED_SUCCESS';
 export const DESENCOUNTERED_FAILURE = 'DESENCOUNTERED_FAILURE';
 
+export const ADD_ANSWER_TO_REMARK_SUCCESS = 'ADD_ANSWER_TO_REMARK_SUCCESS';
+export const ADD_ANSWER_TO_REMARK_FAILURE = 'ADD_ANSWER_TO_REMARK_FAILURE';
 
 export function fetchRemarks() {
   return dispatch => {
@@ -100,6 +102,16 @@ export function desencounter(remark,token) {
   };
 }
 
+export function addAnswerToRemark(idRemark,idAnswer,token) {
+  return dispatch => {
+    return axios.post('https://web-ios-api.herokuapp.com/remarks/'+idRemark+'/answers/'+idAnswer,{ 'headers': { 'Authorization': token } })
+    .then(res => {
+      dispatch(addAnswerToRemarkSuccess(idRemark,idAnswer));
+    })
+    .catch(error => dispatch(addAnswerToRemarkFailure(error)));
+  };
+}
+
 export const fetchRemarksBegin = () => ({
   type: FETCH_REMARK_BEGIN
 });
@@ -162,5 +174,15 @@ export const updateRemarkSuccess = (remark) => ({
 
 export const updateRemarkFailure = (error) => ({
   type: UPDATE_REMARK_FAILURE,
+  payload: {error}
+})
+
+export const addAnswerToRemarkSuccess = (idRemark,idAnswer) => ({
+  type: ADD_ANSWER_TO_REMARK_SUCCESS,
+  payload: {idRemark,idAnswer}
+})
+
+export const addAnswerToRemarkFailure = (error) => ({
+  type: ADD_ANSWER_TO_REMARK_FAILURE,
   payload: {error}
 })
