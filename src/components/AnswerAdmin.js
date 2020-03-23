@@ -94,7 +94,7 @@ class AnswerAdmin extends React.Component{
 
     render(){
 
-        const { answers, categories } = this.props;
+        const { answersList, answers, categories } = this.props;
         var dialogContent, dialogActions;
 
         
@@ -204,8 +204,8 @@ class AnswerAdmin extends React.Component{
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                    {answers.allIds.length ? (
-                        answers.allIds.map(answerId => (
+                    {answersList.length ? (
+                        answersList.map(answerId => (
                             <TableRow key={answerId}>
                             <TableCell component="th" scope="row">
                                 {answerId}

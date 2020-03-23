@@ -9,13 +9,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-
 import Grid from '@material-ui/core/Grid';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
 
 import RemarkAdmin from './RemarkAdmin';
@@ -61,60 +55,37 @@ class AdminPanel extends React.Component{
     render(){
 
         const isAdmin = this.props.auth.isAdmin;
-        var adminContent, adminTitle;
+        var adminContent;
 
         if (this.state.handleRemarks){
-            adminTitle = <span>Administer remarks</span>
             adminContent = (
                     <RemarkAdmin/>
             )
 
         }else if (this.state.handleAnswers){
-            adminTitle = <span>Administer answers</span>
             adminContent = (
-                <AnswerAdmin/>
+                <AnswerAdmin answersList={this.props.answers.allIds}/>
             )
 
         }else if (this.state.handleUsers){
-            adminTitle = <span>Administer users</span>
             adminContent = (
                 <UserAdmin/>
             )
 
         }else if(this.state.handleCategories){
-            adminTitle = <span>Administer categories</span>
             adminContent = (
                 <CategoryAdmin/>
             )
         }else if(isAdmin===false){
-            adminTitle = <span>Access Denied</span>
             adminContent = <div>Access Denied</div> 
         }    
-        else{
-            adminTitle =  <span>Click to administer</span>
-        }
         
         
         return(
             
             <section id="adminPanel">
-            <Grid container >
-                <AppBar position="relative" >
-                    <Toolbar>
-                        <Typography  noWrap>
-                        {adminTitle}
-                        </Typography>
 
-                        <div>
-                            <InputBase 
-                                placeholder="Search…"
-                            
-                                inputProps={{ 'aria-label': 'search' }}
-                            />
-                            <SearchIcon />
-                        </div>
-                    </Toolbar>
-                </AppBar>
+            <Grid container >
                 <Grid item xs={2}>
                     {isAdmin ? (
                     <List>
@@ -156,7 +127,8 @@ class AdminPanel extends React.Component{
     }
 }
 const mapStateToProps = state => ({
-    auth: state.auth
+    auth: state.auth,
+    answers: state.answers
 });
 
 export default connect(mapStateToProps)(AdminPanel);

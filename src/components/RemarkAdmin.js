@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateIcon from '@material-ui/icons/Update';
+import MessageIcon from '@material-ui/icons/Message';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -21,6 +22,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import AddIcon from '@material-ui/icons/Add';
 import Paper from '@material-ui/core/Paper';
+import Badge from '@material-ui/core/Badge';
+import AnswerAdmin from './AnswerAdmin';
 
 class RemarkAdmin extends React.Component{
     componentDidMount(){
@@ -74,6 +77,10 @@ class RemarkAdmin extends React.Component{
 
     handleConfirmCreate = () => {
         this.setState({openDialog:true, dialogAction: "create"})
+    }
+
+    showRemarkAnswers = (event) => {
+        this.setState({openDialog:true, dialogAction: "showAnswers", remarkId: event.currentTarget.value})
     }
 
     handleClose = () => {
@@ -201,6 +208,11 @@ class RemarkAdmin extends React.Component{
                     </Button>
                 </DialogActions>
             )
+        }else if(this.state.dialogAction === "showAnswers"){
+            console.log(remarks.byId[this.state.remarkId].answers)
+            dialogContent = (
+                <AnswerAdmin answersList={remarks.byId[this.state.remarkId].answers}/>
+            )
         }
 
         return(
@@ -213,6 +225,7 @@ class RemarkAdmin extends React.Component{
                             <TableCell>Remark ID</TableCell>
                             <TableCell align="right">Content</TableCell>
                             <TableCell align="right">Category</TableCell>
+                            <TableCell align="right">Answers</TableCell>
                             <TableCell align="right">Update</TableCell>
                             <TableCell align="right">Delete</TableCell>
                         </TableRow>
@@ -226,6 +239,13 @@ class RemarkAdmin extends React.Component{
                                 </TableCell>
                                 <TableCell align="right">{remarks.byId[remarkId].remark}</TableCell>
                                 <TableCell align="right">{categories.byId[remarks.byId[remarkId].idCategory].lib}</TableCell>
+                                <TableCell align="right">
+                                    <Button value={remarkId} onClick={this.showRemarkAnswers}>
+                                        <Badge badgeContent={remarks.byId[remarkId].answers.length} color="secondary" showZero >
+                                            <MessageIcon/>
+                                        </Badge>
+                                    </Button>
+                                </TableCell>
                                 <TableCell align="right">
                                     <IconButton aria-label="update" value={remarkId} onClick={this.handleConfirmUpdate}>
                                         <UpdateIcon color="primary" />
