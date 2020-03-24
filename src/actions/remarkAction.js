@@ -103,9 +103,8 @@ export function desencounter(remark,token) {
 }
 
 export function addAnswerToRemark(idRemark,idAnswer,token) {
-  
   return dispatch => {
-    return axios.post('https://web-ios-api.herokuapp.com/remarks/'+idRemark+'/answers/'+idAnswer,{ 'headers': { 'Authorization': token } })
+    return axios.post('https://web-ios-api.herokuapp.com/remarks/'+idRemark+'/answers/'+idAnswer,{"token" : token})
     .then(res => {
       dispatch(addAnswerToRemarkSuccess(idRemark,idAnswer));
     })
