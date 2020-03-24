@@ -170,7 +170,7 @@ import { act } from 'react-dom/test-utils';
       case ADD_ANSWER_TO_REMARK_SUCCESS:
           let byIdAnswerToRemark = state.byId
           let remarkToAddAnswer = byIdAnswerToRemark[action.payload.idRemark]
-          remarkToAddAnswer.answers.push(action.payload.idAnswer,1)
+          remarkToAddAnswer.answers.push(action.payload.idAnswer)
           byIdAnswerToRemark[action.payload.idRemark] = remarkToAddAnswer
           let allIdsAnswerToRemark = state.allIds
           return {

@@ -77,8 +77,7 @@ export function addAnswer(answer,token){
     return axios.post('https://web-ios-api.herokuapp.com/answers',{"answer":answer.answer, "idCategory":answer.idCategory, "token":token})
     .then(res => {
       answer.idAnswer = res.data.data.idAnswer
-      //DISPATCH A MODIFIER
-      //dispatch(addAnswerToRemark(answer.idRemark,answer.idAnswer,token))
+      dispatch(addAnswerToRemark(answer.idRemark,answer.idAnswer,token))
       dispatch(addAnswerSuccess(answer,token))
     })
     .catch(error => {

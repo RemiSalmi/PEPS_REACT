@@ -24,7 +24,7 @@ class ListAnswer extends React.Component {
         this.state = {
             open: false,
             answer: "",
-            idCategory: this.props.categories.allIds[0],
+            idCategory: this.props.categories.allIds[2],
         }
     }
 
