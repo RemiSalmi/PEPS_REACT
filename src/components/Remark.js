@@ -35,7 +35,7 @@ class Remark extends React.Component{
     };
     handleEncounter = () => {
         if(this.props.auth.isConnected){
-            let idUser = jwt.decode(sessionStorage.getItem('token')).idUser
+            
             if(this.props.remarks.byId[this.props.remark.idRemark].encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser)){
                 console.log("desencounter")
                 console.log(this.props.remark)

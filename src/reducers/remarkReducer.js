@@ -11,7 +11,7 @@ import {
     UPDATE_REMARK_FAILURE,
     ADD_ANSWER_TO_REMARK_SUCCESS
   } from '../actions/remarkAction';
-import { act } from 'react-dom/test-utils';
+
   
   var jwt = require('jsonwebtoken');
 

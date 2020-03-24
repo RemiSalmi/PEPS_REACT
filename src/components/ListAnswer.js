@@ -55,7 +55,7 @@ class ListAnswer extends React.Component {
     }
 
     render() {
-        const { error, loading, title, answersList, answers ,categories} = this.props;
+        const { error, loading, title, answers ,categories,remarks, idRemark} = this.props;
         if (error) {
           return <div>Error! {error.message}</div>;
         }
@@ -69,8 +69,8 @@ class ListAnswer extends React.Component {
                 <h1 className={"section_title"}>{title}</h1>
                 <div className={"container"}>
                     <ul>
-                        {answersList.length ? (
-                            answersList.map(idAnswer => {
+                        {remarks.byId[idRemark].answers.length ? (
+                            remarks.byId[idRemark].answers.map(idAnswer => {
                                 return <li key={idAnswer}><Answer answer={answers.byId[idAnswer]} history={this.props.history}></Answer></li>
                             })
                         ) : (
@@ -92,7 +92,7 @@ class ListAnswer extends React.Component {
                                 <select className="form-control selectpicker" data-style="btn btn-link" id="Category" onChange={this.handleChangeCategory}>
                                     {categories.allIds.filter(categoryId => categories.byId[categoryId].type === "answer").map(categoryId => {
                                         return (
-                                            <option value={categoryId}>{categories.byId[categoryId].lib}</option>
+                                            <option key={categoryId} value={categoryId}>{categories.byId[categoryId].lib}</option>
                                         )   
                                         })
                                     }
@@ -120,6 +120,7 @@ class ListAnswer extends React.Component {
 
 const mapStateToProps = state => ({
     answers: state.answers,
+    remarks: state.remarks,
     loading: state.answers.loading,
     error: state.answers.error,
     auth: state.auth

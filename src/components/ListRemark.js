@@ -50,7 +50,7 @@ class ListRemark extends React.Component {
     refreshNbPage = () => {
         let size = this.props.remarks.allIds.filter(remarkId =>{
                                 
-            if (this.state.filters.includes(this.props.remarks.byId[remarkId].idCategory) || this.state.filters.length == 0){
+            if (this.state.filters.includes(this.props.remarks.byId[remarkId].idCategory) || this.state.filters.length === 0){
                 return remarkId
             }
             return null
@@ -132,7 +132,7 @@ class ListRemark extends React.Component {
                         {remarks.allIds.length ? (
                             remarks.allIds.filter(remarkId =>{
                                 
-                                if (this.state.filters.includes(remarks.byId[remarkId].idCategory) || this.state.filters.length == 0){
+                                if (this.state.filters.includes(remarks.byId[remarkId].idCategory) || this.state.filters.length === 0){
                                     return remarkId
                                 }
                                 return null
