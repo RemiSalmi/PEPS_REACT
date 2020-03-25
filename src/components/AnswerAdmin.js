@@ -23,6 +23,7 @@ import Paper from '@material-ui/core/Paper';
 
 class AnswerAdmin extends React.Component{
     componentDidMount(){
+        this.setState({answersList: this.props.answersList})
     }
 
     constructor(props){
@@ -34,13 +35,13 @@ class AnswerAdmin extends React.Component{
             answerId: "",
             answer: "",
             idCategory: 1,
+            answersList: [],
         }
     }
 
 
     handleCreate = () =>{
-        let answer = {"answer": this.state.answer, "idCategory":this.state.idCategory}
-        console.log(answer)
+        let answer = {"answer": this.state.answer, "idCategory":this.state.idCategory, "idRemark":this.props.remarkId}
         this.props.dispatch(addAnswer(answer,sessionStorage.getItem('token')))
         this.handleClose()
 
@@ -53,6 +54,9 @@ class AnswerAdmin extends React.Component{
     };
 
     handleDelete = () =>{
+        console.log(this.state.answersList)
+        this.state.answersList.splice(this.props.answersList.indexOf(this.state.answerId),1)
+        console.log(this.state.answersList)
         this.props.dispatch(deleteAnswer(this.state.answerId,sessionStorage.getItem('token')))
         this.handleClose()
     };
@@ -94,7 +98,7 @@ class AnswerAdmin extends React.Component{
 
     render(){
 
-        const { answersList, answers, categories } = this.props;
+        const { answers, categories, remarkId } = this.props;
         var dialogContent, dialogActions;
 
         
@@ -191,7 +195,10 @@ class AnswerAdmin extends React.Component{
 
         return(
             <div>
-            <Button variant="contained" color="default" endIcon={<AddIcon/>} onClick={this.handleConfirmCreate}>New Answer</Button>
+            {remarkId != undefined && (
+                <Button variant="contained" color="default" endIcon={<AddIcon/>} onClick={this.handleConfirmCreate}>New Answer for this remark</Button>
+            )}
+            
             <TableContainer component={Paper}>
                 <Table aria-label="customized table">
                     <TableHead>
@@ -204,8 +211,8 @@ class AnswerAdmin extends React.Component{
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                    {answersList.length ? (
-                        answersList.map(answerId => (
+                    {this.state.answersList.length ? (
+                        this.state.answersList.map(answerId => (
                             <TableRow key={answerId}>
                             <TableCell component="th" scope="row">
                                 {answerId}

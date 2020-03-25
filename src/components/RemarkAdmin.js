@@ -211,7 +211,7 @@ class RemarkAdmin extends React.Component{
         }else if(this.state.dialogAction === "showAnswers"){
             console.log(remarks.byId[this.state.remarkId].answers)
             dialogContent = (
-                <AnswerAdmin answersList={remarks.byId[this.state.remarkId].answers}/>
+                <AnswerAdmin answersList={remarks.byId[this.state.remarkId].answers}  remarkId={this.state.remarkId} />
             )
         }
 
