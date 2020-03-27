@@ -362,10 +362,11 @@ a{
 }
 
 .section_title{
-    background-color:#2d2e32;
-    color:white;
+    color: #3c486a;
     margin: 0px;
     padding: 10px;
+    margin: 14px;
+    border-radius: 56px;
 }
 
 .fab_color{
@@ -401,4 +402,8 @@ html{
 
 #adminPanel .MuiToolbar-regular{
     justify-content: space-between;
+}
+
+.MuiDialog-paperFullScreen{
+    background-color: #e0e5ec !important;
 }

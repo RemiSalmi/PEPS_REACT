@@ -112,12 +112,11 @@ class Account extends React.Component{
                                     </div>
                                 </form>
                             </div>
-                            <div> Delete my account</div>
                         </div>
                         </div>
                     </div>
                     <Snackbar open={this.state.open} autoHideDuration={6000} onClose={this.handleClose} anchorOrigin={{ vertical:"top", horizontal:"center"}}>
-                        <Alert onClose={this.handleClose} severity="error">
+                        <Alert onClose={this.handleClose} severity={this.state.alert === "Password modifié" ? ("success"):("error")}>
                             {this.state.alert}
                         </Alert>
                     </Snackbar>

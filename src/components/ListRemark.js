@@ -122,7 +122,7 @@ class ListRemark extends React.Component {
 
         return(
             <section id={title}>
-                <h1 className={"section_title"}>{title}</h1>
+                <h1 className={"section_title neu-card"}>{title}</h1>
                 <div className={"container-fluid dspf"}>
                     <div>
                         <ListFilter type="remark" addFilter={this.addFilter} removeFilter={this.removeFilter}/>

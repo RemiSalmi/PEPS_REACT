@@ -46,13 +46,13 @@ class Answer extends React.Component{
                             <div className="neu pointer" style={{margin:"0px"}} onClick={this.handleLike}>
                                 {jwt.decode(sessionStorage.getItem('token')) !== null ?(
                                         this.props.answer !== undefined ? (
-                                            <div><i className="material-icons icon-mar-r-4" style={answers.byId[this.props.answer.idAnswer].likes.includes(jwt.decode(sessionStorage.getItem('token')).idUser)  ? ({'color': '#a45cfb'}) : ({'color': 'gray'})}>hearing</i> <span>{answers.byId[this.props.answer.idAnswer].likes.length}</span></div>
+                                            <div style={{display:"flex",alignItems:"center"}}><i className="material-icons icon-mar-r-4" style={answers.byId[this.props.answer.idAnswer].likes.includes(jwt.decode(sessionStorage.getItem('token')).idUser)  ? ({'color': '#a45cfb'}) : ({'color': 'gray'})}>check</i> <span>{answers.byId[this.props.answer.idAnswer].likes.length}</span></div>
                                         ):(
                                             null
                                         )
                                     ) : (
                                         this.props.answer !== undefined ? (
-                                            <div><i className="material-icons icon-mar-r-4" style={{'color': 'gray'}}>hearing</i> <span>{answers.byId[this.props.answer.idAnswer].likes.length}</span></div>
+                                            <div style={{display:"flex",alignItems:"center"}}><i className="material-icons icon-mar-r-4" style={{'color': 'gray'}}>check</i> <span>{answers.byId[this.props.answer.idAnswer].likes.length}</span></div>
                                         ) : (
                                             null
                                         )

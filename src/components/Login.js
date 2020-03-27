@@ -5,6 +5,13 @@ import { checkLogin } from '../actions/authAction';
 
 import Footer from './Footer'
 import logo from '../assets/img/logo.svg'
+
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
  
 class Login extends React.Component{
 
@@ -16,7 +23,8 @@ class Login extends React.Component{
         super(props)
         this.state = {
             pseudo: "",
-            pass: ""
+            pass: "",
+            open:false
         }
     }
 
@@ -32,6 +40,21 @@ class Login extends React.Component{
         })
     }
 
+    handleClose = (event, reason) => {
+    
+        this.setState({
+            open: false
+        })
+    };
+
+    openAlert = (alert) => {
+        this.setState({
+            alert : alert,
+            open: true
+            
+        })
+    };
+
     login = (e) =>{
         let credentials ={
             pseudo: this.state.pseudo,
@@ -44,6 +67,7 @@ class Login extends React.Component{
             this.props.history.push('/')
         })
         .catch(err => {
+            this.openAlert("bad credentials")
             console.log(err)
         })
     }
@@ -86,6 +110,11 @@ class Login extends React.Component{
                         </div>
                     </div>
                 </section>
+                <Snackbar open={this.state.open} autoHideDuration={6000} onClose={this.handleClose} anchorOrigin={{ vertical:"top", horizontal:"center"}}>
+                        <Alert onClose={this.handleClose} severity="error">
+                            {this.state.alert}
+                        </Alert>
+                    </Snackbar>
                 <Footer style={{position: "fixed",bottom:"0px", left:"0px", width:"100%"}}/>  
             </div>
          );

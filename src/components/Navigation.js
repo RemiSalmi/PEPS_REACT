@@ -17,7 +17,7 @@ class Navigation extends React.Component{
     }
     
     render() {
-        const isConnected = this.props.auth.isConnected;
+        const isConnected = sessionStorage.getItem('token') !== null;
         const isAdmin = this.props.auth.isAdmin;
         console.log(isAdmin)
         return (

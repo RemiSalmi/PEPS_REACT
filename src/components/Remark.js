@@ -69,7 +69,7 @@ class Remark extends React.Component{
                         <div className={"card-stats"}>
                             <div className={"author"}>
                                 <div>
-                                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=334&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D" alt="..." className={"avatar img-raised"}/>
+                                    <img src="https://www.lajornadadeoriente.com.mx/wp-content/uploads/2018/05/default.jpg" alt=" " className={"avatar img-raised"}/>
                                     <span>{users.byId[remark.idUser] !== undefined ? users.byId[remark.idUser].pseudo : ""}</span>
                                 </div>
                             </div>
@@ -77,9 +77,9 @@ class Remark extends React.Component{
 
                             <div className="neu pointer" onClick={this.handleEncounter}>
                                 {jwt.decode(sessionStorage.getItem('token')) !== null ? (
-                                    <div><i className="material-icons icon-mar-r-4" style={remarks.byId[remark.idRemark].encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser)  ? ({'color': '#a45cfb'}) : ({'color': 'gray'})}>hearing</i> <span>{remarks.byId[remark.idRemark].encounters.length}</span></div>
+                                    <div style={{display:"flex",alignItems:"center"}}><i className="material-icons icon-mar-r-4" style={remarks.byId[remark.idRemark].encounters.includes(jwt.decode(sessionStorage.getItem('token')).idUser)  ? ({'color': '#a45cfb'}) : ({'color': 'gray'})}>hearing</i> <span>{remarks.byId[remark.idRemark].encounters.length}</span></div>
                                 ) : (
-                                    <div><i className="material-icons icon-mar-r-4" style={{'color': 'gray'}}>hearing</i> <span>{remarks.byId[remark.idRemark].encounters.length}</span></div>
+                                    <div style={{display:"flex",alignItems:"center"}}><i className="material-icons icon-mar-r-4" style={{'color': 'gray'}}>hearing</i> <span>{remarks.byId[remark.idRemark].encounters.length}</span></div>
                                 )}
                                 
                             </div>
@@ -92,15 +92,16 @@ class Remark extends React.Component{
                     </div>
                 </div>
 
-                <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'xl'}>
+                <Dialog fullScreen open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'xl'}>
+                <DialogActions>
+                        <Button onClick={this.handleClose} color="primary" autoFocus>
+                            Close
+                        </Button>
+                    </DialogActions>
                     <DialogContent>
                             <ListAnswer title="Answers" idRemark = {remark.idRemark} answersList={remark.answers} history={this.props.history} categories={this.props.categories}></ListAnswer> 
                     </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleClose} color="primary" autoFocus>
-                            Fermer
-                        </Button>
-                    </DialogActions>
+                    
                 </Dialog>
 
             </div>

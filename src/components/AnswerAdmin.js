@@ -195,7 +195,7 @@ class AnswerAdmin extends React.Component{
 
         return(
             <div>
-            {remarkId != undefined && (
+            {remarkId !== undefined && (
                 <Button variant="contained" color="default" endIcon={<AddIcon/>} onClick={this.handleConfirmCreate}>New Answer for this remark</Button>
             )}
             

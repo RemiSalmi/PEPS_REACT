@@ -9,7 +9,7 @@ class Landing extends React.Component{
 
     scrollToRemark = () => {
         let remarks = document.getElementById("Remarks")
-        remarks.scrollIntoView({behavior: "smooth", block: "end", inline: "center"})
+        remarks.scrollIntoView({behavior: "smooth", block: "start", inline: "center"})
     }
 
     render(){

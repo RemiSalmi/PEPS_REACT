@@ -13,6 +13,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import Answer from './Answer'
+import ListFilter from './ListFilter'
 
 class ListAnswer extends React.Component {
     componentDidMount() {
@@ -65,8 +66,8 @@ class ListAnswer extends React.Component {
         }
 
         return(
-            <section id={title}>
-                <h1 className={"section_title"}>{title}</h1>
+            <section style={{height:"100%"}} id={title}>
+                <h1 className={"section_title neu-card"}>{title}</h1>
                 <div className={"container"}>
                     <ul>
                         {remarks.byId[idRemark].answers.length ? (
