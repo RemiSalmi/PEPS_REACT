@@ -43,6 +43,7 @@ class AnswerAdmin extends React.Component{
     handleCreate = () =>{
         let answer = {"answer": this.state.answer, "idCategory":this.state.idCategory, "idRemark":this.props.remarkId}
         this.props.dispatch(addAnswer(answer,sessionStorage.getItem('token')))
+        this.setState({answersList: this.props.remarks.byId[this.props.remarkId].answers})
         this.handleClose()
 
     };
@@ -54,9 +55,7 @@ class AnswerAdmin extends React.Component{
     };
 
     handleDelete = () =>{
-        console.log(this.state.answersList)
         this.state.answersList.splice(this.props.answersList.indexOf(this.state.answerId),1)
-        console.log(this.state.answersList)
         this.props.dispatch(deleteAnswer(this.state.answerId,sessionStorage.getItem('token')))
         this.handleClose()
     };
@@ -260,6 +259,7 @@ class AnswerAdmin extends React.Component{
 const mapStateToProps = state => ({
     answers: state.answers,
     categories: state.categories,
+    remarks: state.remarks,
 });
 
 export default connect(mapStateToProps)(AnswerAdmin);
