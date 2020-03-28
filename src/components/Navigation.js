@@ -7,7 +7,8 @@ import { checkLogin } from '../actions/authAction';
 import logo from '../assets/img/logo.svg'
  
 import { NavLink } from 'react-router-dom';
- 
+var jwt = require('jsonwebtoken');
+
 class Navigation extends React.Component{
 
     logout = (e) =>{
@@ -18,8 +19,11 @@ class Navigation extends React.Component{
     
     render() {
         const isConnected = sessionStorage.getItem('token') !== null;
-        const isAdmin = this.props.auth.isAdmin;
-        console.log(isAdmin)
+        var isAdmin = false
+        if(isConnected){
+            isAdmin = jwt.decode(sessionStorage.getItem('token')).role === "admin";
+        }
+
         return (
             <nav>
                 <div>

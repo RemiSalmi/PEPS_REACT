@@ -16,6 +16,7 @@ import RemarkAdmin from './RemarkAdmin';
 import AnswerAdmin from './AnswerAdmin';
 import UserAdmin from './UserAdmin';
 import CategoryAdmin from './CategoryAdmin';
+var jwt = require('jsonwebtoken');
 
 class AdminPanel extends React.Component{
 
@@ -24,6 +25,7 @@ class AdminPanel extends React.Component{
         this.props.dispatch(fetchAnswers());
         this.props.dispatch(fetchUsers());
         this.props.dispatch(fetchCategories());
+
     }
 
     constructor(props){
@@ -54,7 +56,7 @@ class AdminPanel extends React.Component{
 
     render(){
 
-        const isAdmin = this.props.auth.isAdmin;
+        const isAdmin = jwt.decode(sessionStorage.getItem('token')).role === "admin";
         var adminContent;
 
         if (this.state.handleRemarks){
@@ -127,7 +129,6 @@ class AdminPanel extends React.Component{
     }
 }
 const mapStateToProps = state => ({
-    auth: state.auth,
     answers: state.answers
 });
 
