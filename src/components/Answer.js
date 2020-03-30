@@ -32,6 +32,13 @@ class Answer extends React.Component{
                     <div className="card-body">
                         <h5 className="card-category card-category-social">
                         </h5>
+                        {this.props.answer !== undefined ? (
+                            <span className="badge badge-info ml-auto" style={{height:"20px"}}>{this.props.categories.byId[answer.idCategory].lib}</span>
+                        ) :(
+                            null
+                        )
+
+                        }
                         <h4 className="card-title">
                             <p>&quot;{answer !== undefined ? answer.answer : ""}&quot;</p>
                         </h4>
@@ -39,7 +46,7 @@ class Answer extends React.Component{
                         <div className="card-stats" style={{justifyContent:"space-between"}}>
                             <div className="author">
                                 <div>
-                                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=334&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D" alt="..." className="avatar img-raised"/>
+                                    <img src="https://www.lajornadadeoriente.com.mx/wp-content/uploads/2018/05/default.jpg" alt="..." className="avatar img-raised"/>
                                     <span>{answer !== undefined ? users.byId[answer.idUser].pseudo : ""}</span>
                                 </div>
                             </div>
@@ -73,7 +80,8 @@ class Answer extends React.Component{
 const mapStateToProps = state => ({
     users: state.users,
     answers : state.answers,
-    auth: state.auth
+    auth: state.auth,
+    categories : state.categories
 });
 
 export default connect(mapStateToProps)(Answer);

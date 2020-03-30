@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
+import Pagination from '@material-ui/lab/Pagination';
 
 import Answer from './Answer'
 import ListFilter from './ListFilter'
@@ -25,13 +26,50 @@ class ListAnswer extends React.Component {
         this.state = {
             open: false,
             answer: "",
+            filters : [],
             idCategory: this.props.categories.allIds[2],
+            nbByPage : 10,
+            nbPage : Math.ceil(this.props.remarks.byId[this.props.idRemark].answers.length/10),
+            currentPage : 1
         }
     }
 
     handleClickOpen = () => {
         this.setState({ open: true }) 
     };
+
+    goToFirstPage = (e) => {
+        this.setState({ currentPage: 1 })
+    }
+
+
+    refreshNbPage = () => {
+        let size = this.props.remarks.byId[this.props.idRemark].answers.filter(idAnswer =>{
+                                
+            if (this.state.filters.includes(this.props.answers.byId[idAnswer].idCategory) || this.state.filters.length === 0){
+                return idAnswer
+            }
+            return null
+        }).length
+
+        this.setState({nbPage : Math.ceil(size/this.state.nbByPage)})
+    }
+
+    addFilter = (filter) => {
+        let newFilters = this.state.filters
+        newFilters.push(filter)
+        this.setState({filters : newFilters})
+        this.goToFirstPage()
+        this.refreshNbPage()
+    }
+
+    removeFilter = (filter) => {
+        let newFilters = this.state.filters
+        newFilters.splice(newFilters.indexOf(filter),1)
+        this.setState({filters : newFilters})
+        this.goToFirstPage()
+        this.refreshNbPage()
+    }
 
     handleChangeCategory = (e) => {
         this.setState({
@@ -55,8 +93,14 @@ class ListAnswer extends React.Component {
         this.handleClose()
     }
 
+    handleChangePage = (event, value) => {
+        this.setState({ currentPage: value })
+        document.getElementsByClassName('section_title')[0].scrollIntoView(true)
+    };
+
     render() {
         const { error, loading, title, answers ,categories,remarks, idRemark} = this.props;
+        const isConnected = this.props.auth.isConnected;
         if (error) {
           return <div>Error! {error.message}</div>;
         }
@@ -68,22 +112,45 @@ class ListAnswer extends React.Component {
         return(
             <section style={{height:"100%"}} id={title}>
                 <h1 className={"section_title neu-card"}>{title}</h1>
-                <div className={"container"}>
+                <div className={"container-fluid dspf"}>
+                    <div>
+                        <ListFilter type="answer" addFilter={this.addFilter} removeFilter={this.removeFilter}/>
+                    </div>
+                    <div className="fullWidth" style={{marginRight : "15%"}}>
                     <ul>
                         {remarks.byId[idRemark].answers.length ? (
-                            remarks.byId[idRemark].answers.map(idAnswer => {
+                            remarks.byId[idRemark].answers
+                            .filter(idAnswer =>{
+                                if(answers.byId[idAnswer] !== undefined){
+                                    if (this.state.filters.includes(answers.byId[idAnswer].idCategory) || this.state.filters.length === 0){
+                                        return idAnswer
+                                    }
+                                    return null
+                                }else{
+                                    return idAnswer
+                                }
+                                
+                            })
+                            .slice(this.state.nbByPage*this.state.currentPage-this.state.nbByPage,this.state.nbByPage*this.state.currentPage)
+                            .map(idAnswer => {
                                 return <li key={idAnswer}><Answer answer={answers.byId[idAnswer]} history={this.props.history}></Answer></li>
                             })
                         ) : (
                             <p>There is no answer for this remark, add one !</p>
                         )}    
                     </ul>
+                    <Pagination count={this.state.nbPage === 0 ? (Math.ceil(this.props.remarks.byId[this.props.idRemark].answers.length/10)) :(this.state.nbPage)} page={this.state.currentPage} size="large" className="pagination-it" onChange={this.handleChangePage} />
+                    </div>
                 </div>
-                <Tooltip title={"New answer"} aria-label={"New answer"} arrow>
-                    <Fab aria-label="add" className="fab fab_color" onClick={this.handleClickOpen}>
-                        <AddIcon />
-                    </Fab>
-                </Tooltip>
+                {isConnected ? (
+                    <Tooltip title={"New answer"} aria-label={"New answer"} arrow>
+                        <Fab aria-label="add" className="fab fab_color" onClick={this.handleClickOpen}>
+                            <AddIcon />
+                        </Fab>
+                        
+                    </Tooltip>
+                    ) : null
+                } 
                 <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'xl'}>
                     <DialogTitle id="form-dialog-title">New Answer</DialogTitle>
                     <DialogContent>
