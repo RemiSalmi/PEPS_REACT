@@ -16,6 +16,7 @@ import Pagination from '@material-ui/lab/Pagination';
 
 import Remark from './Remark'
 import ListFilter from './ListFilter'
+import Ordonneur from './Ordonneur';
 
 class ListRemark extends React.Component {
     componentDidMount() {
@@ -30,6 +31,7 @@ class ListRemark extends React.Component {
             remark: "",
             location: "",
             filters : [],
+            ordre : 1,
             category: 1,
             nbByPage : 10,
             nbPage : Math.ceil(this.props.remarks.allIds.length/10),
@@ -73,6 +75,28 @@ class ListRemark extends React.Component {
         this.setState({filters : newFilters})
         this.goToFirstPage()
         this.refreshNbPage()
+    }
+
+    ordonner = (ordre) => {
+        switch (ordre) {
+            case 1:
+                //plus entendu
+                let entendu = this.props.remarks.allIds.map( id => { return [this.props.remarks.byId[id].encounters.length,this.props.remarks.byId[id].idRemark]})
+                entendu.sort().reverse()
+                this.props.remarks.allIds=entendu.map(obj =>{return obj[1]})
+                break;
+            case 2:
+                //plus recent
+                let recent = this.props.remarks.allIds.map( id => { return [this.props.remarks.byId[id].dateCreation,this.props.remarks.byId[id].idRemark]})
+                recent.sort().reverse()
+                this.props.remarks.allIds=recent.map(obj =>{return obj[1]})
+                break;
+    
+            default:
+                break;
+        }
+        this.setState({ordre : ordre})
+        this.goToFirstPage()
     }
 
     handleChangeCategory = (e) => {
@@ -126,6 +150,7 @@ class ListRemark extends React.Component {
                 <div className={"container-fluid dspf"}>
                     <div>
                         <ListFilter type="remark" addFilter={this.addFilter} removeFilter={this.removeFilter}/>
+                        <Ordonneur ordonner={this.ordonner}/>
                     </div>
                     <div className="fullWidth" style={{marginRight : "15%"}}>
                     <ul>
