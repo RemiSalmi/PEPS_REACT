@@ -418,6 +418,9 @@ html{
     .res-off{
         display: none;
     }
+    ul{
+        padding: 0;
+    }
  }
 
 
@@ -427,5 +430,8 @@ html{
     }
     .res-off{
         display: none;
+    }
+    ul{
+        padding: 0;
     }
  }

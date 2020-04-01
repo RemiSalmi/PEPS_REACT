@@ -15,6 +15,7 @@ import Pagination from '@material-ui/lab/Pagination';
 
 import Answer from './Answer'
 import ListFilter from './ListFilter'
+import Ordonneur from './Ordonneur';
 
 class ListAnswer extends React.Component {
     componentDidMount() {
@@ -98,6 +99,29 @@ class ListAnswer extends React.Component {
         document.getElementsByClassName('section_title')[0].scrollIntoView(true)
     };
 
+    ordonner = (ordre) => {
+
+        switch (ordre) {
+            case 1:
+                //plus aimé
+                let answers = this.props.remarks.byId[this.props.idRemark].answers
+                let aimé = answers.map( id => { return [this.props.answers.byId[id].likes.length,this.props.answers.byId[id].idAnswer]})
+                aimé.sort().reverse()
+                this.props.remarks.byId[this.props.idRemark].answers=aimé.map(obj =>{return obj[1]})
+                break;
+            case 2:
+                //plus recent
+                this.props.remarks.byId[this.props.idRemark].answers.sort().reverse()
+                break;
+    
+            default:
+                break;
+        }
+
+        this.setState({ordre : ordre})
+        this.goToFirstPage()
+    }
+
     render() {
         const { error, loading, title, answers ,categories,remarks, idRemark} = this.props;
         const isConnected = this.props.auth.isConnected;
@@ -115,6 +139,8 @@ class ListAnswer extends React.Component {
                 <div className={"container-fluid dspf"}>
                     <div>
                         <ListFilter type="answer" addFilter={this.addFilter} removeFilter={this.removeFilter}/>
+                        <Ordonneur type="answer" ordonner={this.ordonner}/>
+
                     </div>
                     <div className="fullWidth" style={{marginRight : "15%"}}>
                     <ul>
