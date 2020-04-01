@@ -150,7 +150,7 @@ class ListRemark extends React.Component {
                 <div className={"container-fluid dspf responsive"}>
                     <div>
                         <ListFilter type="remark" addFilter={this.addFilter} removeFilter={this.removeFilter}/>
-                        <Ordonneur ordonner={this.ordonner}/>
+                        <Ordonneur type="remark" ordonner={this.ordonner}/>
                     </div>
                     <div className="fullWidth" style={{marginRight : "15%"}}>
                     <ul>

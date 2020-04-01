@@ -41,9 +41,12 @@ class Ordonneur extends React.Component{
                 <div className="card neu-card" style={{padding : "20px",width:"300px"}}>
                     <h2>Classer par</h2>
                     <div className="dspf" style={{flexDirection:"column"}}> 
-                    
+                    {this.props.type === "remark" ?
                     <Chip style={this.props.style} label="plus entendu" color={"primary"} variant={this.state.clicked1 ? ('default'):('outlined')} clickable={true} onClick={this.handleClick1} style={{marginBottom : "5px"}}/>
-                    <Chip style={this.props.style} label="plus récent" color={"primary"} variant={this.state.clicked2 ? ('default'):('outlined')} clickable={true} onClick={this.handleClick2} style={{marginBottom : "5px"}}/>
+                    :
+                    <Chip style={this.props.style} label="plus aimé" color={"primary"} variant={this.state.clicked1 ? ('default'):('outlined')} clickable={true} onClick={this.handleClick1} style={{marginBottom : "5px"}}/>
+                    }
+                     <Chip style={this.props.style} label="plus récent" color={"primary"} variant={this.state.clicked2 ? ('default'):('outlined')} clickable={true} onClick={this.handleClick2} style={{marginBottom : "5px"}}/>
 
                     </div>
                     
