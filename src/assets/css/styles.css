@@ -369,6 +369,8 @@ a{
     border-radius: 56px;
 }
 
+
+
 .fab_color{
     background-color: #e0e5ec !important;
     color: #9960a7 !important;
@@ -407,3 +409,23 @@ html{
 .MuiDialog-paperFullScreen{
     background-color: #e0e5ec !important;
 }
+
+
+@media (max-width: 575.98px) { 
+    .responsive{
+        flex-direction: column;
+    }
+    .res-off{
+        display: none;
+    }
+ }
+
+
+@media (max-width: 767.98px) { 
+    .responsive{
+        flex-direction: column;
+    }
+    .res-off{
+        display: none;
+    }
+ }

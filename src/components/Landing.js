@@ -36,7 +36,7 @@ class Landing extends React.Component{
                         </div>
                     </div>
                     
-                    <div className={"row"} style={{'paddingTop': '60px'}}>
+                    <div className={"row res-off"} style={{'paddingTop': '60px'}}>
                         <div className={"col-sm-6 flex justify-center"}>
                             <div className={"roundBtn"} onClick={this.scrollToRemark}>
                                 <img className={"next"} src={next} alt=""/>

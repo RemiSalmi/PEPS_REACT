@@ -26,15 +26,15 @@ class Navigation extends React.Component{
 
         return (
             <nav>
-                <div>
+                <div style={{display: "flex",flexDirection: "row",alignItems: "center"}}>
                     <img className={"logo-nav"} src={logo} alt="logo"/>
                     <NavLink to="/">Home</NavLink>
                     
                 </div>
                 
                {isConnected ? (
-                   <div style={{display:"flex", marginRight:"10px"}}>
-                        <NavLink className="login" to="/account">My account</NavLink>
+                   <div style={{display:"flex", marginRight:"10px",alignItems: "center"}}>
+                        <NavLink className="login" to="/account">Profile</NavLink>
                         {isAdmin &&  <NavLink className="admin" to="/admin">Admin</NavLink> }
                         <NavLink onClick={this.logout} to="/">Logout</NavLink>
                    </div>
